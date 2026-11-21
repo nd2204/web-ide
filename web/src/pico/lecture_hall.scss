@@ -1,68 +1,68 @@
-// Lecture Hall: the web IDE's visual world.
+// Braun: the web IDE's visual world (the --lh-* token names predate it).
 //
-// Slate-black rounded panels where chalk colour says what a thing is. Dark is
-// the blackboard; light is the same room with the whiteboard, using darker
-// marker inks of the same hues. The unlayered rules here win over the Pico
-// and `user` layers declared in `public/root.css`.
+// A Dieter Rams calculator: matte warm-grey panels, tactile pill keys, and one
+// colour per meaning. Light is the Braun ET 66 body; dark is the same device in
+// charcoal. The unlayered rules here win over the Pico and `user` layers
+// declared in `public/root.css`.
 //
-// Chalk roles (both themes):
+// Key colour roles (both themes; the token names keep their old hue):
 //   yellow  the one primary action and the current step
-//   blue    input pins
+//   blue    input pins (orange)
 //   green   output pins and passed
-//   amber   internal pins
+//   amber   internal pins (grey)
 //   pink    HDL keywords (see monacoSetup.ts)
 //   red     errors
 
 :root {
-  --lh-radius: 12px;
+  --lh-radius: 6px;
   --lh-gap: 8px;
   --lh-btn-h: 1.75rem;
   --lh-btn-px: 0.8rem;
   --lh-btn-fs: 0.9rem;
   --lh-btn-icon: 1.15rem;
-  --lh-radius-sm: 10px;
+  --lh-radius-sm: 4px;
   --lh-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --font-family:
-    Nunito, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans",
-    sans-serif;
+    "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Noto Sans", sans-serif;
   --font-size-monospace: 15px;
 }
 
 :root[data-theme="dark"] {
-  --lh-ground: #0e1112;
-  --lh-panel: #161a1c;
-  --lh-raised: #1c2123;
-  --lh-seam: #2b3234;
-  --lh-text: #f1efe7;
-  --lh-muted: #a3a99f;
-  --lh-yellow: #f6d55c;
-  --lh-on-yellow: #14171a;
-  --lh-blue: #7fc8f8;
-  --lh-green: #8fd694;
-  --lh-amber: #f0a868;
-  --lh-red: #ff8a80;
-  --lh-focus: #f6d55c;
-  --lh-accent-text: #f6d55c;
-  --lh-hover: rgb(241 239 231 / 8%);
+  --lh-ground: #1c1c1a;
+  --lh-panel: #242421;
+  --lh-raised: #2c2c29;
+  --lh-seam: #3d3d38;
+  --lh-text: #ece9e1;
+  --lh-muted: #a19e94;
+  --lh-yellow: #f2d21a;
+  --lh-on-yellow: #1c1c1a;
+  --lh-blue: #f59a3c;
+  --lh-green: #86c866;
+  --lh-amber: #a8a59a;
+  --lh-red: #ff8a7a;
+  --lh-focus: #f2d21a;
+  --lh-accent-text: #f2d21a;
+  --lh-hover: rgb(236 233 225 / 8%);
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
-  --lh-ground: #e9ece8;
-  --lh-panel: #ffffff;
-  --lh-raised: #f3f5f2;
-  --lh-seam: #d5dad3;
-  --lh-text: #1b2022;
-  --lh-muted: #566059;
-  --lh-yellow: #f2c81d;
-  --lh-on-yellow: #14171a;
-  --lh-blue: #1767a8;
-  --lh-green: #2a7a37;
-  --lh-amber: #a85a10;
+  --lh-ground: #e9e7e1;
+  --lh-panel: #f6f4ee;
+  --lh-raised: #efede6;
+  --lh-seam: #cfccc3;
+  --lh-text: #2a2a28;
+  --lh-muted: #6b685f;
+  --lh-yellow: #f2d21a;
+  --lh-on-yellow: #2a2a28;
+  --lh-blue: #b85f08;
+  --lh-green: #3f7f26;
+  --lh-amber: #6e6b61;
   --lh-red: #b3261e;
-  --lh-focus: #1767a8;
-  --lh-accent-text: #7a5b00;
-  --lh-hover: rgb(27 32 34 / 7%);
+  --lh-focus: #2a2a28;
+  --lh-accent-text: #6e5a00;
+  --lh-hover: rgb(42 42 40 / 7%);
   color-scheme: light;
 }
 
@@ -155,7 +155,7 @@
 
       strong a {
         color: var(--lh-text);
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 0.01em;
       }
     }
@@ -202,7 +202,7 @@
       gap: 0.4rem 0.75rem;
       flex-wrap: wrap;
       align-items: flex-start;
-      font-weight: 800;
+      font-weight: 700;
 
       // The title is as tall as one row of controls, so it lines up with the
       // first row when the controls wrap.
@@ -315,10 +315,16 @@
     text-align: center;
     white-space: nowrap;
     border-radius: 999px;
+    // A calculator key: a darker lip along the bottom edge.
+    box-shadow: inset 0 -2px 0 rgb(0 0 0 / 14%);
     transition:
       background-color 120ms var(--lh-ease),
       border-color 120ms var(--lh-ease),
       transform 120ms var(--lh-ease);
+
+    &:active:not(:disabled) {
+      box-shadow: inset 0 1px 0 rgb(0 0 0 / 14%);
+    }
 
     &:has(> .material-symbols-outlined:only-child) {
       min-width: var(--lh-btn-h);
@@ -458,7 +464,7 @@
       background: var(--lh-raised);
       border: 1px solid var(--lh-seam);
       color: var(--lh-accent-text);
-      font-weight: 800;
+      font-weight: 700;
     }
   }
 
@@ -490,7 +496,7 @@
     th {
       color: var(--lh-muted);
       font-size: 0.75rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       padding-top: 0.75rem;
@@ -522,7 +528,7 @@
       color: var(--pin);
     }
 
-    // Bit cells: 0 is hollow, 1 is filled with the pin's chalk colour.
+    // Bit cells: 0 is hollow, 1 is filled with the pin's key colour.
     tr[data-kind] fieldset button,
     tr[data-kind] fieldset button[style] {
       background: transparent !important;
@@ -631,13 +637,13 @@
 // Reviewer pass: dialogs, banner, status, mobile header, drawn icons.
 :root[data-theme="dark"],
 :root[data-theme="light"] {
-  // Current test step and setup lines: chalk-yellow tint with an underline.
+  // Current test step and setup lines: yellow tint with an underline.
   .Editor .highlight {
     background-color: var(--mark-background-color);
     border-bottom: 2px solid var(--lh-yellow);
   }
 
-  // Status line: panel ground, chalk text, a coloured dot carries the state.
+  // Status line: panel ground, ink text, a coloured dot carries the state.
   #root > footer .StatusLine {
     --dot: var(--lh-muted);
     display: flex;
@@ -707,7 +713,7 @@
       border-bottom: 1px solid var(--lh-seam);
       padding: 0.85rem 1.25rem;
       margin: 0;
-      font-weight: 800;
+      font-weight: 700;
 
       p {
         margin: 0;
