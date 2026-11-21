@@ -1,4 +1,5 @@
 import { expect, type Page } from "@playwright/test";
+import { pick } from "../helpers";
 import { TestPanel } from "./TestPanel";
 
 export class ChipPage {
@@ -14,8 +15,11 @@ export class ChipPage {
 
   /** Opens a picker (a Radix select) and chooses the option with this label. */
   async pick(testId: string, label: string): Promise<void> {
-    await this._page.locator(`[data-testid="${testId}"]`).click();
-    await this._page.getByRole("option", { name: label, exact: true }).click();
+    await pick(
+      this._page,
+      this._page.locator(`[data-testid="${testId}"]`),
+      label,
+    );
   }
 
   async selectProject(value: string): Promise<void> {

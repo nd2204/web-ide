@@ -90,10 +90,19 @@ test.describe("service worker", () => {
   let site: Site;
   let context: BrowserContext;
 
+  // Locally a missing build skips these tests. In GitHub Actions it is a
+  // failure: a skipped service-worker suite must never look like a pass. (The
+  // `test:e2e*` scripts set CI=true everywhere, so check GITHUB_ACTIONS.)
+  const hasBuild = existsSync(join(BUILD, "service-worker.js"));
   test.skip(
-    !existsSync(join(BUILD, "service-worker.js")),
+    !hasBuild && !process.env.GITHUB_ACTIONS,
     "run `npm run build -w web` first",
   );
+  test.beforeAll(() => {
+    if (!hasBuild) {
+      throw new Error("web/build is missing: run `npm run build` before e2e");
+    }
+  });
 
   test.beforeEach(async ({ browser }) => {
     site = await serve(BUILD);
