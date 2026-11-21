@@ -221,7 +221,7 @@ The Chip page's buttons, selects and Builtin switch are shadcn-style components 
 - **Do** give every key the same height and the inset bottom lip; keep keys in a group as separate pills with a gap.
 - **Do** build depth from Ground, Panel and Raised steps and 1px Seam lines.
 - **Do** use Be Vietnam Pro (400, 600, 700, self-hosted) for UI and JetBrains Mono for values; keep Vietnamese diacritics rendering.
-- **Do** keep every theme value in `lecture_hall.scss`, mirrored in `lecture_hall_colors.ts` for Monaco; both themes must move together.
+- **Do** keep every theme value in `src/ui/tokens.css`, mirrored in `lecture_hall_colors.ts` for Monaco; both themes must move together.
 - **Do** use `#6e5a00` (not Key Yellow) for yellow-family text on light ground.
 
 ### Don't:

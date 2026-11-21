@@ -4,9 +4,14 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+@import "./tokens.css";
+
 @source "./";
 
-/* shadcn token names mapped onto the Braun tokens in pico/lecture_hall.scss. */
+/* Dark mode follows the app's `data-theme` attribute, not the OS setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* shadcn token names mapped onto the Braun tokens in tokens.css. */
 @theme inline {
   --color-background: var(--lh-ground);
   --color-foreground: var(--lh-text);

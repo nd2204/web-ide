@@ -28,51 +28,7 @@
   --font-size-monospace: 15px;
 }
 
-:root[data-theme="dark"] {
-  --lh-ground: #1c1c1a;
-  --lh-panel: #242421;
-  --lh-raised: #2c2c29;
-  --lh-seam: #3d3d38;
-  --lh-text: #ece9e1;
-  --lh-muted: #a19e94;
-  --lh-yellow: #f2d21a;
-  --lh-on-yellow: #1c1c1a;
-  --lh-blue: #f59a3c;
-  --lh-green: #86c866;
-  --lh-amber: #a8a59a;
-  --lh-red: #ff8a7a;
-  --lh-focus: #f2d21a;
-  --lh-accent-text: #f2d21a;
-  --lh-hover: rgb(236 233 225 / 8%);
-  --lh-key: #3d3d38;
-  --lh-key-edge: #8a877c;
-  --lh-well: #171715;
-  --lh-well-edge: #6e6b62;
-  color-scheme: dark;
-}
-
-:root[data-theme="light"] {
-  --lh-ground: #e9e7e1;
-  --lh-panel: #f6f4ee;
-  --lh-raised: #efede6;
-  --lh-seam: #cfccc3;
-  --lh-text: #2a2a28;
-  --lh-muted: #6b685f;
-  --lh-yellow: #f2d21a;
-  --lh-on-yellow: #2a2a28;
-  --lh-blue: #b85f08;
-  --lh-green: #3f7f26;
-  --lh-amber: #6e6b61;
-  --lh-red: #b3261e;
-  --lh-focus: #2a2a28;
-  --lh-accent-text: #6e5a00;
-  --lh-hover: rgb(42 42 40 / 7%);
-  --lh-key: #fffefb;
-  --lh-key-edge: #8a867b;
-  --lh-well: #e2dfd5;
-  --lh-well-edge: #9a968b;
-  color-scheme: light;
-}
+// The light and dark --lh-* colour values live in ../ui/tokens.css.
 
 :root[data-theme="dark"],
 :root[data-theme="light"] {
