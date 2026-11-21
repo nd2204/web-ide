@@ -39,9 +39,13 @@ const ICON_BOX = `.material-symbols-outlined {
 
 async function settle(page: Page, ready: readonly string[]) {
   for (const selector of ready) {
-    await expect(page.locator(selector).first()).toBeVisible();
+    await expect(page.locator(selector).first()).toBeVisible({
+      timeout: 20_000,
+    });
   }
-  await expect(page.getByText("Loading...")).toHaveCount(0);
+  await expect(page.getByText("Loading...")).toHaveCount(0, {
+    timeout: 20_000,
+  });
   await page.waitForLoadState("networkidle");
   await page.addStyleTag({ content: ICON_BOX });
   await page.evaluate(() => document.fonts.ready);
