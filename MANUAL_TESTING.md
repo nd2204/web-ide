@@ -30,6 +30,30 @@ The feature being exercised: switching storage mode from Browser to PC, seeding 
 
 Pass criteria: every step above behaves as described, no console errors, and the on-disk file contents stay in lockstep with the editor across the reload boundary.
 
+## Keyboard and screen-reader pass
+
+Run this on every primitive a migration step touches (Dialog, Tooltip, Button, Input, Select, Slider, Table, Panel and Accordion, in that order of the migration). Automated axe checks do not replace it.
+
+1. Keyboard only, with the mouse unplugged: Tab reaches every control in a logical order and a visible focus ring shows where you are.
+2. Dialogs: Tab and Shift+Tab stay inside while open, Escape closes (or cancels), and focus returns to the control that opened it. Chained dialogs restore focus step by step.
+3. Select and menus: Enter, Space and arrow keys open and move through the list, Home and End jump, Escape closes, typing a letter jumps to a match.
+4. Tabs and toggle groups: arrow keys move between items, Tab leaves the group.
+5. Switches and radio groups: Space toggles, and the label is announced with the state.
+6. Tooltips: the text is also reachable without hover, through the accessible name or a visible label.
+7. Screen reader (VoiceOver on macOS or NVDA on Windows): each control announces a role, a name and its state. Dialogs announce their title when they open. Icon-only buttons have a name.
+8. Touch (a phone or devtools device mode): every target is at least 44px, and nothing needs hover.
+9. Record the browser, the screen reader and any defects in the pull request.
+
+## Live site update check
+
+Run this after every deploy (see the deploy decision in the migration map). The service worker can serve a stale app from cache.
+
+1. Open <https://nand2tetris.github.io/web-ide/> in a profile that already visited the previous version. Wait for the update prompt or reload once.
+2. Confirm the About page shows the new version.
+3. Run `BASE_URL=https://nand2tetris.github.io/web-ide/ npm run test:e2e:smoke` against the live site.
+4. Reload the tool pages (`chip`, `cpu`, `asm`, `vm`, `compiler`, `bitmap`) once offline and confirm they still load.
+5. If the old version persists, unregister the service worker in DevTools → Application and report it before deploying again.
+
 ## Teardown
 
 1. Settings → **Use browser storage** to revert.

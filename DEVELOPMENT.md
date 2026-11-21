@@ -84,6 +84,16 @@ Formatting and linting are fast, so run them after every change.
 - Do not assign message IDs. The SWC plugin in `web/vite.config.ts` derives each ID from the source text, which serves as the English message.
 - Do not hardcode user facing text, such as the "Select local file" button in `web/src/shell/file_select.tsx`.
 
+### Primitives and `components`
+
+These rules keep the shared UI translatable ([web/src/ui](./web/src/ui) holds the shadcn primitives; [Styling and UI](#styling-and-ui) describes them):
+
+1. **Primitives are Lingui-free.** `web/src/ui` never imports `@lingui/*` and ships no English text. Built-in strings (a Dialog close label, a Select placeholder, Slider and Tooltip `aria-label`s) are required props with no default, so TypeScript forces each caller to translate. Callers pass `<Trans>` children, or `` t`...` `` from `useLingui()` (not the global `t`) for any string passed as a prop, so it re-renders on a locale change.
+2. **`components` stays Lingui-free.** Chrome text arrives already translated through render-prop slots, and `web` owns every string. Text inside custom widget content stays English until a human translation exists.
+3. **Grow, do not truncate.** Text controls use `min-h-*` and `min-w-*`, never fixed `h-*` or `w-*`. Button labels wrap, and wells and tab lists wrap or scroll instead of clipping. Truncate only the Select trigger value, editor file tab names and the header title, and keep the full text reachable through the accessible name or a tooltip.
+
+A Vitest guard enforces the first rule for `web/src/ui`. The `en-pl` and 150% text-scale `@smoke` specs check the rest.
+
 ### Catalogs
 
 No manual step is needed. `npm run start`, `npm run build -w web`, and `npm test -w web` extract the messages into `web/src/locales/<locale>/messages.po` when they start, and the Lingui Vite plugin compiles each catalog when `web/src/locales.ts` imports it. Run `npm run extract -w web` only to inspect the catalogs without starting Vite. `web/src/.gitignore` ignores `web/src/locales/`, so the catalogs are not committed. No check fails on missing translations.
@@ -95,6 +105,20 @@ The configured locales are `en`, which is the source locale, and `en-PL`, which 
 To add a locale, add it to `locales` in `web/lingui.config.ts`, and optionally map it in `fallbackLocales`. `web/src/locales.ts` loads every catalog it finds.
 
 At startup, `web/src/App.tsx` activates `navigator.language`. In browser storage mode, `web/src/shell/settings.tsx` then activates the locale stored in the browser file `/locale`, and writes `en` there when the file is missing. The app has no language picker. A missing translation falls back to the fallback locale or the source text.
+
+## Styling and UI
+
+The app is moving from Pico CSS and SCSS to shadcn (Radix, Tailwind v4, `cva`). Until the last step deletes `web/src/pico/`, both systems coexist:
+
+- Primitives live in `web/src/ui`, one file per part, and every Radix part sets `data-slot`. Tailwind is unprefixed, and its preflight reset is off until Pico is gone.
+- One cascade layer order, declared once in `web/public/root.css`: `@layer pico, theme, components, utilities;`. Our own SCSS in `lecture_hall.scss` is unlayered and still wins over every layer.
+- The old flex helpers are named `stack`, `stack-row`, `stack-wrap`, `stack-justify-*`, `stack-align-*` and `stack-item-<n>` so they never collide with Tailwind's `flex`, `row`, `justify-*` and `flex-<n>`.
+- Colour tokens are the `--lh-*` variables in `web/src/ui/tokens.css`. They stay canonical until the final rename to shadcn names. The Tailwind `dark:` variant follows `data-theme="dark"`.
+- `components` styles its widgets with plain CSS in `components/src/public` and imports no Tailwind, Radix or `web/src/ui`. Chrome around a widget is passed in as slots from `web`.
+- Primitives carry `coarse:min-h-11` for 44px touch targets and use the `phone` breakpoint (576px) for chrome. Page grids keep their SCSS thresholds.
+- Until Pico is gone, button-based parts set explicit `bg-*`, `text-*` and `border-*` plus `w-auto mb-0`, use `inline-flex w-full` instead of `flex`, and add `grid-flow-row grid-cols-1` to Tailwind `grid`.
+- `web/src/migration_guard.test.ts` counts remaining Pico imports, type selectors in `lecture_hall.scss` and Pico-only CSS variables. A step may only lower those numbers. `web/src/bundle_budget.test.ts` enforces `web/bundle-budget.json` against `web/build`, and fails in GitHub Actions when the build is missing.
+- Tests: Radix needs browser APIs that jsdom lacks, and `web/src/setupTests.ts` stubs them. In e2e, `e2e/src/helpers.ts` provides `pick`, `toggle`, `openTab` and `dialog`. Use roles and accessible names, never Pico class names.
 
 ## End to End Tests
 
@@ -111,6 +135,31 @@ End to end tests live in `e2e/tests/` and run with Playwright against the dev se
 | `npm run -w e2e flakes` | Repeats each test 10 times to identify flaky tests |
 
 Append `-- --grep "<pattern>"` to any of these commands to limit which tests run.
+
+The Playwright projects are:
+
+| Project | Runs | Notes |
+|---------|------|-------|
+| `chromium` | Every spec outside the folders below | Desktop Chrome |
+| `phone` | `tests/phone/` | 390x844, touch, mobile; checks overflow and 44px targets |
+| `en-pl` | `tests/i18n/` | Seeds the `en-PL` pseudolocale before the app loads |
+| `visual` | `tests/visual/` | Screenshot baselines; GitHub Actions and the Docker script only |
+
+The `test:e2e*` scripts set `CI=true` even on a laptop, so checks that must differ in real CI test `GITHUB_ACTIONS` instead. The service-worker specs and the bundle budget skip locally without a `web/build`, and fail in GitHub Actions.
+
+Set `BASE_URL` (with a trailing slash) to run specs against an already deployed site, for example `BASE_URL=https://nand2tetris.github.io/web-ide/ npm run test:e2e:smoke`. No dev server starts then.
+
+### Visual baselines
+
+`tests/visual/visual.spec.ts` screenshots every route and the Settings dialog at a desktop and a phone viewport. The baselines are Linux and Chromium only, committed in `tests/visual/visual.spec.ts-snapshots/`. Pull requests compare against them in GitHub Actions, and the diff images upload with the `playwright-results` artifact. A migration step must leave them unchanged, or update them on purpose in the same pull request.
+
+Regenerate them in the official Playwright Docker image, so they match CI:
+
+```
+npm run test:e2e:visual:update
+```
+
+The script copies the repository into the container, builds it and rewrites the snapshots (amd64, so expect a few minutes). If Docker is not available, download the `playwright-results` artifact of a failed run and commit the `*-actual.png` images under their baseline names.
 
 In CI mode, Playwright records a trace when it retries a failed test. View the trace with:
 
