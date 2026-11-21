@@ -20,7 +20,7 @@ const KNOWN: { rule: string; target: RegExp; why: string }[] = [
   },
   {
     rule: "aria-required-children",
-    target: /^section\[role="tablist"\]$/,
+    target: /^section(\[role="tablist"\])?$/,
     why: "tabs are radio inputs inside role=tab wrappers (tabs step)",
   },
   {
