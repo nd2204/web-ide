@@ -172,7 +172,7 @@ export const CPU = () => {
         className="IO"
         header={
           <>
-            <div className="flex-1">
+            <div className="stack-item-1">
               {runnersAssigned && cpuRunner.current && (
                 <Runbar
                   runner={cpuRunner.current}

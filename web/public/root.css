@@ -8,7 +8,10 @@
   src: url(./jet_brains_mono.ttf) format("truetype");
 }
 
-@layer pico component user;
+/* One layer order for Pico, Tailwind and our own rules. Tailwind's theme.css and
+   utilities.css are imported into `theme` and `utilities` (src/ui/tailwind.css).
+   Unlayered rules (lecture_hall.scss) still beat every layer. */
+@layer pico, theme, components, utilities;
 
 /* Be Vietnam Pro: the UI face of the Braun theme, designed for Vietnamese. */
 @font-face {

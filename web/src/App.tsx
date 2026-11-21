@@ -71,7 +71,7 @@ function App() {
               <FilePicker />
               <Router basename={import.meta.env.BASE_URL}>
                 <Header />
-                <main className="flex flex-1">
+                <main className="stack stack-item-1">
                   <ErrorBoundary fallback={RenderError}>
                     <Suspense
                       fallback={

@@ -2,7 +2,7 @@
 //
 // A Dieter Rams calculator: matte warm-grey panels, tactile pill keys, and one
 // colour per meaning. Light is the Braun ET 66 body; dark is the same device in
-// charcoal. The unlayered rules here win over the Pico and `user` layers
+// charcoal. The unlayered rules here win over the Pico and `components` layers
 // declared in `public/root.css`.
 //
 // Key colour roles (both themes; the token names keep their old hue):
@@ -227,7 +227,7 @@
         white-space: nowrap;
       }
 
-      .flex.row.wrap {
+      .stack.stack-row.stack-wrap {
         gap: 0.4rem 0.75rem;
         align-items: center;
         justify-content: flex-start;
@@ -967,7 +967,7 @@
 :root[data-theme="dark"],
 :root[data-theme="light"] {
   // Rows inside a nested panel (CPU and VM Keyboard row).
-  article.panel > .flex.row.align-baseline {
+  article.panel > .stack.stack-row.stack-align-baseline {
     align-items: center;
     gap: 0.75rem;
     padding: 0.4rem 0.75rem;
@@ -1145,11 +1145,4 @@
       border-color: var(--lh-focus);
     }
   }
-}
-
-// Radix locks page scroll while a select is open by making <body> relative,
-// which collapses #root (it is absolutely sized against the viewport). The
-// page never scrolls, so keep body static and let the lock only hide overflow.
-html body[data-scroll-locked] {
-  position: static !important;
 }

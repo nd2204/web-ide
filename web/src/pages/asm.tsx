@@ -155,14 +155,14 @@ export const Asm = () => {
             <div>
               <Trans>Source</Trans>
             </div>
-            <div className="flex-1">
+            <div className="stack-item-1">
               {runnerAssigned && runner.current && (
                 <Runbar
                   runner={runner.current}
                   disabled={state.error != undefined}
                   prefix={
                     <button
-                      className="flex-0"
+                      className="stack-item-0"
                       onClick={loadAsm}
                       aria-label={t`Load file`}
                       data-tooltip={t`Load file`}
@@ -289,7 +289,7 @@ export const Asm = () => {
         isEditorPanel={true}
         header={
           <>
-            <div className="flex-1">
+            <div className="stack-item-1">
               <Trans>Symbol Table</Trans>
             </div>
             <input
@@ -318,7 +318,7 @@ export const Asm = () => {
                 <Icon name="folder_open" />
               </button>
             </fieldset>
-            <div className="flex-1" />
+            <div className="stack-item-1" />
             <fieldset role="group">
               <button onClick={compare}>
                 <Trans>Compare</Trans>

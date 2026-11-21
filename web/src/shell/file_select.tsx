@@ -112,9 +112,7 @@ const FileEntry = ({
   return (
     <div>
       <button
-        className={`flex row justify-start outline ${
-          highlighted ? "" : "secondary"
-        }`}
+        className={`stack stack-row outline ${highlighted ? "" : "secondary"}`}
         style={{
           textAlign: "left",
           color: disabled ? "var(--disabled)" : undefined,
@@ -260,7 +258,7 @@ export const FilePicker = () => {
         style={{ display: "none" }}
         webkitdirectory={filePicker.allowFolders ? "true" : undefined}
       ></input>
-      <article className="file-select flex">
+      <article className="file-select stack">
         <header>
           <p>
             <Trans>Choose file</Trans>
@@ -282,7 +280,7 @@ export const FilePicker = () => {
           <div>
             <b>{fs.cwd()}</b>
           </div>
-          <div className="flex wrap files-container">
+          <div className="stack stack-wrap files-container">
             {files.map((file) => (
               <FileEntry
                 key={file.name}

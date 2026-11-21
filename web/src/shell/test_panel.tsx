@@ -217,20 +217,20 @@ export const TestPanel = ({
             {showName && (name == "" ? ": Default" : `: ${name}`)}
           </div>
           {editWarning}
-          <div className="flex-1">
+          <div className="stack-item-1">
             {runner.current && (
               <Runbar
                 prefix={
                   <>
                     {prefix}
                     {showClear && (
-                      <button className="flex-0" onClick={clear}>
+                      <button className="stack-item-0" onClick={clear}>
                         <Trans>Clear</Trans>
                       </button>
                     )}
                     {showLoad && (
                       <button
-                        className="flex-0"
+                        className="stack-item-0"
                         onClick={loadTest}
                         aria-label={t`Load a test script`}
                         data-tooltip={t`Load a test script`}

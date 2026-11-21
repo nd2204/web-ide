@@ -307,7 +307,7 @@ export const Chip = () => {
             <Trans>Builtin</Trans>
           </label>
           <div style={{ width: "30px" }}></div>
-          <div className="flex-4">{selectors}</div>
+          <div className="stack-item-4">{selectors}</div>
           <fieldset role="group">
             <Button
               size="icon"
@@ -333,7 +333,7 @@ export const Chip = () => {
       }
     >
       <Editor
-        className="flex-1"
+        className="stack-item-1"
         value={hdl}
         error={state.controls.error}
         onChange={async (source) => {

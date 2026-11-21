@@ -225,15 +225,15 @@ const VM = () => {
         isEditorPanel={true}
         header={
           <>
-            <div className="flex-0" style={{ whiteSpace: "nowrap" }}>
+            <div className="stack-item-0" style={{ whiteSpace: "nowrap" }}>
               <Trans>VM Code</Trans>
             </div>
-            <div className="flex-1">
+            <div className="stack-item-1">
               {runnersAssigned && vmRunner.current && (
                 <Runbar
                   prefix={
                     <button
-                      className="flex-0"
+                      className="stack-item-0"
                       onClick={load}
                       aria-label={t`Load files`}
                       data-tooltip={t`Load files`}
