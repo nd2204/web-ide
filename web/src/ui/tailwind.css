@@ -11,6 +11,14 @@
 /* Dark mode follows the app's `data-theme` attribute, not the OS setting. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/* Touch targets: primitives add `coarse:min-h-11` (44px) for finger input. */
+@custom-variant coarse (@media (pointer: coarse));
+
+/* The one chrome breakpoint (576px); page grids keep their own SCSS thresholds. */
+@theme {
+  --breakpoint-phone: 36rem;
+}
+
 /* shadcn token names mapped onto the Braun tokens in tokens.css. */
 @theme inline {
   --color-background: var(--lh-ground);
