@@ -19,8 +19,8 @@ test("Toggling Builtin on and off leaves the saved HDL untouched", async ({
   const toggle = page.locator("label", { hasText: "Builtin" });
   const editorText = page.locator(".view-lines").first();
 
-  await page.selectOption('[data-testid="project-picker"]', { label: "Project 1" });
-  await page.selectOption('[data-testid="chip-picker"]', { label: "And" });
+  await chipPage.pick("project-picker", "Project 1");
+  await chipPage.pick("chip-picker", "And");
   await expect(editorText).toContainText("CHIP And");
   const original = await savedHdl();
   expect(original).not.toContain("BUILTIN");

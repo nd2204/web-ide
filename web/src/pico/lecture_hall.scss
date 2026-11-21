@@ -44,6 +44,10 @@
   --lh-focus: #f2d21a;
   --lh-accent-text: #f2d21a;
   --lh-hover: rgb(236 233 225 / 8%);
+  --lh-key: #3d3d38;
+  --lh-key-edge: #8a877c;
+  --lh-well: #171715;
+  --lh-well-edge: #6e6b62;
   color-scheme: dark;
 }
 
@@ -63,6 +67,10 @@
   --lh-focus: #2a2a28;
   --lh-accent-text: #6e5a00;
   --lh-hover: rgb(42 42 40 / 7%);
+  --lh-key: #fffefb;
+  --lh-key-edge: #8a867b;
+  --lh-well: #e2dfd5;
+  --lh-well-edge: #9a968b;
   color-scheme: light;
 }
 
@@ -99,7 +107,7 @@
   --code-color: var(--lh-text);
   --mark-background-color: color-mix(in srgb, var(--lh-yellow) 16%, transparent);
   --mark-error-color: color-mix(in srgb, var(--lh-red) 35%, transparent);
-  --switch-background-color: var(--lh-seam);
+  --switch-background-color: var(--lh-well);
   --switch-checked-background-color: var(--lh-green);
   --switch-color: var(--lh-text);
   --border-radius: var(--lh-radius-sm);
@@ -193,7 +201,13 @@
     background: var(--lh-panel);
     border: 1px solid var(--lh-seam);
     border-radius: var(--lh-radius);
-    overflow: hidden;
+    // Round corners clip, but a tall panel (the CPU screen column) still scrolls.
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &.editor {
+      overflow-y: hidden;
+    }
 
     > header {
       background: var(--lh-raised);
@@ -302,7 +316,7 @@
   // Button system: one height, one padding and one type size for every button,
   // grouped or standalone. Icon-only buttons are square. Pin cells, tabs and
   // the header tool pills have their own rules.
-  button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control),
+  button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control):not([data-slot]),
   [role="button"]:not(li) {
     display: inline-flex;
     align-items: center;
@@ -327,8 +341,10 @@
     }
 
     &:has(> .material-symbols-outlined:only-child) {
+      // An icon-only key is a round button, as wide as it is tall.
+      width: var(--lh-btn-h);
       min-width: var(--lh-btn-h);
-      padding: 0 0.5rem;
+      padding: 0;
     }
 
     // Icon and label together.
@@ -344,7 +360,7 @@
   }
 
   // Buttons in a group share the row: natural width, equal height.
-  fieldset[role="group"] > button:not([data-testid^="pin-"]) {
+  fieldset[role="group"] > button:not([data-testid^="pin-"]):not([data-slot]) {
     flex: 0 0 auto;
     width: auto;
     font-variant-numeric: tabular-nums;
@@ -352,7 +368,7 @@
 
   // Yellow is the one primary action on a screen (class `lh-primary`), and the
   // current step. Every other button is a quiet pill.
-  button,
+  button:not([data-slot]),
   [role="button"] {
     background-color: var(--lh-raised);
     border: 1px solid var(--lh-seam);
@@ -375,7 +391,7 @@
     }
   }
 
-  button.lh-primary:not(:disabled) {
+  button.lh-primary:not(:disabled):not([data-slot]) {
     background: var(--lh-yellow);
     border-color: var(--lh-yellow);
     color: var(--lh-on-yellow);
@@ -914,7 +930,7 @@
       justify-content: center;
     }
 
-    button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control),
+    button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control):not([data-slot]),
     [role="button"]:not(li),
     input[type="range"],
     label[role="tab"],
@@ -1021,4 +1037,119 @@
       padding: 0.5rem 0.75rem;
     }
   }
+}
+
+// Controls: keys are raised and lit, fields and tracks are sunk wells, and both
+// carry an edge strong enough to read against any panel (3:1 or better).
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  button:not(.lh-primary):not([data-slot]),
+  [role="button"]:not(li) {
+    background-color: var(--lh-key);
+    border-color: var(--lh-key-edge);
+
+    &:hover:not(:disabled):not([aria-disabled="true"]) {
+      background-color: color-mix(in srgb, var(--lh-key) 88%, var(--lh-text));
+      border-color: var(--lh-text);
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+      background-color: transparent;
+      border-color: var(--lh-seam);
+    }
+  }
+
+  button.lh-primary:not(:disabled):not([data-slot]) {
+    border-color: color-mix(in srgb, var(--lh-yellow) 60%, black);
+  }
+
+  // Fields and selects are wells.
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea,
+  details[role="list"] > summary {
+    background-color: var(--lh-well);
+    border: 1px solid var(--lh-well-edge);
+    color: var(--lh-text);
+  }
+
+  details[role="list"] > summary:hover {
+    border-color: var(--lh-text);
+  }
+
+  // An open list is a key-coloured sheet with a strong edge and a clear hover.
+  details[role="list"] ul {
+    background: var(--lh-key);
+    border: 1px solid var(--lh-key-edge);
+
+    li:hover,
+    li:focus-within {
+      background: color-mix(in srgb, var(--lh-yellow) 28%, var(--lh-key));
+    }
+  }
+
+  // Switch: a sunk track with an edge; on turns green.
+  [type="checkbox"][role="switch"] {
+    border: 1px solid var(--lh-well-edge);
+
+    &:checked {
+      background-color: var(--lh-green);
+      border-color: color-mix(in srgb, var(--lh-green) 60%, black);
+    }
+  }
+
+  // Slider: a sunk track and a key for a thumb.
+  input[type="range"] {
+    --range-track: var(--lh-well);
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    height: 1.5rem;
+
+    &::-webkit-slider-runnable-track {
+      height: 0.5rem;
+      border-radius: 999px;
+      background: var(--lh-well);
+      border: 1px solid var(--lh-well-edge);
+    }
+
+    &::-moz-range-track {
+      height: 0.5rem;
+      border-radius: 999px;
+      background: var(--lh-well);
+      border: 1px solid var(--lh-well-edge);
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-top: calc((0.5rem - 1.25rem) / 2 - 1px);
+      border-radius: 50%;
+      background: var(--lh-key);
+      border: 1.5px solid var(--lh-key-edge);
+      box-shadow: inset 0 -2px 0 rgb(0 0 0 / 18%);
+    }
+
+    &::-moz-range-thumb {
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: var(--lh-key);
+      border: 1.5px solid var(--lh-key-edge);
+      box-shadow: inset 0 -2px 0 rgb(0 0 0 / 18%);
+    }
+
+    &:focus-visible::-webkit-slider-thumb {
+      border-color: var(--lh-focus);
+    }
+  }
+}
+
+// Radix locks page scroll while a select is open by making <body> relative,
+// which collapses #root (it is absolutely sized against the viewport). The
+// page never scrolls, so keep body static and let the lock only hide overflow.
+html body[data-scroll-locked] {
+  position: static !important;
 }

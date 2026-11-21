@@ -12,14 +12,18 @@ export class ChipPage {
     return this._page;
   }
 
+  /** Opens a picker (a Radix select) and chooses the option with this label. */
+  async pick(testId: string, label: string): Promise<void> {
+    await this._page.locator(`[data-testid="${testId}"]`).click();
+    await this._page.getByRole("option", { name: label, exact: true }).click();
+  }
+
   async selectProject(value: string): Promise<void> {
-    await this._page.selectOption('[data-testid="project-picker"]', { value });
+    await this.pick("project-picker", `Project ${value.replace(/^0/, "")}`);
   }
 
   async selectChip(name: string): Promise<void> {
-    await this._page.selectOption('[data-testid="chip-picker"]', {
-      label: name,
-    });
+    await this.pick("chip-picker", name);
     await this.disableBuiltin();
   }
 

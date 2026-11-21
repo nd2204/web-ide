@@ -1,0 +1,28 @@
+/* Tailwind for the shadcn components in src/ui, without its preflight reset so
+   Pico and lecture_hall.scss keep styling everything else. Theme and utilities
+   sit in layers declared after Pico's (see public/root.css). */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@source "./";
+
+/* shadcn token names mapped onto the Braun tokens in pico/lecture_hall.scss. */
+@theme inline {
+  --color-background: var(--lh-ground);
+  --color-foreground: var(--lh-text);
+  --color-card: var(--lh-panel);
+  --color-muted: var(--lh-raised);
+  --color-muted-foreground: var(--lh-muted);
+  --color-border: var(--lh-seam);
+  --color-primary: var(--lh-yellow);
+  --color-primary-foreground: var(--lh-on-yellow);
+  --color-ring: var(--lh-focus);
+  --color-key: var(--lh-key);
+  --color-key-edge: var(--lh-key-edge);
+  --color-well: var(--lh-well);
+  --color-well-edge: var(--lh-well-edge);
+  --color-input-pin: var(--lh-blue);
+  --color-output-pin: var(--lh-green);
+  --radius-sm: var(--lh-radius-sm);
+  --radius-md: var(--lh-radius);
+}

@@ -190,8 +190,11 @@ Pill (999px) for keys, tabs, header tool pills, the tool capsule, toggle switche
 ### Panels
 - **Corner Style:** 6px. **Background:** Panel with 1px Seam border. **Title bar:** Raised, 700, seam beneath; footer matches.
 
-### Fields
-- Raised fill, 1px Seam border, 4px radius, Ink text. Focus draws a 2px outline (Ink in light, Key Yellow in dark) offset 2px.
+### Fields, selects, sliders and switches
+- **Wells, not raised:** text fields, selects, the dropdown summary, slider tracks and switch tracks are sunk wells (`--lh-well`: dark #171715, light #e2dfd5) with a 1px edge (`--lh-well-edge`: dark #6e6b62, light #9a968b). Focus draws a 2px outline (Ink in light, Key Yellow in dark) offset 2px.
+- **Keys are lit:** buttons use the key face (`--lh-key`: dark #3d3d38, light #fffefb) with a 1px key edge (`--lh-key-edge`: dark #8a877c, light #8a867b) and the bottom lip, so they separate from any panel. Hover darkens the face and turns the edge to Ink.
+- **Slider:** a well track and a 1.25rem round key thumb with a lip. **Switch:** a well track with an edge; on turns Output Green. **Open list:** a key-coloured sheet with a key edge; the hovered row tints toward Key Yellow.
+- Edges are 3:1 or better against the panel in both themes.
 
 ### Tabs
 - Pill tabs; inactive Muted on transparent, hover ink tint, selected Raised fill with Seam border and accent-text label.
@@ -207,6 +210,10 @@ Pill (999px) for keys, tabs, header tool pills, the tool capsule, toggle switche
 ### Status line
 - Footer on Ground with a 0.6rem dot: green success, grey warning, red error, Muted idle.
 
+## Component Library
+
+The Chip page's buttons, selects and Builtin switch are shadcn-style components in `src/ui/` (Radix primitives, Tailwind v4 utilities, `cva` variants, `data-slot` attributes). `src/ui/tailwind.css` loads Tailwind's theme and utilities in layers after Pico, without its preflight reset, and maps shadcn's token names onto the `--lh-*` tokens (`--color-primary` is Key Yellow, `--color-key` the key face, `--color-well` the sunk well). Existing global rules in `lecture_hall.scss` skip elements carrying `data-slot`, so the two systems do not fight. Selects draw their own list (not the OS list) in the open-list style above. Other pages still use Pico elements and move over one primitive at a time.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -218,6 +225,7 @@ Pill (999px) for keys, tabs, header tool pills, the tool capsule, toggle switche
 - **Do** use `#6e5a00` (not Key Yellow) for yellow-family text on light ground.
 
 ### Don't:
+- **Don't** make a control the same tone as its panel: keys are lit, fields are wells, and both carry an edge.
 - **Don't** add drop shadows, glows or outer elevation; the key lip is the only shadow.
 - **Don't** fill more than one key yellow on a screen or use yellow for decoration.
 - **Don't** reuse orange, green, grey or red for anything but their pin or status meaning.

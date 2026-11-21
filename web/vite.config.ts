@@ -1,6 +1,7 @@
 import { getCatalogs } from "@lingui/cli/api";
 import { getConfig } from "@lingui/conf";
 import { lingui } from "@lingui/vite-plugin";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type Plugin } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
@@ -27,6 +28,7 @@ export default defineConfig({
     react({
       plugins: [linguiSwcPlugin],
     }),
+    tailwindcss(),
     linguiExtract(),
     lingui(),
     VitePWA({

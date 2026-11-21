@@ -15,7 +15,7 @@ test("Switching chips with Builtin enabled shows the new chip's input pins", asy
   await expect(pinCell("in")).toHaveCount(1);
 
   // Select a different chip directly, leaving Builtin on.
-  await page.selectOption('[data-testid="chip-picker"]', { label: "And" });
+  await chipPage.pick("chip-picker", "And");
 
   await expect(page.getByRole("switch", { name: "Builtin" })).toBeChecked();
   await expect(pinCell("a")).toHaveCount(1);
