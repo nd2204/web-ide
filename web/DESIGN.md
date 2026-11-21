@@ -169,6 +169,7 @@ Flat and tonal. Depth comes from stepping Ground, Panel and Raised plus 1px seam
 ### Shadow Vocabulary
 - **Key lip** (`box-shadow: inset 0 -2px 0 rgb(0 0 0 / 14%)`): the darker bottom edge on every key and pill button.
 - **Key pressed** (`box-shadow: inset 0 1px 0 rgb(0 0 0 / 14%)` with `transform: scale(0.97)`): the active state.
+- **Pin key lip** (`inset 0 -3px 0` in a darker mix of the pin colour): the bit key's lip, flattening to `inset 0 0 0` when pressed.
 
 ### Named Rules
 **The Inset Lip Rule.** Keys carry an inset lip only; nothing floats and nothing casts an outer shadow.
@@ -199,7 +200,9 @@ Pill (999px) for keys, tabs, header tool pills, the tool capsule, toggle switche
 - Header tool pills in a right-aligned outlined capsule (1px Seam, 3px padding); inactive Muted, current page filled Key Yellow.
 
 ### Pin table (signature)
-- Rows carry a kind colour (orange input, green output, grey internal) on the pin name, bit cells and trace. Bit cells are hollow pills outlined and lettered in the pin colour (1.5px), tinting 20% on hover. Column heads are uppercase captions.
+- Rows carry a kind colour (orange input, green output, grey internal) on the pin name, bit cell and trace. A single-bit pin is a spring key: a pill with a darker bottom lip that presses in 2px and springs back (320ms overshoot), filled with the pin colour when the value is 1 and hollow when 0. A pin that changed on the last step keeps a small lamp beside the key until the next step.
+- The trace fills the rest of the row (minimum 8rem) and shows the last 16 values as a stepped stroke. Every trace shares one time scale with the newest value at the right edge, a faint gridline marks each step, and the newest step is tinted, so values at one moment are compared by reading straight down.
+- Column heads are uppercase captions.
 
 ### Status line
 - Footer on Ground with a 0.6rem dot: green success, grey warning, red error, Muted idle.

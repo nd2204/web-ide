@@ -282,6 +282,7 @@ const Pin = ({
               style={internal ? { backgroundColor: "grey" } : {}}
               onClick={() => toggle?.(pin.pin, i)}
               data-testid={`pin-${i}`}
+              data-value={v}
             >
               {v}
             </button>
@@ -310,7 +311,7 @@ const Pin = ({
   );
 };
 
-/** Tracks the last eight values of a pin and whether the latest update changed it. */
+/** Tracks the last sixteen values of a pin and whether the latest update changed it. */
 function usePinHistory(pin: ImmPin) {
   const seen = useRef<{
     pin: ImmPin;
@@ -326,31 +327,40 @@ function usePinHistory(pin: ImmPin) {
     s.changed = s.key !== key;
     s.pin = pin;
     s.key = key;
-    s.values = [...s.values, key].slice(-8);
+    s.values = [...s.values, key].slice(-TRACE_STEPS);
   }
   return seen.current;
 }
 
+const TRACE_STEPS = 16;
 const TRACE_STEP = 8;
 const TRACE_HIGH = 3;
 const TRACE_LOW = 13;
 
-/** A short stepped stroke of a one bit pin's recent values. */
+/**
+ * A stepped stroke of a one bit pin's recent values. It stretches to the room
+ * the row has, and the newest value sits at the right edge of every trace, so
+ * the pins can be compared at the same moment by reading straight down.
+ */
 const PinTrace = ({ history }: { history: string[] }) => {
   const points: string[] = [];
+  const offset = (TRACE_STEPS - history.length) * TRACE_STEP;
   history.forEach((value, i) => {
     const y = value === "1" ? TRACE_HIGH : TRACE_LOW;
-    points.push(`${i * TRACE_STEP},${y}`, `${(i + 1) * TRACE_STEP},${y}`);
+    points.push(
+      `${offset + i * TRACE_STEP},${y}`,
+      `${offset + (i + 1) * TRACE_STEP},${y}`,
+    );
   });
+  const width = TRACE_STEPS * TRACE_STEP;
   return (
     <svg
       className="pin-trace"
       aria-hidden="true"
-      width={8 * TRACE_STEP + 4}
-      height={16}
-      viewBox={`-2 0 ${8 * TRACE_STEP + 4} 16`}
+      preserveAspectRatio="none"
+      viewBox={`0 0 ${width} 16`}
     >
-      <polyline points={points.join(" ")} />
+      <polyline points={points.join(" ")} vectorEffect="non-scaling-stroke" />
     </svg>
   );
 };
