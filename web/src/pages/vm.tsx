@@ -15,6 +15,7 @@ import { IMPLICIT, SYS_INIT, VmFrame } from "@nand2tetris/simulator/vm/vm.js";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../App.context";
 import { PageContext } from "../Page.context";
+import { Icon } from "../pico/icon";
 import { Editor } from "../shell/editor";
 import { isPath } from "../shell/file_select";
 import { Panel } from "../shell/panel";
@@ -234,10 +235,11 @@ const VM = () => {
                     <button
                       className="flex-0"
                       onClick={load}
+                      aria-label={t`Load files`}
                       data-tooltip={t`Load files`}
                       data-placement="bottom"
                     >
-                      📂
+                      <Icon name="folder_open" />
                     </button>
                   }
                   runner={vmRunner.current}

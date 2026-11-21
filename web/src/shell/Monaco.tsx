@@ -5,7 +5,7 @@ import * as monacoT from "monaco-editor";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../App.context";
 import { Decoration, HighlightType } from "./editor";
-import "./monacoSetup";
+import { defineLectureHallThemes } from "./monacoSetup";
 
 const isRangeVisible = (
   editor: monacoT.editor.IStandaloneCodeEditor | undefined,
@@ -64,8 +64,8 @@ export const makeDecorations = (
   return editor.deltaDecorations(decorations, nextDecoration);
 };
 
-export const MONACO_LIGHT_THEME = "vs";
-export const MONACO_DARK_THEME = "vs-dark";
+export const MONACO_LIGHT_THEME = "lecture-hall-light";
+export const MONACO_DARK_THEME = "lecture-hall-dark";
 export const Monaco = ({
   value,
   onChange,
@@ -269,6 +269,8 @@ export const Monaco = ({
 
   return (
     <MonacoEditor
+      theme={codeTheme()}
+      beforeMount={defineLectureHallThemes}
       options={{ readOnly: disabled }}
       value={value}
       language={language}

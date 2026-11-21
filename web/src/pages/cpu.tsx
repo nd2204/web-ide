@@ -239,6 +239,7 @@ export const CPU = () => {
                 onChange={({ target: { value } }) => {
                   actions.loadTest(value);
                 }}
+                aria-label={t`Test`}
                 data-testid="test-picker"
               >
                 {state.tests.map((test) => (

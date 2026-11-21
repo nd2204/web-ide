@@ -12,6 +12,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../App.context";
 import { PageContext } from "../Page.context";
+import { Icon } from "../pico/icon";
 import { Editor } from "../shell/editor";
 import { isPath } from "../shell/file_select";
 import { Panel } from "../shell/panel";
@@ -163,10 +164,11 @@ export const Asm = () => {
                     <button
                       className="flex-0"
                       onClick={loadAsm}
+                      aria-label={t`Load file`}
                       data-tooltip={t`Load file`}
                       data-placement="bottom"
                     >
-                      📂
+                      <Icon name="folder_open" />
                     </button>
                   }
                   overrideTooltips={{ step: "Translate", run: "Translate all" }}
@@ -178,11 +180,12 @@ export const Asm = () => {
             {!localFsRoot && (
               <fieldset role="group">
                 <button
+                  aria-label={t`Download`}
                   data-tooltip={t`Download`}
                   data-placement="left"
                   onClick={downloadAsm}
                 >
-                  ⬇️
+                  <Icon name="download" />
                 </button>
               </fieldset>
             )}
@@ -238,19 +241,21 @@ export const Asm = () => {
               />
               <fieldset role="group">
                 <button
+                  aria-label={t`Load in CPU Emulator`}
                   data-tooltip={t`Load in CPU Emulator`}
                   data-placement="left"
                   onClick={loadToCpu}
                 >
-                  ↩️
+                  <Icon name="developer_board" />
                 </button>
                 {!localFsRoot && (
                   <button
+                    aria-label={t`Download`}
                     data-tooltip={t`Download`}
                     data-placement="left"
                     onClick={downloadHack}
                   >
-                    ⬇️
+                    <Icon name="download" />
                   </button>
                 )}
               </fieldset>
@@ -309,7 +314,9 @@ export const Asm = () => {
               {state.compareName && `: ${state.compareName}`}
             </div>
             <fieldset role="group">
-              <button onClick={loadCompare}>📂</button>
+              <button aria-label={t`Load file`} onClick={loadCompare}>
+                <Icon name="folder_open" />
+              </button>
             </fieldset>
             <div className="flex-1" />
             <fieldset role="group">

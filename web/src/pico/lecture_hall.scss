@@ -1,0 +1,962 @@
+// Lecture Hall: the web IDE's visual world.
+//
+// Slate-black rounded panels where chalk colour says what a thing is. Dark is
+// the blackboard; light is the same room with the whiteboard, using darker
+// marker inks of the same hues. The unlayered rules here win over the Pico
+// and `user` layers declared in `public/root.css`.
+//
+// Chalk roles (both themes):
+//   yellow  the one primary action and the current step
+//   blue    input pins
+//   green   output pins and passed
+//   amber   internal pins
+//   pink    HDL keywords (see monacoSetup.ts)
+//   red     errors
+
+:root {
+  --lh-radius: 12px;
+  --lh-gap: 8px;
+  --lh-btn-h: 1.75rem;
+  --lh-btn-px: 0.8rem;
+  --lh-btn-fs: 0.9rem;
+  --lh-btn-icon: 1.15rem;
+  --lh-radius-sm: 10px;
+  --lh-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-family:
+    Nunito, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans",
+    sans-serif;
+  --font-size-monospace: 15px;
+}
+
+:root[data-theme="dark"] {
+  --lh-ground: #0e1112;
+  --lh-panel: #161a1c;
+  --lh-raised: #1c2123;
+  --lh-seam: #2b3234;
+  --lh-text: #f1efe7;
+  --lh-muted: #a3a99f;
+  --lh-yellow: #f6d55c;
+  --lh-on-yellow: #14171a;
+  --lh-blue: #7fc8f8;
+  --lh-green: #8fd694;
+  --lh-amber: #f0a868;
+  --lh-red: #ff8a80;
+  --lh-focus: #f6d55c;
+  --lh-accent-text: #f6d55c;
+  --lh-hover: rgb(241 239 231 / 8%);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --lh-ground: #e9ece8;
+  --lh-panel: #ffffff;
+  --lh-raised: #f3f5f2;
+  --lh-seam: #d5dad3;
+  --lh-text: #1b2022;
+  --lh-muted: #566059;
+  --lh-yellow: #f2c81d;
+  --lh-on-yellow: #14171a;
+  --lh-blue: #1767a8;
+  --lh-green: #2a7a37;
+  --lh-amber: #a85a10;
+  --lh-red: #b3261e;
+  --lh-focus: #1767a8;
+  --lh-accent-text: #7a5b00;
+  --lh-hover: rgb(27 32 34 / 7%);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  --background-color: var(--lh-ground);
+  --color: var(--lh-text);
+  --text-color: var(--lh-text);
+  --muted-color: var(--lh-muted);
+  --muted-border-color: var(--lh-seam);
+  --primary: var(--lh-yellow);
+  --primary-hover: var(--lh-yellow);
+  --primary-focus: color-mix(in srgb, var(--lh-focus) 40%, transparent);
+  --primary-inverse: var(--lh-on-yellow);
+  --secondary: var(--lh-muted);
+  --h1-color: var(--lh-text);
+  --h2-color: var(--lh-text);
+  --h3-color: var(--lh-text);
+  --h4-color: var(--lh-text);
+  --card-background-color: var(--lh-panel);
+  --card-border-color: var(--lh-seam);
+  --card-sectionning-background-color: var(--lh-raised);
+  --table-border-color: var(--lh-seam);
+  --form-element-background-color: var(--lh-raised);
+  --form-element-border-color: var(--lh-seam);
+  --form-element-color: var(--lh-text);
+  --form-element-placeholder-color: var(--lh-muted);
+  --form-element-active-background-color: var(--lh-raised);
+  --form-element-active-border-color: var(--lh-focus);
+  --form-element-focus-color: var(--lh-focus);
+  --form-element-disabled-background-color: transparent;
+  --form-element-disabled-border-color: var(--lh-seam);
+  --code-background-color: var(--lh-raised);
+  --code-color: var(--lh-text);
+  --mark-background-color: color-mix(in srgb, var(--lh-yellow) 16%, transparent);
+  --mark-error-color: color-mix(in srgb, var(--lh-red) 35%, transparent);
+  --switch-background-color: var(--lh-seam);
+  --switch-checked-background-color: var(--lh-green);
+  --switch-color: var(--lh-text);
+  --border-radius: var(--lh-radius-sm);
+  --disabled: var(--lh-muted);
+  --light-grey: var(--lh-seam);
+  --status-info-bg-color: var(--lh-raised);
+  --status-success-bg-color: color-mix(in srgb, var(--lh-green) 22%, var(--lh-panel));
+  --status-warning-bg-color: color-mix(in srgb, var(--lh-amber) 24%, var(--lh-panel));
+  --status-error-bg-color: color-mix(in srgb, var(--lh-red) 24%, var(--lh-panel));
+  --diff-highlight-error-line-bg-color: color-mix(in srgb, var(--lh-red) 16%, transparent);
+  --diff-highlight-error-cell-bg-color: color-mix(in srgb, var(--lh-red) 38%, transparent);
+  --diff-highlight-correct-line-bg-color: color-mix(in srgb, var(--lh-green) 14%, transparent);
+  --diff-highlight-correct-cell-bg-color: color-mix(in srgb, var(--lh-green) 34%, transparent);
+}
+
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  body {
+    background: var(--lh-ground);
+    color: var(--lh-text);
+    font-weight: 400;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--lh-yellow) 35%, transparent);
+  }
+
+  // Scrollbars take the palette.
+  * {
+    scrollbar-color: var(--lh-seam) transparent;
+    scrollbar-width: thin;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--lh-focus);
+    outline-offset: 2px;
+  }
+
+  // Header: product name, tool pills.
+  #root > header {
+    background: var(--lh-ground);
+    border-bottom: 1px solid var(--lh-seam);
+    padding: 0 0.75rem;
+
+    nav {
+      align-items: center;
+      margin: 0;
+    }
+
+    nav > ul:first-child li {
+      font-weight: 700;
+      color: var(--lh-muted);
+
+      strong a {
+        color: var(--lh-text);
+        font-weight: 800;
+        letter-spacing: 0.01em;
+      }
+    }
+
+    ul.icon-list {
+      margin: 0.35rem 0;
+      gap: 0.15rem;
+
+      li {
+        margin: 0;
+        padding: 0.35rem 0.6rem;
+        border-radius: 999px;
+        border: 0;
+        background-color: transparent;
+        color: var(--lh-muted);
+        transition:
+          background-color 120ms var(--lh-ease),
+          color 120ms var(--lh-ease);
+
+        &:hover {
+          background: var(--lh-hover);
+          color: var(--lh-text);
+        }
+
+        &[aria-current="page"] {
+          background: var(--lh-yellow);
+          color: var(--lh-on-yellow);
+        }
+      }
+    }
+  }
+
+  // Panels: slate cards with a seam and a calm title bar.
+  article.panel {
+    background: var(--lh-panel);
+    border: 1px solid var(--lh-seam);
+    border-radius: var(--lh-radius);
+    overflow: hidden;
+
+    > header {
+      background: var(--lh-raised);
+      border-bottom: 1px solid var(--lh-seam);
+      padding: 0.1rem 0.6rem;
+      gap: 0.4rem 0.75rem;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      font-weight: 800;
+
+      // The title is as tall as one row of controls, so it lines up with the
+      // first row when the controls wrap.
+      > :first-child {
+        display: flex;
+        align-items: center;
+        min-height: var(--lh-btn-h);
+        white-space: nowrap;
+      }
+
+      .flex.row.wrap {
+        gap: 0.4rem 0.75rem;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+      // Switches and labels sit on the first row, level with the title.
+      > input[type="checkbox"],
+      > label {
+        align-self: center;
+      }
+
+      input[type="range"] {
+        margin: 0 0.5rem;
+      }
+    }
+
+    > footer {
+      background: var(--lh-raised);
+      border-top: 1px solid var(--lh-seam);
+    }
+  }
+
+  #root > main {
+    gap: 0.6rem;
+    padding: 8px;
+  }
+
+  // Every tool page is a grid of panels with the same outer padding (main) and
+  // the same gap between panels.
+  .Page,
+  .AsmPage {
+    gap: var(--lh-gap);
+  }
+
+  // A panel nested in a panel (CPU and VM screen column) is a section, not a card.
+  article.panel article.panel {
+    border: 0;
+    border-top: 1px solid var(--lh-seam);
+    border-radius: 0;
+  }
+
+  // Bitmap Jack/Hack tabs use the same pill tabs as the test panel.
+  .tab-container {
+    gap: 0.25rem;
+
+    .tab-button {
+      margin: 0;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background-color: transparent;
+      color: var(--lh-muted);
+
+      &:hover:not(.active) {
+        background-color: var(--lh-hover);
+        color: var(--lh-text);
+      }
+
+      &.active {
+        background-color: var(--lh-raised);
+        border-color: var(--lh-seam);
+        color: var(--lh-accent-text);
+      }
+    }
+  }
+
+  // Footer / status line.
+  #root > footer {
+    background: var(--lh-ground);
+    border-top: 1px solid var(--lh-seam);
+    padding: 0;
+  }
+
+  .StatusLine {
+    flex: 1;
+    padding: 0.3rem 1rem;
+    color: var(--lh-muted);
+
+    &:is(.status-success, .status-warning, .status-error) {
+      color: var(--lh-text);
+    }
+  }
+
+  // Button system: one height, one padding and one type size for every button,
+  // grouped or standalone. Icon-only buttons are square. Pin cells, tabs and
+  // the header tool pills have their own rules.
+  button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control),
+  [role="button"]:not(li) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--lh-btn-h);
+    padding: 0 var(--lh-btn-px);
+    font-size: var(--lh-btn-fs);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 999px;
+    transition:
+      background-color 120ms var(--lh-ease),
+      border-color 120ms var(--lh-ease),
+      transform 120ms var(--lh-ease);
+
+    &:has(> .material-symbols-outlined:only-child) {
+      min-width: var(--lh-btn-h);
+      padding: 0 0.5rem;
+    }
+
+    // Icon and label together.
+    &:has(> .material-symbols-outlined:not(:only-child)) {
+      gap: 0.4rem;
+    }
+
+    > .material-symbols-outlined {
+      display: block;
+      font-size: var(--lh-btn-icon);
+      line-height: 1;
+    }
+  }
+
+  // Buttons in a group share the row: natural width, equal height.
+  fieldset[role="group"] > button:not([data-testid^="pin-"]) {
+    flex: 0 0 auto;
+    width: auto;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Yellow is the one primary action on a screen (class `lh-primary`), and the
+  // current step. Every other button is a quiet pill.
+  button,
+  [role="button"] {
+    background-color: var(--lh-raised);
+    border: 1px solid var(--lh-seam);
+    color: var(--lh-text);
+
+    &:hover:not(:disabled):not([aria-disabled="true"]) {
+      background-color: var(--lh-hover);
+      border-color: var(--lh-muted);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+      background-color: transparent;
+      color: var(--lh-muted);
+      opacity: 0.7;
+    }
+  }
+
+  button.lh-primary:not(:disabled) {
+    background: var(--lh-yellow);
+    border-color: var(--lh-yellow);
+    color: var(--lh-on-yellow);
+
+    &:hover {
+      background: var(--lh-yellow);
+      border-color: var(--lh-yellow);
+      filter: brightness(1.08);
+    }
+  }
+
+  .pin-control {
+    --form-element-spacing-horizontal: 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    padding: 0.2rem 0.55rem;
+    min-width: 2.4rem;
+  }
+
+  // Inputs and selects.
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    background: var(--lh-raised);
+    border: 1px solid var(--lh-seam);
+    border-radius: var(--lh-radius-sm);
+    color: var(--lh-text);
+  }
+
+  // The HDL panel's builtin toggle.
+  [type="checkbox"][role="switch"] {
+    border-radius: 999px;
+  }
+
+  // Tabs become pills inside the panel.
+  [role="tablist"] {
+    --border: 1px solid transparent;
+    --border-empty: 1px solid transparent;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem 0;
+  }
+
+  [role="tablist"]::after,
+  [role="tablist"]::before {
+    border-bottom: 1px solid var(--lh-seam);
+  }
+
+  label[role="tab"],
+  [role="tab"] label {
+    padding: 0.2rem 0.7rem;
+    line-height: 1.25;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  // The visually hidden radio kept a gap on the left of the label; take it
+  // out of the flow (still focusable) so the padding is even.
+  [role="tab"] {
+    position: relative;
+
+    [type="radio"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  [role="tab"] {
+    border-radius: 999px;
+    color: var(--lh-muted);
+    border: 1px solid transparent;
+
+    &:hover {
+      background: var(--lh-hover);
+      color: var(--lh-text);
+      border: 1px solid transparent;
+    }
+
+    &[aria-selected="true"],
+    &:has(:checked) {
+      background: var(--lh-raised);
+      border: 1px solid var(--lh-seam);
+      color: var(--lh-accent-text);
+      font-weight: 800;
+    }
+  }
+
+  // Button groups: every button is its own pill with a gap, so neighbours never
+  // fuse into one slab. (The pin bus below is the one joined group.)
+  fieldset[role="group"] {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+
+    > button,
+    > input,
+    > select {
+      margin: 0;
+      border-radius: 999px;
+    }
+  }
+
+  // Pin table: kind colour is the point of the signature.
+  table.pinout {
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th {
+      color: var(--lh-muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-top: 0.75rem;
+    }
+
+    tbody td:first-child {
+      font-family: var(--font-family-monospace);
+      font-size: 0.9rem;
+      color: var(--lh-muted);
+      border-right: 0;
+      min-width: 3rem;
+      padding-left: 0.75rem;
+      padding-right: 0.5rem;
+    }
+
+    tr[data-kind="input"] {
+      --pin: var(--lh-blue);
+    }
+
+    tr[data-kind="output"] {
+      --pin: var(--lh-green);
+    }
+
+    tr[data-kind="internal"] {
+      --pin: var(--lh-amber);
+    }
+
+    tr[data-kind] td:first-child {
+      color: var(--pin);
+    }
+
+    // Bit cells: 0 is hollow, 1 is filled with the pin's chalk colour.
+    tr[data-kind] fieldset button,
+    tr[data-kind] fieldset button[style] {
+      background: transparent !important;
+      border: 1.5px solid var(--pin);
+      color: var(--pin);
+      font-family: var(--font-family-monospace);
+      font-weight: 700;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.35rem;
+      min-height: 2rem;
+      padding: 0;
+      line-height: 1;
+
+      // A single bit is a round cell; bus bits stay narrow so 16 fit.
+      &:not(:only-child) {
+        font-size: 0.8rem;
+        min-width: 0;
+      }
+
+      &:only-child {
+        min-width: 2rem;
+      }
+
+      &:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--pin) 20%, transparent) !important;
+      }
+    }
+
+    // Reserve a 2px bottom edge so single-bit and bus rows share one height.
+    tr[data-kind] fieldset {
+      border-bottom: 2px solid transparent;
+    }
+
+    // A 16 bit bus must leave room for the bin/dec toggle.
+    tr[data-kind] fieldset {
+      gap: 0;
+
+      > button {
+        margin: 0;
+        border-radius: 0;
+
+        &:first-child {
+          border-radius: 999px 0 0 999px;
+        }
+
+        &:last-child {
+          border-radius: 0 999px 999px 0;
+        }
+
+        &:only-child {
+          border-radius: 999px;
+        }
+      }
+    }
+
+    tr[data-kind] fieldset:has(> button:nth-child(2)) {
+      width: 14rem !important;
+    }
+
+    td {
+      vertical-align: middle;
+      padding-left: 0.4rem;
+      padding-right: 0.4rem;
+    }
+
+    .pin-trace {
+      margin-left: 0.75rem;
+      flex: none;
+      align-self: center;
+
+      polyline {
+        fill: none;
+        stroke: var(--pin);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.85;
+      }
+    }
+  }
+
+  // Tables elsewhere (diff table, compare output).
+  table {
+    --table-border-color: var(--lh-seam);
+  }
+
+  // Dialogs, dropdowns, tooltips take the same slate.
+  dialog > article,
+  details[role="list"] ul {
+    background: var(--lh-panel);
+    border: 1px solid var(--lh-seam);
+    border-radius: var(--lh-radius);
+  }
+
+  details > summary {
+    background: var(--lh-raised);
+    border-radius: var(--lh-radius-sm);
+  }
+}
+
+
+
+// Reviewer pass: dialogs, banner, status, mobile header, drawn icons.
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  // Current test step and setup lines: chalk-yellow tint with an underline.
+  .Editor .highlight {
+    background-color: var(--mark-background-color);
+    border-bottom: 2px solid var(--lh-yellow);
+  }
+
+  // Status line: panel ground, chalk text, a coloured dot carries the state.
+  #root > footer .StatusLine {
+    --dot: var(--lh-muted);
+    display: flex;
+    align-items: center;
+    background: var(--lh-ground);
+    color: var(--lh-text);
+
+    &::before {
+      content: "";
+      flex: none;
+      width: 0.6rem;
+      height: 0.6rem;
+      margin-right: 0.65rem;
+      border-radius: 50%;
+      background: var(--dot);
+    }
+
+    &.status-success {
+      --dot: var(--lh-green);
+    }
+
+    &.status-warning {
+      --dot: var(--lh-amber);
+    }
+
+    &.status-error {
+      --dot: var(--lh-red);
+    }
+  }
+
+  // Cookie and analytics banner.
+  #trackingBanner {
+    background: var(--lh-panel);
+    border-top: 1px solid var(--lh-seam);
+    color: var(--lh-text);
+    align-items: center;
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+
+    a:not([role="button"]) {
+      color: var(--lh-accent-text);
+    }
+
+    [role="button"] {
+      background: var(--lh-raised);
+      border: 1px solid var(--lh-seam);
+      color: var(--lh-text);
+      border-radius: 999px;
+      margin-left: 0.4rem;
+      padding: 0.25rem 1rem;
+
+      &.accept {
+        background: var(--lh-yellow);
+        border-color: var(--lh-yellow);
+        color: var(--lh-on-yellow);
+      }
+    }
+  }
+
+  // Settings and other dialogs.
+  dialog > article {
+    padding: 0;
+    overflow: hidden;
+
+    > header {
+      background: var(--lh-raised);
+      border-bottom: 1px solid var(--lh-seam);
+      padding: 0.85rem 1.25rem;
+      margin: 0;
+      font-weight: 800;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    > main {
+      padding: 1.25rem;
+    }
+
+    > footer {
+      padding: 0.85rem 1.25rem;
+      margin: 0;
+    }
+  }
+
+  .settings-dialog {
+    min-height: 0;
+
+    dl {
+      grid-template-columns: 12rem 1fr;
+      gap: 0.75rem 1.5rem;
+      margin: 0;
+    }
+
+    dt,
+    dd {
+      border: 0;
+      background: transparent;
+      padding: 0.25rem 0;
+      font-weight: 700;
+    }
+
+    dd {
+      font-weight: 400;
+    }
+
+    dt > div {
+      margin-top: 0.75rem !important;
+      font-weight: 400;
+    }
+
+    .storage-option {
+      background: var(--lh-raised);
+      border: 1px solid var(--lh-seam);
+      border-radius: var(--lh-radius-sm);
+      padding: 0.85rem 1rem;
+      gap: 0.5rem;
+
+      > div[style] {
+        color: var(--lh-muted) !important;
+      }
+    }
+
+    [role="button"],
+    button {
+      width: 100%;
+    }
+
+    button:disabled,
+    [role="button"][aria-disabled="true"] {
+      border: 1px solid var(--lh-seam);
+      color: var(--lh-muted);
+      opacity: 1;
+    }
+
+    a {
+      color: var(--lh-accent-text);
+    }
+  }
+
+  // Pages that are a single card (Converter, About) sit on the same grid as the
+  // panel pages.
+  #root > main > article {
+    margin: 0;
+  }
+
+  // Header on narrow screens: keep the title to one line, scroll the tools.
+  #root > header nav {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+
+    > ul:first-child {
+      min-width: 0;
+      flex: 0 1 auto;
+
+      li {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+    }
+
+    ul.icon-list {
+      flex: 1 1 0;
+      min-width: 0;
+      overflow-x: auto;
+      justify-content: safe flex-end;
+      scrollbar-width: none;
+
+      li {
+        flex: none;
+      }
+    }
+  }
+}
+
+// Header tools: one right-aligned segmented capsule, outline and compact.
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  #root > header nav ul.icon-list.tool-capsule {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 2px;
+    padding: 3px;
+    margin: 0.35rem 0;
+    background: transparent;
+    border: 1px solid var(--lh-seam);
+    border-radius: 999px;
+
+    li {
+      padding: 0.2rem 0.4rem;
+    }
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+  }
+}
+
+// Touch: 44px targets on coarse pointers (WCAG 2.5.8 asks 24px; 44px is easier).
+@media (pointer: coarse) {
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    #root > header ul.icon-list li {
+      min-width: 44px;
+      min-height: 44px;
+      justify-content: center;
+    }
+
+    button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control),
+    [role="button"]:not(li),
+    input[type="range"],
+    label[role="tab"],
+    [role="tab"] label,
+    table.pinout tr[data-kind] fieldset button {
+      min-height: 44px;
+    }
+
+    table.pinout tr[data-kind] fieldset button:not(:only-child) {
+      min-width: 1.6rem;
+    }
+  }
+}
+
+// Motion: the 120ms hover and press transitions are decorative; the colour
+// change itself still happens, it just snaps.
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    button,
+    [role="button"],
+    #root > header ul.icon-list li {
+      transition: none;
+    }
+
+    button:active:not(:disabled),
+    [role="button"]:active:not(:disabled) {
+      transform: none;
+    }
+  }
+}
+
+// Content blocks that sat flush against panel edges or against each other.
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  // Rows inside a nested panel (CPU and VM Keyboard row).
+  article.panel > .flex.row.align-baseline {
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  // Accordions (Registers) and the tables inside them.
+  details {
+    margin: 0;
+
+    > summary {
+      padding: 0.35rem 0.75rem;
+    }
+
+    table {
+      width: auto;
+      margin: 0 0.75rem 0.6rem;
+    }
+
+    dl {
+      margin: 0 0.75rem 0.6rem;
+    }
+
+    td,
+    th {
+      padding: 0.3rem 0.75rem;
+    }
+  }
+
+  // VM Structures: Stack and Call-stack.
+  .VmPage article.panel main > section > p,
+  .VmPage article.panel main > section > div,
+  .VmPage article.panel main > section > main {
+    margin: 0;
+    padding: 0.45rem 0.75rem;
+  }
+
+  // Bitmap option rows.
+  .BitmapPage .control-row {
+    padding: 0.4rem 0.75rem;
+    gap: 0.4rem 0.75rem;
+  }
+
+  // Property sheet (Converter): cells need room around their text.
+  dl {
+    dt,
+    dd {
+      display: flex;
+      align-items: center;
+      padding: 0.35rem 0.75rem;
+    }
+  }
+
+  // Single card pages: title and body share one inset.
+  #root > main > article {
+    padding: 0;
+
+    > header {
+      margin: 0;
+      padding: 0.5rem 0.75rem;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
+    > main {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+}

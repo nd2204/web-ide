@@ -6,15 +6,23 @@
     grid-template-columns: 1fr 1fr !important;
     grid-template-rows: 1fr 1fr 1fr !important;
 
+    // Phones: stack the panels so ROM and RAM headers have the full width.
+    @media screen and (max-width: 600px) {
+      grid-template-areas: "ROM" "RAM" "IO" "test";
+      grid-template-columns: 1fr !important;
+      grid-template-rows: 1fr 1fr 1.7fr 1fr !important;
+    }
+
     @media screen and (min-width: 1024px) {
       grid-template-areas: "ROM RAM IO" "test test test";
       grid-template-columns: 1fr 1fr var(--screen-size) !important;
       grid-template-rows: 1fr 1fr !important;
     }
 
-    @media screen and (min-width: 1500px) {
+    // Four columns only when the Test panel still gets a usable width.
+    @media screen and (min-width: 1800px) {
       grid-template-areas: "ROM RAM IO test";
-      grid-template-columns: 350px 350px var(--screen-size) auto !important;
+      grid-template-columns: 350px 350px var(--screen-size) minmax(480px, 1fr) !important;
       grid-template-rows: 1fr !important;
     }
   }

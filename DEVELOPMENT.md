@@ -28,7 +28,6 @@ The repository is a TypeScript monorepo of npm workspaces. It implements the ful
 | `components/` | Shared React components and Immer and RxJS state stores |
 | `web/` | Vite single page app hosting all tools; deploys to GitHub Pages |
 | `cli/` | `nand2tetris` grading CLI |
-| `extension/` | VS Code extension wrapping the same components |
 | `e2e/` | Playwright end to end tests for the web app |
 
 ## Package Build Order
@@ -39,7 +38,7 @@ Each package imports a previous package's `build/` output, so packages build in 
 projects → runner → simulator → components → web
 ```
 
-`cli` depends on `runner` and `simulator`. `extension` depends on `simulator` and `components`. Neither is part of the default test run.
+`cli` depends on `runner` and `simulator`. It is not part of the default test run.
 
 ## Key Commands
 
@@ -66,7 +65,7 @@ Formatting and linting are fast, so run them after every change.
 - Put unit tests in `src/` beside their source as `*.test.ts` or `*.test.tsx`, not in a separate `tests/` directory.
 - In `simulator`, return `Result<T, E>` from `@davidsouther/jiffies` instead of throwing exceptions.
 - Define domain languages (HDL, ASM, VM, Jack, TST, and CMP) with Ohm.js grammars in `simulator`.
-- Keep state stores in `components/src/stores` free of UI imports, so `web` and `extension` can share them. Stores use `useImmerReducer`.
+- Keep state stores in `components/src/stores` free of UI imports, so more than one front end can share them. Stores use `useImmerReducer`.
 - Drive tick and tock through the RxJS `Clock` singleton (`Clock.get()`). React components subscribe to it in `useEffect`.
 - Wrap user facing text in `web` with Lingui macros, as [Internationalization](#internationalization) describes.
 - Use the existing formatter, linter, and test runners. Do not add another.
@@ -75,7 +74,7 @@ Formatting and linting are fast, so run them after every change.
 
 ## Internationalization
 
-`web` translates its interface with [Lingui](https://lingui.dev) 6. The Lingui configuration is `web/lingui.config.ts`. `components`, `simulator`, and `extension` do not use Lingui, so their strings are not translatable. `components/src/i18n.tsx` is an unused stub.
+`web` translates its interface with [Lingui](https://lingui.dev) 6. The Lingui configuration is `web/lingui.config.ts`. `components` and `simulator` do not use Lingui, so their strings are not translatable. `components/src/i18n.tsx` is an unused stub.
 
 ### Adding a string
 

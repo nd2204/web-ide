@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import {
   BaseContext,
   useBaseContext,
@@ -111,6 +112,24 @@ const Header = () => {
 
   const pathname = useLocation().pathname.replaceAll("/", "");
 
+  const activate = ({
+    href,
+    onClick,
+    target,
+    tool,
+  }: Pick<HeaderButton, "href" | "onClick" | "target" | "tool">) => {
+    setTool(tool);
+    setStatus("");
+    if (onClick) {
+      onClick({ appContext, baseContext, pathname });
+    } else if (href) {
+      if (target) {
+        localStorage.setItem(LAST_ROUTE_KEY, href);
+      }
+      redirectRefs[href].current?.click();
+    }
+  };
+
   return (
     <header>
       <nav style={{ width: "100%" }}>
@@ -129,7 +148,11 @@ const Header = () => {
             {title && ` / ${title}`}
           </li>
         </ul>
-        <ul className="icon-list">
+        <ul
+          className="icon-list tool-capsule"
+          role="toolbar"
+          aria-label={t`Tools`}
+        >
           {headerButtons.map(
             ({ href, icon, onClick, tooltip, target, tool }) => {
               return (
@@ -137,19 +160,19 @@ const Header = () => {
                   key={icon}
                   data-tooltip={tooltip}
                   data-placement="bottom"
-                  onClick={() => {
-                    setTool(tool);
-                    setStatus("");
-                    if (onClick) {
-                      onClick?.({ appContext, baseContext, pathname });
-                    } else {
-                      if (href) {
-                        if (target) {
-                          localStorage.setItem(LAST_ROUTE_KEY, href);
-                        }
-
-                        redirectRefs[href].current?.click();
-                      }
+                  aria-current={
+                    target && href?.replaceAll("/", "") === pathname
+                      ? "page"
+                      : undefined
+                  }
+                  role={target ? "link" : "button"}
+                  tabIndex={0}
+                  aria-label={tooltip}
+                  onClick={() => activate({ href, onClick, target, tool })}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      activate({ href, onClick, target, tool });
                     }
                   }}
                 >

@@ -4,6 +4,7 @@ import { installPreloadErrorReload } from "./preloadError";
 import { registerServiceWorker } from "./registerServiceWorker";
 
 import "./pico/pico.scss";
+import "./pico/lecture_hall.scss";
 
 import App from "./App";
 

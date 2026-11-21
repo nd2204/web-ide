@@ -311,25 +311,32 @@ export const Memory = forwardRef(
               <button
                 onClick={doLoad}
                 className="flex-0"
+                aria-label={loadTooltip?.value ?? "Load file"}
                 data-tooltip={loadTooltip?.value ?? "Load file"}
                 data-placement={loadTooltip?.placement ?? "bottom"}
               >
-                {/* <Icon name="upload_file" /> */}📂
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  folder_open
+                </span>
               </button>
             )}
             {showClear && (
               <button
                 onClick={clear}
                 className="flex-0"
+                aria-label="Clear"
                 data-tooltip={"Clear"}
                 data-placement="bottom"
               >
-                {/* <Icon name="upload_file" /> */}🆑
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  delete_sweep
+                </span>
               </button>
             )}
             <input
               style={{ width: "4em", height: "100%" }}
               placeholder="Addr"
+              aria-label="Address"
               value={jmp}
               onKeyDown={({ key }) => key === "Enter" && jumpTo()}
               onChange={({ target: { value } }) => setJmp(value)}
@@ -337,13 +344,19 @@ export const Memory = forwardRef(
             <button
               onClick={jumpTo}
               className="flex-0"
+              aria-label="Scroll to address"
               data-tooltip={"Scroll to address"}
               data-placement="bottom"
             >
-              {/* <Icon name="move_down" /> */}
-              ⤵️
+              <span className="material-symbols-outlined" aria-hidden="true">
+                move_down
+              </span>
             </button>
-            <select value={fmt} onChange={(e) => doSetFormat(e.target.value)}>
+            <select
+              value={fmt}
+              aria-label="Number format"
+              onChange={(e) => doSetFormat(e.target.value)}
+            >
               {FORMATS.filter(
                 (option) => !excludedFormats.includes(option),
               ).map((option) => (

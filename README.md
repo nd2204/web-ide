@@ -4,13 +4,11 @@ A Javascript reimplementation of the software suite described in www.nand2tetris
 
 The goal is to allow students complete the projects using modern, web-based tools, without having to download code to their computers.
 
-Users can work with the tools via a web IDE, or via a VS Code extension. Both are described below.
+Users work with the tools via the web IDE, described below.
 
 ## User Guide
 
 The user guides for the web IDE are available [here](https://drive.google.com/drive/folders/10hDzWql94MTPIStI3KEx--JYpHTBoeE6) and can also be accessed by clicking "Guide" at the top right of the [published project](https://nand2tetris.github.io/web-ide).
-
-The user guide for the extension is coming.
 
 The parts of the user guide that describe the UI may be out of sync with the code since we keep experimenting with different UIs.
 
@@ -87,27 +85,6 @@ For evented asynchronous behavior, use RXJS observables and subscriptions.
 Jiffies extends [`PicoCSS`](https://picocss.com), allowing rapid iteration on custom components.
 Some ideas have been moved upstream to Pico.
 Specific components in the forked Pico include [`inline-buttons`](https://github.com/picocss/pico/issues/182) and a [`property sheet`](https://github.com/picocss/pico/issues/195).
-
-### Extension
-
-A VSCode extension with language definitions and editor support.
-
-- `npm run -w extension package` builds the extension & related views into a standalone `.vsix` file.
-- `Run Extension` launch configuration starts a new VSCode extension host to debug the extension.
-
-#### Languages
-
-Language support for `.hdl` & `.tst` uses the language libraries in `simulator`.
-Syntax errors are highlighted, with in-editor error diagnostics on the failing token.
-Syntax highlighting rules activate for `HDL`, `TST`, `CMP`, `OUT`, `ASM`, `VM`, and `Jack` files.
-Snippets are available for `HDL`, `ASM`, `VM`, `Jack`, and `TST` files.
-
-#### Views
-
-The extension adds an activity bar container, `NAND2Tetris`.
-`NAND2TETRIS: HDL CHIP` opens in the container, and shows a chip panel when the user has opened an HDL file.
-The panel attempts to update whenever changing HDL files, or when saving the file.
-It does not update if the new HDL does not parse.
 
 ### Jiffies
 

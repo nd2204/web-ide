@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { Icon } from "../pico/icon";
 
 import "./chip.scss";
 
@@ -48,6 +49,8 @@ export const Chip = () => {
   const { state, actions, dispatch } = stores.chip;
 
   const [hdl, setHdl] = useStateInitializer(state.files.hdl);
+  const latestState = useRef(state);
+  latestState.current = state;
   const [tst, setTst] = useStateInitializer(state.files.tst);
   const [cmp, setCmp] = useStateInitializer(state.files.cmp);
   const [out, setOut] = useStateInitializer(state.files.out);
@@ -233,6 +236,7 @@ export const Chip = () => {
           onChange={({ target: { value } }) => {
             actions.setProject(value);
           }}
+          aria-label={t`Project`}
           data-testid="project-picker"
         >
           {state.controls.projects.map((project) => (
@@ -252,6 +256,7 @@ export const Chip = () => {
               actions.loadChip(path);
             }
           }}
+          aria-label={t`Chip`}
           data-testid="chip-picker"
         >
           {state.controls.chipName == "" && <option></option>}
@@ -290,19 +295,21 @@ export const Chip = () => {
           <div className="flex-4">{selectors}</div>
           <fieldset role="group">
             <button
+              aria-label={t`Open an HDL file directly`}
               data-tooltip={t`Open an HDL file directly`}
               data-placement="bottom"
               onClick={loadFile}
             >
-              📂
+              <Icon name="folder_open" />
             </button>
             <a ref={downloadRef} style={{ display: "none" }} />
             <button
               onClick={downloadProject}
+              aria-label={t`Download .hdl files`}
               data-tooltip={t`Download .hdl files`}
               data-placement="left"
             >
-              ⬇️
+              <Icon name="download" />
             </button>
           </fieldset>
         </>
@@ -314,10 +321,15 @@ export const Chip = () => {
         error={state.controls.error}
         onChange={async (source) => {
           setHdl(source);
-          if (!state.controls.usingBuiltin) {
+          // The editor also reports programmatic changes (switching Builtin on
+          // or off). This callback can be stale then, so read the latest state:
+          // only a real edit, which differs from the stored text, is saved.
+          const latest = latestState.current;
+          const edited = source !== latest.files.hdl;
+          if (!latest.controls.usingBuiltin && edited) {
             actions.saveChip(source);
           }
-          compile.current(state.controls.usingBuiltin ? {} : { hdl: source });
+          compile.current(latest.controls.usingBuiltin ? {} : { hdl: source });
         }}
         grammar={HDL.parser}
         language={"hdl"}
@@ -344,6 +356,7 @@ export const Chip = () => {
   const chipButtons = (
     <fieldset role="group">
       <button
+        className="lh-primary"
         onClick={evalIfCan}
         onKeyDown={evalIfCan}
         disabled={!state.sim.pending || !inputValid}
@@ -358,7 +371,6 @@ export const Chip = () => {
           }
           clockActions.reset();
         }}
-        style={{ maxWidth: "initial" }}
         disabled={!state.sim.clocked}
       >
         <Trans>Reset</Trans>
@@ -371,7 +383,6 @@ export const Chip = () => {
           }
           clockActions.toggle();
         }}
-        style={{ minWidth: "7em", textAlign: "start" }}
         disabled={!state.sim.clocked}
       >
         <Trans>Clock</Trans>:{"\u00a0"}
@@ -411,6 +422,7 @@ export const Chip = () => {
           <>
             <PinContext.Provider value={pinResetDispatcher}>
               <FullPinout
+                trace
                 sim={state.sim}
                 toggle={actions.toggle}
                 setInputValid={setInputValid}
@@ -439,6 +451,7 @@ export const Chip = () => {
             onChange={({ target: { value } }) => {
               actions.loadTest(value);
             }}
+            aria-label={t`Test`}
             data-testid="test-picker"
           >
             {state.controls.tests.map((test) => (

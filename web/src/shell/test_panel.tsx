@@ -26,6 +26,7 @@ import {
   useState,
 } from "react";
 import { AppContext } from "../App.context";
+import { Icon } from "../pico/icon";
 import { Editor } from "./editor";
 import { isPath } from "./file_select";
 import { Panel } from "./panel";
@@ -231,10 +232,11 @@ export const TestPanel = ({
                       <button
                         className="flex-0"
                         onClick={loadTest}
+                        aria-label={t`Load a test script`}
                         data-tooltip={t`Load a test script`}
                         data-placement="bottom"
                       >
-                        📂
+                        <Icon name="folder_open" />
                       </button>
                     )}
                   </>

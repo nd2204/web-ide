@@ -11,29 +11,6 @@
       "cwd": "${workspaceFolder}/simulator",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
-    },
-    {
-      "name": "Run Extension",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": [
-        "--disable-extensions",
-        "--extensionDevelopmentPath=${workspaceFolder}/extension"
-      ],
-      "outFiles": ["${workspaceFolder}/extension/build/**/*.js"]
-      // "preLaunchTask": "${defaultBuildTask}"
-    },
-    {
-      "name": "Extension Tests",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": [
-        "--disable-extensions",
-        "--extensionDevelopmentPath=${workspaceFolder}/extension",
-        "--extensionTestsPath=${workspaceFolder}/extension/build/test/suite/index"
-      ],
-      "outFiles": ["${workspaceFolder}/extension/build/test/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
     }
   ]
 }

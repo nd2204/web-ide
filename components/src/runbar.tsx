@@ -73,11 +73,13 @@ export const Runbar = (props: {
           className="flex-0"
           disabled={props.disabled}
           onClick={() => runner.actions.frame()}
+          aria-label={props.overrideTooltips?.step ?? `Step`}
           data-tooltip={props.overrideTooltips?.step ?? `Step`}
           data-placement="bottom"
         >
-          {/* <Icon name="play_arrow" /> */}
-          ➡️
+          <span className="material-symbols-outlined" aria-hidden="true">
+            skip_next
+          </span>
         </button>
         <button
           className="flex-0"
@@ -88,6 +90,11 @@ export const Runbar = (props: {
               ? runner.actions.stop()
               : runner.actions.start()
           }
+          aria-label={
+            runner.state.running
+              ? (props.overrideTooltips?.pause ?? `Pause`)
+              : (props.overrideTooltips?.run ?? `Run`)
+          }
           data-tooltip={
             runner.state.running
               ? (props.overrideTooltips?.pause ?? `Pause`)
@@ -95,8 +102,9 @@ export const Runbar = (props: {
           }
           data-placement="bottom"
         >
-          {/* <Icon name={runner.state.running ? "pause" : "fast_forward"} /> */}
-          {runner.state.running ? "⏸" : "️⏩"}
+          <span className="material-symbols-outlined" aria-hidden="true">
+            {runner.state.running ? "pause" : "fast_forward"}
+          </span>
         </button>
         <button
           className="flex-0"
@@ -106,10 +114,13 @@ export const Runbar = (props: {
             }
             runner.actions.reset();
           }}
+          aria-label={props.overrideTooltips?.reset ?? `Reset`}
           data-tooltip={props.overrideTooltips?.reset ?? `Reset`}
           data-placement="bottom"
         >
-          {/* <Icon name="fast_rewind" /> */}⏮
+          <span className="material-symbols-outlined" aria-hidden="true">
+            skip_previous
+          </span>
         </button>
       </fieldset>
       <div
@@ -146,6 +157,7 @@ export const Runbar = (props: {
           disabled={runner.state.running}
           onChange={onChange}
           style={{ width: "150px", padding: "0.2rem" }}
+          aria-label="Execution speed"
           data-tooltip={"Execution speed"}
           data-placement={"bottom"}
         />

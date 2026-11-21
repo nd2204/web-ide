@@ -12,6 +12,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../App.context";
 import { PageContext } from "../Page.context";
+import { Icon } from "../pico/icon";
 import { Editor } from "../shell/editor";
 import { Panel } from "../shell/panel";
 import { Tab, TabList } from "../shell/tabs";
@@ -194,12 +195,13 @@ export const Compiler = () => {
             </div>
             <div className="flex row flex-1">
               <button
+                aria-label={t`Open a folder containing Jack file(s)`}
                 data-tooltip={t`Open a folder containing Jack file(s)`}
                 data-placement="right"
                 className="flex-0"
                 onClick={uploadFiles}
               >
-                📂
+                <Icon name="folder_open" />
               </button>
               <Padding />
               <button

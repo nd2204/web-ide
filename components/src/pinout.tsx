@@ -4,7 +4,7 @@ import {
   Pins,
   Voltage,
 } from "@nand2tetris/simulator/chip/chip.js";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { ChipDisplayInfo, getDisplayInfo } from "./pin_display.js";
 import "./public/pin.css";
 import { ChipSim } from "./stores/chip.store.js";
@@ -39,6 +39,7 @@ export const FullPinout = (props: {
   toggle: (pin: ChipPin, i: number | undefined) => void;
   setInputValid: (pending: boolean) => void;
   hideInternal?: boolean;
+  trace?: boolean;
 }) => {
   const { inPins, outPins, internalPins } = props.sim;
   const displayInfo = getDisplayInfo(props.sim.chip[0].name ?? "");
@@ -68,6 +69,8 @@ export const FullPinout = (props: {
           <PinoutBlock
             pins={inPins}
             header="Input pins"
+            kind="input"
+            trace={props.trace}
             toggle={props.toggle}
             setInputValid={props.setInputValid}
             displayInfo={displayInfo}
@@ -75,6 +78,8 @@ export const FullPinout = (props: {
           <PinoutBlock
             pins={outPins}
             header="Output pins"
+            kind="output"
+            trace={props.trace}
             disabled={props.sim.pending}
             enableEdit={false}
             displayInfo={displayInfo}
@@ -83,6 +88,8 @@ export const FullPinout = (props: {
             <PinoutBlock
               pins={internalPins}
               header="Internal pins"
+              kind="internal"
+              trace={props.trace}
               disabled={props.sim.pending}
               enableEdit={false}
               displayInfo={displayInfo}
@@ -97,6 +104,8 @@ export const FullPinout = (props: {
 export const PinoutBlock = (
   props: PinoutPins & {
     header: string;
+    kind?: "input" | "output" | "internal";
+    trace?: boolean;
     disabled?: boolean;
     enableEdit?: boolean;
     setInputValid?: (valid: boolean) => void;
@@ -110,11 +119,12 @@ export const PinoutBlock = (
       </tr>
     )}
     {[...props.pins].map((immPin) => (
-      <tr key={immPin.pin.name}>
+      <tr key={immPin.pin.name} data-kind={props.kind}>
         <td>{immPin.pin.name}</td>
         <td>
           <Pin
             pin={immPin}
+            trace={props.trace}
             toggle={props.toggle}
             disabled={props.disabled}
             enableEdit={props.enableEdit}
@@ -168,7 +178,9 @@ const Pin = ({
   signed = true,
   setInputValid,
   internal = false,
+  trace = false,
 }: {
+  trace?: boolean;
   pin: ImmPin;
   toggle: ((pin: ChipPin, bit?: number) => void) | undefined;
   disabled?: boolean;
@@ -178,6 +190,7 @@ const Pin = ({
   internal: boolean;
 }) => {
   const [isBin, setIsBin] = useState(true);
+  const history = usePinHistory(pin);
   let inputValid = true;
   const [decimal, setDecimal] = useState("");
 
@@ -256,7 +269,11 @@ const Pin = ({
     <div
       style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
     >
-      <fieldset role="group" style={{ width: `${pin.bits.length}rem` }}>
+      <fieldset
+        role="group"
+        style={{ width: `${pin.bits.length}rem` }}
+        data-changed={history.changed || undefined}
+      >
         {isBin ? (
           pin.bits.map(([i, v]) => (
             <button
@@ -280,6 +297,7 @@ const Pin = ({
           />
         )}
       </fieldset>
+      {trace && pin.bits.length === 1 && <PinTrace history={history.values} />}
       {pin.bits.length > 1 && (
         <>
           <div style={{ width: "1em" }} />
@@ -289,6 +307,51 @@ const Pin = ({
         </>
       )}
     </div>
+  );
+};
+
+/** Tracks the last eight values of a pin and whether the latest update changed it. */
+function usePinHistory(pin: ImmPin) {
+  const seen = useRef<{
+    pin: ImmPin;
+    key: string;
+    values: string[];
+    changed: boolean;
+  } | null>(null);
+  const key = pin.bits.map(([, v]) => v).join("");
+  if (seen.current === null) {
+    seen.current = { pin, key, values: [key], changed: false };
+  } else if (seen.current.pin !== pin) {
+    const s = seen.current;
+    s.changed = s.key !== key;
+    s.pin = pin;
+    s.key = key;
+    s.values = [...s.values, key].slice(-8);
+  }
+  return seen.current;
+}
+
+const TRACE_STEP = 8;
+const TRACE_HIGH = 3;
+const TRACE_LOW = 13;
+
+/** A short stepped stroke of a one bit pin's recent values. */
+const PinTrace = ({ history }: { history: string[] }) => {
+  const points: string[] = [];
+  history.forEach((value, i) => {
+    const y = value === "1" ? TRACE_HIGH : TRACE_LOW;
+    points.push(`${i * TRACE_STEP},${y}`, `${(i + 1) * TRACE_STEP},${y}`);
+  });
+  return (
+    <svg
+      className="pin-trace"
+      aria-hidden="true"
+      width={8 * TRACE_STEP + 4}
+      height={16}
+      viewBox={`-2 0 ${8 * TRACE_STEP + 4} 16`}
+    >
+      <polyline points={points.join(" ")} />
+    </svg>
   );
 };
 
