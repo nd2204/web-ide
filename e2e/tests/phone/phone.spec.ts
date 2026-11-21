@@ -6,15 +6,16 @@ import { expect, type Page, test } from "@playwright/test";
 
 const MIN_TARGET = 44;
 
-// Anything wider than the viewport must sit inside a scroller or a clipping
-// ancestor (the header's tool capsule scrolls on a phone) or inside Monaco.
+// Anything wider than the viewport must sit inside a scroller (the header's
+// tool capsule scrolls on a phone) or inside Monaco. `overflow: hidden` does
+// not count: clipping is the failure this check exists to catch.
 async function overflowing(page: Page, within: string) {
   return page.evaluate((scope) => {
     const clipped = (el: Element) => {
       for (let p = el.parentElement; p; p = p.parentElement) {
         if (p.matches(scope.replace(/ .*/, "")) && p !== el) break;
         const x = getComputedStyle(p).overflowX;
-        if (x === "auto" || x === "scroll" || x === "hidden") return true;
+        if (x === "auto" || x === "scroll") return true;
       }
       return false;
     };
@@ -54,14 +55,27 @@ async function expectPrimitiveTargets(page: Page) {
 }
 
 test.describe("phone", { tag: "@smoke" }, () => {
-  test("header and Chip page fit the viewport with 44px primitives", async ({
+  test("header fits the viewport and Chip primitives reach 44px", async ({
     page,
   }) => {
     await page.goto("chip");
     await expect(page.locator(".ChipPage")).toBeVisible();
     await expect(page.locator("#root > header")).toBeVisible();
-    await expectNoHorizontalOverflow(page);
+    await expectNoHorizontalOverflow(page, "#root > header");
     await expectPrimitiveTargets(page);
+  });
+
+  // Known defect today: the Chip page's editor wrappers are wider than a phone
+  // and are clipped by their panels. `test.fail` starts failing (and must
+  // become a plain test) when the Panel step fixes it.
+  test("chip page content does not overflow the viewport", async ({ page }) => {
+    test.fail(
+      true,
+      "Chip editor wrappers overflow a phone until the Panel step",
+    );
+    await page.goto("chip");
+    await expect(page.locator(".ChipPage")).toBeVisible();
+    await expectNoHorizontalOverflow(page, ".ChipPage");
   });
 
   test("settings dialog fits the viewport", async ({ page }) => {

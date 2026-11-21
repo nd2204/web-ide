@@ -62,6 +62,11 @@ for (const [name, context] of Object.entries(VIEWPORTS)) {
     test.use(context);
 
     test.beforeEach(async ({ page }) => {
+      // Answer the analytics consent banner so it does not cover the page.
+      // The "tracking banner" test below removes this to show it.
+      await page.addInitScript(() =>
+        localStorage.setItem("/tracking/canTrack", "no"),
+      );
       // The icon font loads from Google Fonts until the self-hosting step.
       // Blocking it keeps the baseline independent of the network; icons draw
       // as their ligature text. Drop this route when the font is self-hosted.
@@ -80,6 +85,19 @@ for (const [name, context] of Object.entries(VIEWPORTS)) {
         });
       });
     }
+
+    test("tracking banner", async ({ page }) => {
+      await page.addInitScript(() =>
+        localStorage.removeItem("/tracking/canTrack"),
+      );
+      await page.goto("chip");
+      await settle(page, ROUTES.chip);
+      await expect(page.getByRole("button", { name: "Accept" })).toBeVisible();
+      await expect(page).toHaveScreenshot(`tracking-banner-${name}.png`, {
+        ...SCREENSHOT,
+        mask: masks(page),
+      });
+    });
 
     test("settings dialog", async ({ page }) => {
       await page.goto("chip");

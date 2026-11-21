@@ -159,6 +159,10 @@ Regenerate them in the official Playwright Docker image, so they match CI:
 npm run test:e2e:visual:update
 ```
 
+GitHub Actions runs the whole e2e job in the same image (`container:` in `.github/workflows/e2e.yaml`), so the tag `mcr.microsoft.com/playwright:v<version>-noble` must equal the installed `@playwright/test` version. Change both together, and regenerate the baselines after a Playwright upgrade.
+
+`npm run test:e2e:visual:update -- --check` compares without rewriting, and leaves the diff images in `e2e/test-results/visual-docker`.
+
 The script copies the repository into the container, builds it and rewrites the snapshots (amd64, so expect a few minutes). If Docker is not available, download the `playwright-results` artifact of a failed run and commit the `*-actual.png` images under their baseline names.
 
 In CI mode, Playwright records a trace when it retries a failed test. View the trace with:
