@@ -1,0 +1,10 @@
+{
+  "entryJsGzipBytes": 204800,
+  "entryCssGzipBytes": 10240,
+  "baseline": {
+    "recordedAt": "2026-11-21",
+    "step": "0: infrastructure",
+    "entryJsGzipBytes": 182681,
+    "entryCssGzipBytes": 9611
+  }
+}

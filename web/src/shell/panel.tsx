@@ -38,7 +38,9 @@ export const Accordian = (props: {
       style={props.style}
     >
       <summary>
-        <div className="flex row align-baseline">{props.summary}</div>
+        <div className="stack stack-row stack-align-baseline">
+          {props.summary}
+        </div>
       </summary>
       {props.children}
     </details>

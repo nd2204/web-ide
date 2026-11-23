@@ -129,8 +129,8 @@ export function TrackingBanner() {
   return (
     <>
       {show && (
-        <div id="trackingBanner" className="flex row">
-          <div className="flex-1">
+        <div id="trackingBanner" className="stack stack-row">
+          <div className="stack-item-1">
             <TrackingDisclosure />
           </div>
           <div>

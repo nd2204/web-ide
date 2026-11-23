@@ -5,6 +5,7 @@ import { registerServiceWorker } from "./registerServiceWorker";
 
 import "./pico/pico.scss";
 import "./pico/lecture_hall.scss";
+import "./ui/tailwind.css";
 
 import App from "./App";
 

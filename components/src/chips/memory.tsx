@@ -310,7 +310,7 @@ export const Memory = forwardRef(
             {fileSelect && (
               <button
                 onClick={doLoad}
-                className="flex-0"
+                className="stack-item-0"
                 aria-label={loadTooltip?.value ?? "Load file"}
                 data-tooltip={loadTooltip?.value ?? "Load file"}
                 data-placement={loadTooltip?.placement ?? "bottom"}
@@ -323,7 +323,7 @@ export const Memory = forwardRef(
             {showClear && (
               <button
                 onClick={clear}
-                className="flex-0"
+                className="stack-item-0"
                 aria-label="Clear"
                 data-tooltip={"Clear"}
                 data-placement="bottom"
@@ -343,7 +343,7 @@ export const Memory = forwardRef(
             />
             <button
               onClick={jumpTo}
-              className="flex-0"
+              className="stack-item-0"
               aria-label="Scroll to address"
               data-tooltip={"Scroll to address"}
               data-placement="bottom"

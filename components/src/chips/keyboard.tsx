@@ -135,18 +135,18 @@ export const Keyboard = ({
 
   return (
     <article className="panel">
-      <div className="flex row align-baseline">
+      <div className="stack stack-row stack-align-baseline">
         <button
           onClick={toggleEnabled}
           ref={toggleRef}
-          className="flex-0"
+          className="stack-item-0"
           style={{ whiteSpace: "pre" }}
         >
           {`${enabled ? "Disable" : "Enable"} Keyboard`}
         </button>
-        <div className="flex-1"></div> {/* padding */}
-        <div className="flex-4">Key: {character}</div>
-        <div className="flex-4">
+        <div className="stack-item-1"></div> {/* padding */}
+        <div className="stack-item-4">Key: {character}</div>
+        <div className="stack-item-4">
           <RegisterComponent name="Char code" bits={bits} />
         </div>
       </div>

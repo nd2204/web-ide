@@ -193,12 +193,12 @@ export const Compiler = () => {
             <div>
               <Trans>Source</Trans>
             </div>
-            <div className="flex row flex-1">
+            <div className="stack stack-row stack-item-1">
               <button
                 aria-label={t`Open a folder containing Jack file(s)`}
                 data-tooltip={t`Open a folder containing Jack file(s)`}
                 data-placement="right"
-                className="flex-0"
+                className="stack-item-0"
                 onClick={uploadFiles}
               >
                 <Icon name="folder_open" />
@@ -207,14 +207,14 @@ export const Compiler = () => {
               <button
                 data-tooltip={t`Create a new file in the currently opened folder`}
                 data-placement="right"
-                className="flex-0"
+                className="stack-item-0"
                 onClick={createFile}
               >
                 +
               </button>
               <Padding />
               <button
-                className="flex-0"
+                className="stack-item-0"
                 data-tooltip={`Compile all the opened Jack files`}
                 data-placement="bottom"
                 onClick={compileFiles}
@@ -224,7 +224,7 @@ export const Compiler = () => {
               </button>
               <Padding />
               <button
-                className="flex-0"
+                className="stack-item-0"
                 disabled={!state.isCompiled}
                 data-tooltip={t`Load the compiled code into the VM emulator`}
                 data-placement="bottom"
@@ -303,7 +303,7 @@ const NameDialog = ({
           />
         </header>
         <main>
-          <div className="flex row">
+          <div className="stack stack-row">
             <input
               value={value}
               onChange={(e) => setValue(e.target.value)}

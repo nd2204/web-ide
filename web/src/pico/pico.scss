@@ -1,65 +1,7 @@
-@layer user {
-  body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
-  }
-
-  :root {
-    --line-height: 1.25;
-    /* 1.5 */
-    --spacing: 0.25rem;
-    /* 1rem */
-    --typography-spacing-vertical: 1.15rem;
-    /* 1.5rem */
-    --grid-spacing-horizontal: var(--spacing);
-    --grid-spacing-vertical: var(--spacing);
-    --form-element-spacing-vertical: 0.15rem;
-    /* .75rem */
-    --form-element-spacing-horizontal: 0.25rem;
-    /* 1rem */
-    --font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Noto Sans", sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --font-size-monospace: 16px;
-    --font-family-monospace: "JetBrains Mono", source-code-pro, Menlo, Monaco,
-      Consolas, "Roboto Mono", "Ubuntu Monospace", "Noto Mono", "Oxygen Mono",
-      "Liberation Mono", monospace, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol", "Noto Color Emoji";
-    --card-border-color: black;
-    --text-color: black;
-    --mark-background-color: rgb(255, 230, 121);
-    --mark-error-color: rgb(252, 169, 154);
-    --light-grey: rgb(170, 170, 170);
-    --compiler-err-color: "#ffaaaa";
-    --disabled: var(--light-grey);
-    --file-picker-width: 400px;
-  }
-
-  @media only screen and (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --card-border-color: white;
-      --text-color: white;
-      --mark-background-color: rgb(30, 74, 109);
-    }
-  }
-
-  [data-theme="dark"] {
-    --card-border-color: white;
-    --text-color: white;
-    --mark-background-color: rgb(30, 74, 109);
-    --compiler-err-color: rgb(69, 25, 22);
-    --code-color: rgb(180, 180, 180);
-
-    .outline {
-      color: var(--light-grey);
-    }
-
-    --disabled: rgb(76, 85, 93);
-  }
-}
-
-@layer component {
+// One `components` layer (declared in public/root.css) replaces the old
+// `component` and `user` layers. The former `user` rules come last because
+// they used to outrank the `component` rules.
+@layer components {
   .scroll-x {
     overflow-x: auto;
   }
@@ -189,5 +131,75 @@
   [data-tooltip]::before,
   [data-tooltip]::after {
     display: none !important;
+  }
+}
+
+@layer components {
+  // The page never scrolls: #root is absolutely sized against a full-height
+  // body. Radix scroll lock makes <body> `position: relative` while a Select or
+  // Dialog is open; with these rules #root keeps the same box.
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+
+  :root {
+    --line-height: 1.25;
+    /* 1.5 */
+    --spacing: 0.25rem;
+    /* 1rem */
+    --typography-spacing-vertical: 1.15rem;
+    /* 1.5rem */
+    --grid-spacing-horizontal: var(--spacing);
+    --grid-spacing-vertical: var(--spacing);
+    --form-element-spacing-vertical: 0.15rem;
+    /* .75rem */
+    --form-element-spacing-horizontal: 0.25rem;
+    /* 1rem */
+    --font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Noto Sans", sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-size-monospace: 16px;
+    --font-family-monospace: "JetBrains Mono", source-code-pro, Menlo, Monaco,
+      Consolas, "Roboto Mono", "Ubuntu Monospace", "Noto Mono", "Oxygen Mono",
+      "Liberation Mono", monospace, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol", "Noto Color Emoji";
+    --card-border-color: black;
+    --text-color: black;
+    --mark-background-color: rgb(255, 230, 121);
+    --mark-error-color: rgb(252, 169, 154);
+    --light-grey: rgb(170, 170, 170);
+    --compiler-err-color: "#ffaaaa";
+    --disabled: var(--light-grey);
+    --file-picker-width: 400px;
+  }
+
+  @media only screen and (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --card-border-color: white;
+      --text-color: white;
+      --mark-background-color: rgb(30, 74, 109);
+    }
+  }
+
+  [data-theme="dark"] {
+    --card-border-color: white;
+    --text-color: white;
+    --mark-background-color: rgb(30, 74, 109);
+    --compiler-err-color: rgb(69, 25, 22);
+    --code-color: rgb(180, 180, 180);
+
+    .outline {
+      color: var(--light-grey);
+    }
+
+    --disabled: rgb(76, 85, 93);
   }
 }

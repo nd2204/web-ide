@@ -66,11 +66,11 @@ export const Runbar = (props: {
   });
 
   return (
-    <div className="flex row wrap">
+    <div className="stack stack-row stack-wrap">
       <fieldset role="group">
         {props.prefix}
         <button
-          className="flex-0"
+          className="stack-item-0"
           disabled={props.disabled}
           onClick={() => runner.actions.frame()}
           aria-label={props.overrideTooltips?.step ?? `Step`}
@@ -82,7 +82,7 @@ export const Runbar = (props: {
           </span>
         </button>
         <button
-          className="flex-0"
+          className="stack-item-0"
           ref={toggleRef}
           disabled={props.disabled}
           onClick={() =>
@@ -107,7 +107,7 @@ export const Runbar = (props: {
           </span>
         </button>
         <button
-          className="flex-0"
+          className="stack-item-0"
           onClick={() => {
             if (runner.state.running) {
               runner.actions.stop();

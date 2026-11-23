@@ -1,12 +1,19 @@
 name: Playwright E2E Tests
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: ["main", "release/**"]
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    # Run in the official Playwright image so the @visual screenshots render
+    # exactly as in e2e/scripts/update-visual-baseline.sh. Keep this tag equal
+    # to the installed @playwright/test version, and update both together.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
 
     steps:
       - uses: actions/checkout@v3
@@ -24,9 +31,6 @@ jobs:
 
       - name: Install
         run: npm ci
-
-      - name: Install Playwright browsers
-        run: npm run playwright:install
 
       - name: Run E2E tests
         run: |

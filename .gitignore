@@ -29,3 +29,7 @@ yarn-error.log*
 docs
 .tmp
 .worktrees
+
+# local tooling state
+web/.impeccable/
+web/.swc/

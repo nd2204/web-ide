@@ -1,8 +1,10 @@
-.flex {
+// Flex helpers. Named `stack` so they never collide with Tailwind's `flex`,
+// `flex-<n>`, `justify-*` and `grow` utilities (see `ui/tailwind.css`).
+.stack {
   display: flex;
   flex-direction: column;
 
-  &.row {
+  &.stack-row {
     flex-direction: row;
 
     &.inline > * {
@@ -10,45 +12,45 @@
     }
   }
 
-  &.justify-around {
+  &.stack-justify-around {
     justify-content: space-around;
   }
 
-  &.justify-between {
+  &.stack-justify-between {
     justify-content: space-between;
   }
 
-  &.justify-center {
+  &.stack-justify-center {
     justify-content: center;
   }
 
-  &.align-baseline {
+  &.stack-align-baseline {
     align-items: baseline;
   }
 
-  &.align-center {
+  &.stack-align-center {
     align-items: center;
   }
 
-  &.align-stretch {
+  &.stack-align-stretch {
     align-items: stretch;
   }
 
-  &.align-end {
+  &.stack-align-end {
     align-items: end;
   }
 
-  &.wrap {
+  &.stack-wrap {
     flex-wrap: wrap;
   }
 }
 
-.flex-0 {
+.stack-item-0 {
   flex-basis: 0;
 }
 
 @for $i from 1 through 4 {
-  .flex-#{$i} {
+  .stack-item-#{$i} {
     flex: $i;
   }
 }

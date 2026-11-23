@@ -10,6 +10,15 @@ import {
   useState,
 } from "react";
 import { Icon } from "../pico/icon";
+import { Button } from "../ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Switch } from "../ui/switch";
 
 import "./chip.scss";
 
@@ -231,23 +240,26 @@ export const Chip = () => {
         data-tooltip={t`Open an HDL file using this menu`}
         data-placement="bottom"
       >
-        <select
+        <Select
           value={state.controls.project}
-          onChange={({ target: { value } }) => {
+          onValueChange={(value) => {
             actions.setProject(value);
           }}
-          aria-label={t`Project`}
-          data-testid="project-picker"
         >
-          {state.controls.projects.map((project) => (
-            <option key={project} value={project}>
-              {`Project ${project.replace(/^0/, "")}`}
-            </option>
-          ))}
-        </select>
-        <select
+          <SelectTrigger aria-label={t`Project`} data-testid="project-picker">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {state.controls.projects.map((project) => (
+              <SelectItem key={project} value={project}>
+                {`Project ${project.replace(/^0/, "")}`}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
           value={state.controls.chipName}
-          onChange={({ target: { value } }) => {
+          onValueChange={(value) => {
             if (value != "") {
               let path = `/${state.controls.project}/${value}.hdl`;
               if (!localFsRoot) {
@@ -256,16 +268,18 @@ export const Chip = () => {
               actions.loadChip(path);
             }
           }}
-          aria-label={t`Chip`}
-          data-testid="chip-picker"
         >
-          {state.controls.chipName == "" && <option></option>}
-          {state.controls.chips.map((chip) => (
-            <option key={chip} value={chip}>
-              {chip}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger aria-label={t`Chip`} data-testid="chip-picker">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {state.controls.chips.map((chip) => (
+              <SelectItem key={chip} value={chip}>
+                {chip}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </fieldset>
     </>
   );
@@ -278,45 +292,48 @@ export const Chip = () => {
           <div tabIndex={0}>HDL</div>
           <label
             style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
               visibility: hasBuiltinChip(state.controls.chipName)
                 ? "visible"
                 : "hidden",
             }}
           >
-            <input
-              type="checkbox"
-              role="switch"
+            <Switch
               checked={state.controls.usingBuiltin}
-              onChange={toggleUseBuiltin}
+              onCheckedChange={toggleUseBuiltin}
             />
             <Trans>Builtin</Trans>
           </label>
           <div style={{ width: "30px" }}></div>
-          <div className="flex-4">{selectors}</div>
+          <div className="stack-item-4">{selectors}</div>
           <fieldset role="group">
-            <button
+            <Button
+              size="icon"
               aria-label={t`Open an HDL file directly`}
               data-tooltip={t`Open an HDL file directly`}
               data-placement="bottom"
               onClick={loadFile}
             >
               <Icon name="folder_open" />
-            </button>
+            </Button>
             <a ref={downloadRef} style={{ display: "none" }} />
-            <button
+            <Button
+              size="icon"
               onClick={downloadProject}
               aria-label={t`Download .hdl files`}
               data-tooltip={t`Download .hdl files`}
               data-placement="left"
             >
               <Icon name="download" />
-            </button>
+            </Button>
           </fieldset>
         </>
       }
     >
       <Editor
-        className="flex-1"
+        className="stack-item-1"
         value={hdl}
         error={state.controls.error}
         onChange={async (source) => {
@@ -355,15 +372,15 @@ export const Chip = () => {
 
   const chipButtons = (
     <fieldset role="group">
-      <button
-        className="lh-primary"
+      <Button
+        variant="primary"
         onClick={evalIfCan}
         onKeyDown={evalIfCan}
         disabled={!state.sim.pending || !inputValid}
       >
         <Trans>Eval</Trans>
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           if (state.sim.invalid) {
             showCannotTestError();
@@ -374,8 +391,8 @@ export const Chip = () => {
         disabled={!state.sim.clocked}
       >
         <Trans>Reset</Trans>
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           if (state.sim.invalid) {
             showCannotTestError();
@@ -387,7 +404,7 @@ export const Chip = () => {
       >
         <Trans>Clock</Trans>:{"\u00a0"}
         <Clockface />
-      </button>
+      </Button>
     </fieldset>
   );
 
@@ -446,20 +463,23 @@ export const Chip = () => {
       disabled={state.sim.invalid}
       prefix={
         state.controls.tests.length > 1 ? (
-          <select
+          <Select
             value={state.controls.testName}
-            onChange={({ target: { value } }) => {
+            onValueChange={(value) => {
               actions.loadTest(value);
             }}
-            aria-label={t`Test`}
-            data-testid="test-picker"
           >
-            {state.controls.tests.map((test) => (
-              <option key={test} value={test}>
-                {test}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger aria-label={t`Test`} data-testid="test-picker">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {state.controls.tests.map((test) => (
+                <SelectItem key={test} value={test}>
+                  {test}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         ) : (
           <></>
         )

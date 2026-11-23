@@ -27,7 +27,7 @@ const TestResult = (props: {
     <summary>
       {props.name} {props.pass ? <Trans>Passed</Trans> : <Trans>Failed</Trans>}
     </summary>
-    <div className="flex row">
+    <div className="stack stack-row">
       <pre>
         <code>{props.hdl}</code>
       </pre>

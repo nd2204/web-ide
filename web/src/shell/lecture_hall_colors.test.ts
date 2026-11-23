@@ -3,13 +3,13 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { LECTURE_HALL_TOKENS } from "./lecture_hall_colors";
 
-const scss = readFileSync(
-  resolve(process.cwd(), "src/pico/lecture_hall.scss"),
+const tokensCss = readFileSync(
+  resolve(process.cwd(), "src/ui/tokens.css"),
   "utf8",
 );
 
 function tokens(theme: "dark" | "light") {
-  const block = scss.match(
+  const block = tokensCss.match(
     new RegExp(`:root\\[data-theme="${theme}"\\] \\{([^}]*)\\}`),
   );
   expect(block, `${theme} token block`).not.toBeNull();
