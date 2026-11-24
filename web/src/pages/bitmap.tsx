@@ -10,6 +10,7 @@ import {
   getWordValue,
 } from "../utils/bitmapUtils";
 import "./bitmap.scss";
+import { Button } from "../ui/button";
 
 // Constants
 const STATE_KEY = "bitmap_editor_state";
@@ -739,18 +740,18 @@ export const BitmapEditor = () => {
               maxLength={2}
               defaultValue={pixelSize}
             />
-            <button
+            <Button
               onClick={handleResize}
               title={t`Resize Canvas Preserving Upper-left Contents`}
             >
               <Trans>Resize</Trans>
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleReset}
               title={t`Reset Canvas Size, Settings, and Clear Contents`}
             >
               <Trans>Reset</Trans>
-            </button>
+            </Button>
           </div>
         }
       >
@@ -834,43 +835,43 @@ export const BitmapEditor = () => {
             accept=".bmp, .png, image/bmp, image/png"
             onChange={handleFileSelect}
           />
-          <button
+          <Button
             onClick={() => fileInputRef.current?.click()}
             title={t`Import BMP (24-bit) or PNG (black and white) file`}
           >
             <Trans>Import Image</Trans>
-          </button>
+          </Button>
 
           <div className="button-group">
-            <button onClick={shiftLeft}>
+            <Button onClick={shiftLeft}>
               <Trans>Shift left &lt;</Trans>
-            </button>
-            <button onClick={shiftRight}>
+            </Button>
+            <Button onClick={shiftRight}>
               <Trans>Shift right &gt;</Trans>
-            </button>
-            <button onClick={shiftUp}>
+            </Button>
+            <Button onClick={shiftUp}>
               <Trans>Shift up ^</Trans>
-            </button>
-            <button onClick={shiftDown}>
+            </Button>
+            <Button onClick={shiftDown}>
               <Trans>Shift down v</Trans>
-            </button>
-            <button onClick={clearShifting}>
+            </Button>
+            <Button onClick={clearShifting}>
               <Trans>Clear Shifting</Trans>
-            </button>
+            </Button>
           </div>
 
           <div className="spacer" />
 
           <div className="button-group">
-            <button onClick={rotateBitmapRight} disabled={width !== height}>
+            <Button onClick={rotateBitmapRight} disabled={width !== height}>
               <Trans>Rotate right</Trans>
-            </button>
-            <button onClick={mirrorBitmap}>
+            </Button>
+            <Button onClick={mirrorBitmap}>
               <Trans>Flip horizontally</Trans>
-            </button>
-            <button onClick={invertBitmap}>
+            </Button>
+            <Button onClick={invertBitmap}>
               <Trans>Invert</Trans>
-            </button>
+            </Button>
           </div>
 
           <div className="checkbox-group">

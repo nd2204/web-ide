@@ -17,7 +17,7 @@ import {
   useMemo,
   useState,
 } from "react";
-
+import { Btn } from "../button.js";
 import { useClockReset } from "../clockface.js";
 import InlineEdit from "../inline_edit.js";
 import { LOADING } from "../messages.js";
@@ -313,9 +313,8 @@ export const Memory = forwardRef(
                 label={loadTooltip?.value ?? "Load file"}
                 placement={loadTooltip?.placement ?? "bottom"}
               >
-                <button
+                <Btn
                   onClick={doLoad}
-                  className="stack-item-0"
                   aria-label={loadTooltip?.value ?? "Load file"}
                 >
                   <span
@@ -324,23 +323,19 @@ export const Memory = forwardRef(
                   >
                     folder_open
                   </span>
-                </button>
+                </Btn>
               </Tip>
             )}
             {showClear && (
               <Tip label="Clear">
-                <button
-                  onClick={clear}
-                  className="stack-item-0"
-                  aria-label="Clear"
-                >
+                <Btn onClick={clear} aria-label="Clear">
                   <span
                     className="material-symbols-outlined"
                     aria-hidden="true"
                   >
                     delete_sweep
                   </span>
-                </button>
+                </Btn>
               </Tip>
             )}
             <input
@@ -352,15 +347,11 @@ export const Memory = forwardRef(
               onChange={({ target: { value } }) => setJmp(value)}
             />
             <Tip label="Scroll to address">
-              <button
-                onClick={jumpTo}
-                className="stack-item-0"
-                aria-label="Scroll to address"
-              >
+              <Btn onClick={jumpTo} aria-label="Scroll to address">
                 <span className="material-symbols-outlined" aria-hidden="true">
                   move_down
                 </span>
-              </button>
+              </Btn>
             </Tip>
             <select
               value={fmt}

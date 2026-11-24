@@ -12,7 +12,7 @@ test(
     const settings = dialog(page, "Settings");
     await expect(settings).toBeVisible();
 
-    await settings.getByRole("button", { name: "Dark" }).click();
+    await settings.getByLabel("Dark").check({ force: true });
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 
     await settings.getByRole("button", { name: "Close" }).click();

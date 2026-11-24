@@ -79,6 +79,38 @@ test.describe("phone", { tag: "@smoke" }, () => {
     await expectNoHorizontalOverflow(page, ".ChipPage");
   });
 
+  test("every header tool is reachable by Tab at 360px", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
+    await page.goto("chip");
+    const tools = page.getByRole("toolbar").locator("[aria-label]");
+    const count = await tools.count();
+    expect(count).toBeGreaterThan(5);
+    const seen = new Set<string>();
+    await tools.first().focus();
+    for (let i = 0; i < count; i++) {
+      const label = await page.evaluate(
+        () => document.activeElement?.getAttribute("aria-label") ?? "",
+      );
+      seen.add(label);
+      // Focus scrolls the toolbar, so at least a 24px target (WCAG 2.5.8) of
+      // the focused tool is inside the toolbar's visible area.
+      await expect
+        .poll(() =>
+          page.evaluate(() => {
+            const el = document.activeElement;
+            const bar = el?.closest("ul");
+            if (!el || !bar) return -1;
+            const r = el.getBoundingClientRect();
+            const b = bar.getBoundingClientRect();
+            return Math.min(r.right, b.right) - Math.max(r.left, b.left);
+          }),
+        )
+        .toBeGreaterThanOrEqual(24);
+      await page.keyboard.press("Tab");
+    }
+    expect(seen.size).toBe(count);
+  });
+
   test("settings dialog fits the viewport", async ({ page }) => {
     await page.goto("chip");
     await headerButton(page, "Settings").click();

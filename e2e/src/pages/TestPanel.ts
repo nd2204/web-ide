@@ -16,15 +16,22 @@ export class TestPanel {
   async runTest(options?: { stuckTimeoutMs?: number }): Promise<void> {
     const stuckTimeout = options?.stuckTimeoutMs ?? 5_000;
 
+    const before = await this.#progressSnapshot();
     await this.panel
       .getByRole("button", { name: this.runTooltip, exact: true })
       .click();
 
-    await expect(
-      this.panel.getByRole("button", { name: "Pause", exact: true }),
-    ).toBeVisible({
-      timeout: START_TIMEOUT_MS,
-    });
+    // A fast test finishes between polls, so "Pause" may never be seen. The
+    // run has started once Pause shows or the progress counters have moved.
+    await expect
+      .poll(
+        async () =>
+          (await this.panel
+            .getByRole("button", { name: "Pause", exact: true })
+            .count()) > 0 || (await this.#progressSnapshot()) !== before,
+        { timeout: START_TIMEOUT_MS },
+      )
+      .toBe(true);
 
     let lastSnapshot = await this.#progressSnapshot();
     let lastProgressAt = Date.now();

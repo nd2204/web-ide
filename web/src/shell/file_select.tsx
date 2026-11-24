@@ -16,6 +16,8 @@ import { AppContext } from "../App.context";
 import { Icon } from "../pico/icon";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import "./file_select.scss";
+import { Button } from "../ui/button";
+import { cn } from "../ui/cn";
 import { Tip } from "./tip";
 import { newZip } from "./zip";
 
@@ -112,17 +114,19 @@ const FileEntry = ({
 
   return (
     <div>
-      <button
-        className={`stack stack-row outline ${highlighted ? "" : "secondary"}`}
+      <Button
+        className={cn(
+          "w-full justify-start gap-2 text-left",
+          highlighted && "border-foreground bg-muted",
+        )}
         style={{
-          textAlign: "left",
           color: disabled ? "var(--disabled)" : undefined,
         }}
         onClick={onClickCB}
       >
         <Icon name={stats.isDirectory() ? "folder" : "draft"} />
         {stats.name}
-      </button>
+      </Button>
     </div>
   );
 };
@@ -298,7 +302,7 @@ export const FilePicker = () => {
             ))}
           </div>
           <DialogActions align="start">
-            <button
+            <Button
               disabled={
                 !chosen ||
                 chosen.path == ".." ||
@@ -310,23 +314,23 @@ export const FilePicker = () => {
               onClick={confirm}
             >
               {t`Select`}
-            </button>
+            </Button>
             {!localFsRoot && filePicker.allowLocal && (
-              <button onClick={loadLocal}>
+              <Button onClick={loadLocal}>
                 <Trans>Select local file</Trans>
-              </button>
+              </Button>
             )}
             {!localFsRoot && (
               <Tip
                 label={t`Download all files in this folder into a zip`}
                 placement="bottom"
               >
-                <button
+                <Button
                   onClick={downloadFolder}
                   disabled={chosen.path == "" || chosen.path.includes(".")}
                 >
                   {t`Download`}
-                </button>
+                </Button>
               </Tip>
             )}
           </DialogActions>

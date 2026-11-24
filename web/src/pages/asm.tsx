@@ -19,6 +19,7 @@ import { Panel } from "../shell/panel";
 import URLs from "../urls";
 import "./asm.scss";
 import { Tip } from "../shell/tip";
+import { Button } from "../ui/button";
 
 export const Asm = () => {
   const { filePicker } = useContext(AppContext);
@@ -163,13 +164,9 @@ export const Asm = () => {
                   disabled={state.error != undefined}
                   prefix={
                     <Tip label={t`Load file`} placement="bottom">
-                      <button
-                        className="stack-item-0"
-                        onClick={loadAsm}
-                        aria-label={t`Load file`}
-                      >
+                      <Button onClick={loadAsm} aria-label={t`Load file`}>
                         <Icon name="folder_open" />
-                      </button>
+                      </Button>
                     </Tip>
                   }
                   overrideTooltips={{ step: "Translate", run: "Translate all" }}
@@ -181,9 +178,9 @@ export const Asm = () => {
             {!localFsRoot && (
               <fieldset role="group">
                 <Tip label={t`Download`} placement="left">
-                  <button aria-label={t`Download`} onClick={downloadAsm}>
+                  <Button aria-label={t`Download`} onClick={downloadAsm}>
                     <Icon name="download" />
-                  </button>
+                  </Button>
                 </Tip>
               </fieldset>
             )}
@@ -239,18 +236,18 @@ export const Asm = () => {
               />
               <fieldset role="group">
                 <Tip label={t`Load in CPU Emulator`} placement="left">
-                  <button
+                  <Button
                     aria-label={t`Load in CPU Emulator`}
                     onClick={loadToCpu}
                   >
                     <Icon name="developer_board" />
-                  </button>
+                  </Button>
                 </Tip>
                 {!localFsRoot && (
                   <Tip label={t`Download`} placement="left">
-                    <button aria-label={t`Download`} onClick={downloadHack}>
+                    <Button aria-label={t`Download`} onClick={downloadHack}>
                       <Icon name="download" />
-                    </button>
+                    </Button>
                   </Tip>
                 )}
               </fieldset>
@@ -309,15 +306,15 @@ export const Asm = () => {
               {state.compareName && `: ${state.compareName}`}
             </div>
             <fieldset role="group">
-              <button aria-label={t`Load file`} onClick={loadCompare}>
+              <Button aria-label={t`Load file`} onClick={loadCompare}>
                 <Icon name="folder_open" />
-              </button>
+              </Button>
             </fieldset>
             <div className="stack-item-1" />
             <fieldset role="group">
-              <button onClick={compare}>
+              <Button onClick={compare}>
                 <Trans>Compare</Trans>
-              </button>
+              </Button>
             </fieldset>
           </>
         }

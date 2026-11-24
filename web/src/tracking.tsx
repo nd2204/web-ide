@@ -3,6 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { useCallback, useState } from "react";
 import ReactGA from "react-ga4";
 import "./tracking.scss";
+import { Button } from "./ui/button";
 
 const PATH = "/tracking/canTrack";
 const YES = "yes";
@@ -134,30 +135,36 @@ export function TrackingBanner() {
             <TrackingDisclosure />
           </div>
           <div>
-            <a
-              href="#reject"
-              role="button"
-              className="reject"
-              onClick={doReject}
-            >
-              <Trans>Reject</Trans>
-            </a>
-            <a
-              href="#accept"
-              role="button"
-              className="accept"
-              onClick={doAccept}
-            >
-              <Trans>Accept</Trans>
-            </a>
-            <a
-              href="#close"
-              role="button"
-              className="close secondary"
-              onClick={close}
-            >
-              𝖷
-            </a>
+            <Button asChild>
+              <a
+                href="#reject"
+                role="button"
+                className="reject"
+                onClick={doReject}
+              >
+                <Trans>Reject</Trans>
+              </a>
+            </Button>
+            <Button asChild>
+              <a
+                href="#accept"
+                role="button"
+                className="accept"
+                onClick={doAccept}
+              >
+                <Trans>Accept</Trans>
+              </a>
+            </Button>
+            <Button asChild>
+              <a
+                href="#close"
+                role="button"
+                className="close secondary"
+                onClick={close}
+              >
+                𝖷
+              </a>
+            </Button>
           </div>
         </div>
       )}
