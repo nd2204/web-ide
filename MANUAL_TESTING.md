@@ -46,7 +46,8 @@ Run this on every primitive a migration step touches (Dialog, Tooltip, Button, I
 10. Screen reader (VoiceOver on macOS or NVDA on Windows): each control announces a role, a name and its state. Dialogs announce their title when they open. Icon-only buttons have a name.
 11. Touch (a phone or devtools device mode): every target is at least 44px, and nothing needs hover. At 360px wide, Tab through the header: each tool scrolls fully into view when focused.
 12. Buttons: Enter and Space press every button, a disabled button is skipped by Tab and announced as dimmed, and the segmented choices (Settings theme; Bitmap margin and base address) move with the arrow keys and announce the selected one.
-13. Record the browser, the screen reader and any defects in the pull request.
+13. Tables: translate a program in the Assembler. The Symbol Table is announced as a table named "Symbol Table" with "Symbol" and "Address" column headers, and the screen reader's table navigation (VoiceOver Control+Option+arrows, NVDA Control+Alt+arrows) reads each symbol with its address. The headings stay in view while the list scrolls, and a long symbol name wraps instead of widening the panel. In the Hardware Simulator, each pin row reads the pin name, then its bit keys.
+14. Record the browser, the screen reader and any defects in the pull request.
 
 ## Live site update check
 

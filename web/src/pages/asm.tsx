@@ -1,9 +1,8 @@
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { LOADING } from "@nand2tetris/components/messages.js";
 import { Runbar } from "@nand2tetris/components/runbar";
 import { BaseContext } from "@nand2tetris/components/stores/base.context";
-import { Table } from "@nand2tetris/components/table";
+import { SymbolTable } from "@nand2tetris/components/symbol_table";
 import { ROM } from "@nand2tetris/simulator/cpu/memory";
 import { ASM } from "@nand2tetris/simulator/languages/asm.js";
 import { loadHack } from "@nand2tetris/simulator/loader.js";
@@ -23,6 +22,7 @@ import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
 
 export const Asm = () => {
+  const { t } = useLingui();
   const { filePicker } = useContext(AppContext);
   const { stores, setTool } = useContext(PageContext);
   const { state, actions, dispatch } = stores.asm;
@@ -295,7 +295,11 @@ export const Asm = () => {
         }
       >
         {state.translating && showSymbolTable && (
-          <Table values={state.symbols} />
+          <SymbolTable
+            values={state.symbols}
+            headings={{ symbol: t`Symbol`, address: t`Address` }}
+            aria-labelledby="asm-symbol-table-title"
+          />
         )}
       </Panel>
       <Panel

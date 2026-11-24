@@ -10,6 +10,10 @@ import {
   type RangeProps,
   RangeProvider,
 } from "@nand2tetris/components/range.js";
+import {
+  type TableParts,
+  TablePartsProvider,
+} from "@nand2tetris/components/table.js";
 import type { ReactNode } from "react";
 import { Input } from "../ui/input";
 import {
@@ -20,6 +24,14 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Slider } from "../ui/slider";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../ui/table";
 
 function ShadcnField(props: FieldProps) {
   return <Input {...props} />;
@@ -65,12 +77,28 @@ function ShadcnRange({
   );
 }
 
-/** Makes every `Field`, `Choice` and `Range` in `components` a shadcn part. */
+const SHADCN_TABLE: TableParts = {
+  Table,
+  Header: TableHeader,
+  Body: TableBody,
+  Row: TableRow,
+  Head: TableHead,
+  Cell: TableCell,
+};
+
+/**
+ * Makes every `Field`, `Choice` and `Range` in `components` a shadcn part, and
+ * hands the shadcn Table parts to the tables there.
+ */
 export default function FormRoot({ children }: { children: ReactNode }) {
   return (
     <FieldProvider value={ShadcnField}>
       <ChoiceProvider value={ShadcnChoice}>
-        <RangeProvider value={ShadcnRange}>{children}</RangeProvider>
+        <RangeProvider value={ShadcnRange}>
+          <TablePartsProvider value={SHADCN_TABLE}>
+            {children}
+          </TablePartsProvider>
+        </RangeProvider>
       </ChoiceProvider>
     </FieldProvider>
   );

@@ -1,0 +1,25 @@
+/* Memory grids (RAM, ROM, Stack) and the screen. A cell is an address and a
+   value; the current address carries the yellow step tint. */
+
+.memory-cell > code {
+  border-radius: 0;
+}
+
+/* The label and address keep their padding spaces; the value may wrap. */
+.memory-cell > code:not(.memory-cell-value) {
+  white-space: pre;
+}
+
+.memory-cell[data-current] > code {
+  background: color-mix(in srgb, var(--lh-yellow) 16%, transparent);
+}
+
+.memory-cell-value,
+.memory-cell-value > span {
+  color: var(--lh-text);
+}
+
+/* The well around the screen canvas. */
+.screen-well {
+  background-color: var(--lh-raised);
+}

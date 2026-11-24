@@ -3,6 +3,7 @@ import { Memory } from "@nand2tetris/simulator/cpu/memory.js";
 import { useCallback, useRef, useState } from "react";
 import { Btn } from "../button.js";
 import { useClockFrame, useClockReset } from "../clockface.js";
+import "../public/memory.css";
 
 const WHITE = "white";
 const BLACK = "black";
@@ -114,7 +115,7 @@ export const Screen = ({
         )}
       </header>
       {screenScale > 0 && (
-        <main style={{ backgroundColor: "var(--code-background-color)" }}>
+        <main className="screen-well">
           <figure
             style={{
               width: `${512 * screenScale}px`,

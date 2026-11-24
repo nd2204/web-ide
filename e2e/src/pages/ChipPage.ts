@@ -32,9 +32,9 @@ export class ChipPage {
   }
 
   private pinRow(pin: string) {
-    return this._page
-      .locator("tr")
-      .filter({ has: this._page.locator(`td:text-is("${pin}")`) });
+    return this._page.getByRole("row").filter({
+      has: this._page.getByRole("cell", { name: pin, exact: true }),
+    });
   }
 
   private pinButton(pin: string) {

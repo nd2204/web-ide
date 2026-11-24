@@ -3,6 +3,7 @@ import { range } from "@davidsouther/jiffies/range.ts";
 import { Err, isErr, Ok } from "@davidsouther/jiffies/result.ts";
 import { CMP } from "@nand2tetris/simulator/languages/cmp.js";
 import { ReactElement } from "react";
+import { useTableParts } from "./table.js";
 
 export const DiffTable = ({
   className = "",
@@ -15,6 +16,7 @@ export const DiffTable = ({
   className?: string;
   zeroState?: ReactElement;
 }) => {
+  const { Table, Body, Row, Cell } = useTableParts();
   const output = CMP.parse(out);
   const compare = CMP.parse(cmp);
 
@@ -72,49 +74,30 @@ export const DiffTable = ({
         </p>
       )}
       {table.length > 0 ? (
-        <table
-          style={{
-            fontFamily: "var(--font-family-monospace)",
-            marginBottom: "none",
-          }}
-        >
-          <tbody>
+        <Table>
+          <Body>
             {table.map((row, i) => (
-              <tr key={i}>
-                {row.map(({ cmp, out, pass }, i) => (
-                  <DiffCell cmp={cmp} out={out} pass={pass} key={i} />
+              <Row key={i}>
+                {row.map(({ cmp, out, pass }, j) => (
+                  <Cell key={j} tone={pass ? "default" : "fail"}>
+                    {pass ? (
+                      cmp
+                    ) : (
+                      <>
+                        <ins>{cmp}</ins>
+                        <br />
+                        <del>{out}</del>
+                      </>
+                    )}
+                  </Cell>
                 ))}
-              </tr>
+              </Row>
             ))}
-          </tbody>
-        </table>
+          </Body>
+        </Table>
       ) : (
         (zeroState ?? <p>Execute test script to compare output.</p>)
       )}
     </div>
-  );
-};
-
-const DiffCell = ({
-  cmp,
-  out,
-  pass,
-}: {
-  cmp: string;
-  out: string;
-  pass: boolean;
-}) => {
-  return pass ? (
-    <>
-      <td>{cmp}</td>
-    </>
-  ) : (
-    <>
-      <td>
-        <ins>{cmp}</ins>
-        <br />
-        <del>{out}</del>
-      </td>
-    </>
   );
 };
