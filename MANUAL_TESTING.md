@@ -39,7 +39,7 @@ Run this on every primitive a migration step touches (Dialog, Tooltip, Button, I
 3. Select and menus: Enter, Space and arrow keys open and move through the list, Home and End jump, Escape closes, typing a letter jumps to a match.
 4. Tabs and toggle groups: arrow keys move between items, Tab leaves the group.
 5. Switches and radio groups: Space toggles, and the label is announced with the state.
-6. Tooltips: the text is also reachable without hover, through the accessible name or a visible label.
+6. Tooltips: Tab onto an icon button and the tooltip opens on focus; Escape closes it. The text is also reachable without hover, through the accessible name or a visible label. On touch no tooltip appears and nothing depends on one.
 7. Screen reader (VoiceOver on macOS or NVDA on Windows): each control announces a role, a name and its state. Dialogs announce their title when they open. Icon-only buttons have a name.
 8. Touch (a phone or devtools device mode): every target is at least 44px, and nothing needs hover.
 9. Record the browser, the screen reader and any defects in the pull request.

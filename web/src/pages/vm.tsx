@@ -21,6 +21,7 @@ import { isPath } from "../shell/file_select";
 import { Panel } from "../shell/panel";
 import { TestPanel } from "../shell/test_panel";
 import "./vm.scss";
+import { Tip } from "../shell/tip";
 
 const ERROR_MESSAGES: Record<ERRNO, string> = {
   [ERRNO.SYS_WAIT_DURATION_NOT_POSITIVE]: t`Duration must be positive (Sys.wait)`,
@@ -232,15 +233,15 @@ const VM = () => {
               {runnersAssigned && vmRunner.current && (
                 <Runbar
                   prefix={
-                    <button
-                      className="stack-item-0"
-                      onClick={load}
-                      aria-label={t`Load files`}
-                      data-tooltip={t`Load files`}
-                      data-placement="bottom"
-                    >
-                      <Icon name="folder_open" />
-                    </button>
+                    <Tip label={t`Load files`} placement="bottom">
+                      <button
+                        className="stack-item-0"
+                        onClick={load}
+                        aria-label={t`Load files`}
+                      >
+                        <Icon name="folder_open" />
+                      </button>
+                    </Tip>
                   }
                   runner={vmRunner.current}
                   disabled={!state.controls.valid}

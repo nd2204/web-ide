@@ -84,7 +84,7 @@ export class ChipPage {
   }
 
   async resetTest(): Promise<void> {
-    await this._page.click('[data-tooltip="Reset"]');
+    await this._page.getByLabel("Reset", { exact: true }).click();
     await expect(this.clockButton).toHaveText(/Clock:\s*0/);
   }
 

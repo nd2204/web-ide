@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { dialog } from "../../src/helpers";
+import { dialog, headerButton } from "../../src/helpers";
 
 // All dialogs are modal Radix dialogs. Settings can open the reset dialog on
 // top of itself (siblings), and its "Incomplete Setup" warning is a second view
@@ -15,7 +15,7 @@ test(
   { tag: "@smoke" },
   async ({ page }) => {
     await page.goto("chip");
-    const opener = page.locator('li[data-tooltip="Settings"]');
+    const opener = headerButton(page, "Settings");
     await opener.click();
     const settings = dialog(page, "Settings");
     await expect(settings).toBeVisible();

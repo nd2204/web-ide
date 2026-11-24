@@ -16,6 +16,7 @@ import { AppContext } from "../App.context";
 import { Icon } from "../pico/icon";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import "./file_select.scss";
+import { Tip } from "./tip";
 import { newZip } from "./zip";
 
 export const Selected = "file selected";
@@ -316,13 +317,17 @@ export const FilePicker = () => {
               </button>
             )}
             {!localFsRoot && (
-              <button
-                onClick={downloadFolder}
-                data-tooltip={t`Download all files in this folder into a zip`}
-                disabled={chosen.path == "" || chosen.path.includes(".")}
+              <Tip
+                label={t`Download all files in this folder into a zip`}
+                placement="bottom"
               >
-                {t`Download`}
-              </button>
+                <button
+                  onClick={downloadFolder}
+                  disabled={chosen.path == "" || chosen.path.includes(".")}
+                >
+                  {t`Download`}
+                </button>
+              </Tip>
             )}
           </DialogActions>
         </div>
