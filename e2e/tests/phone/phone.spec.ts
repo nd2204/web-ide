@@ -83,6 +83,9 @@ test.describe("phone", { tag: "@smoke" }, () => {
     await page.setViewportSize({ width: 360, height: 740 });
     await page.goto("chip");
     const tools = page.getByRole("toolbar").locator("[aria-label]");
+    // count() does not wait, and the header renders only after the app has
+    // initialised its file system.
+    await expect(tools.first()).toBeVisible();
     const count = await tools.count();
     expect(count).toBeGreaterThan(5);
     const seen = new Set<string>();

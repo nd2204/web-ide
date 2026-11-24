@@ -38,6 +38,13 @@ const ICON_BOX = `.material-symbols-outlined {
   text-indent: -100em; background: currentColor; opacity: 0.4;
 }`;
 
+// Monaco reveals its scrollbar sliders for about 500ms after any resize of the
+// editor, such as the icon boxes above re-flowing a panel header. Baselines
+// never show them, so hide them instead of racing the fade.
+const MONACO_SLIDERS = `.monaco-scrollable-element > .scrollbar > .slider {
+  visibility: hidden !important;
+}`;
+
 async function settle(page: Page, ready: readonly string[]) {
   for (const selector of ready) {
     await expect(page.locator(selector).first()).toBeVisible({
@@ -48,7 +55,7 @@ async function settle(page: Page, ready: readonly string[]) {
     timeout: 20_000,
   });
   await page.waitForLoadState("networkidle");
-  await page.addStyleTag({ content: ICON_BOX });
+  await page.addStyleTag({ content: ICON_BOX + MONACO_SLIDERS });
   await page.evaluate(() => document.fonts.ready);
   await expect(page.locator("#root")).toBeVisible();
 }
