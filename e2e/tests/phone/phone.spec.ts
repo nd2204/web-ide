@@ -83,6 +83,9 @@ test.describe("phone", { tag: "@smoke" }, () => {
     await page.setViewportSize({ width: 360, height: 740 });
     await page.goto("chip");
     const tools = page.getByRole("toolbar").locator("[aria-label]");
+    // count() does not wait, and the header renders only after the app has
+    // initialised its file system.
+    await expect(tools.first()).toBeVisible();
     const count = await tools.count();
     expect(count).toBeGreaterThan(5);
     const seen = new Set<string>();
@@ -128,11 +131,7 @@ test.describe("phone", { tag: "@smoke" }, () => {
     );
   });
 
-  // Known defect today: the Settings content is wider than the dialog and is
-  // clipped on a phone. `test.fail` keeps this honest: it starts failing (and
-  // must be turned into a plain test) when the form step fixes it.
   test("settings dialog content does not overflow", async ({ page }) => {
-    test.fail(true, "Settings content overflows on a phone until the form step");
     await page.goto("chip");
     await headerButton(page, "Settings").click();
     await expect(dialog(page, "Settings")).toBeVisible();

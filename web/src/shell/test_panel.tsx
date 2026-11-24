@@ -36,6 +36,7 @@ import {
 import { Editor } from "./editor";
 import { isPath } from "./file_select";
 import { Panel } from "./panel";
+import { SwitchRow } from "./switch_row";
 import { Tab, TabList } from "./tabs";
 import { Tip } from "./tip";
 
@@ -185,18 +186,9 @@ export const TestPanel = ({
             session, the original script will be restored.
           </Trans>
         </DialogDescription>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <input
-            type="checkbox"
-            checked={skipWarning}
-            onChange={(e) => {
-              setSkipWarning(e.target.checked);
-            }}
-          />
-          <p>
-            <Trans>Do not show this again</Trans>
-          </p>
-        </div>
+        <SwitchRow checked={skipWarning} onCheckedChange={setSkipWarning}>
+          <Trans>Do not show this again</Trans>
+        </SwitchRow>
         <DialogActions>
           <Button
             onClick={() => {

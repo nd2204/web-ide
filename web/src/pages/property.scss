@@ -1,0 +1,33 @@
+// Property sheets: a two-column `dl` of names and values (CPU registers and
+// the Converter).
+dl {
+  display: grid;
+  grid-template-columns: minmax(max-content, 1fr) minmax(auto, 2fr);
+
+  > header {
+    grid-column: 1 / span 2;
+    font-weight: bold;
+    background-color: var(--lh-muted);
+    color: var(--lh-on-yellow);
+    padding: 0.15rem 0.25rem;
+  }
+
+  dt {
+    grid-column-start: 1;
+  }
+
+  dd {
+    grid-column-start: 2;
+    margin: 0;
+  }
+
+  dd,
+  dt {
+    padding: 0.15rem 0.25rem;
+    border: 1px solid var(--lh-seam);
+
+    &:nth-of-type(even) {
+      background-color: color-mix(in srgb, var(--lh-text) 3%, transparent);
+    }
+  }
+}

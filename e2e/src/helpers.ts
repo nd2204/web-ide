@@ -14,6 +14,21 @@ export async function pick(
   await page.getByRole("option", { name: label, exact: true }).click();
 }
 
+/**
+ * Picks one option of a radio group or a segmented ToggleGroup (both expose
+ * `radiogroup` and `radio`), by the group's and the option's names.
+ */
+export async function choose(
+  page: Page,
+  group: string | RegExp,
+  option: string,
+): Promise<void> {
+  await page
+    .getByRole("radiogroup", { name: group })
+    .getByRole("radio", { name: option, exact: true })
+    .click();
+}
+
 /** Switches a `role="switch"` control to the wanted state. */
 export async function toggle(
   page: Page,

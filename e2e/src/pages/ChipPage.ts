@@ -47,7 +47,7 @@ export class ChipPage {
     if ((await ctrl.textContent()) === "dec") {
       await ctrl.click();
     }
-    return row.locator("input");
+    return row.getByRole("textbox", { name: pin, exact: true });
   }
 
   async setInput(pin: string, value: 0 | 1): Promise<void> {

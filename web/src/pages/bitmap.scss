@@ -19,33 +19,6 @@
         grid-area: controls;
     }
 
-    // Canvas size header controls
-    .canvas-size-controls {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        gap: var(--spacing);
-        align-items: center;
-        padding: var(--spacing);
-
-        input[type="text"] {
-            width: 3rem;
-            margin: 0;
-            padding: var(--spacing);
-        }
-
-        label {
-            margin: 0;
-            font-weight: normal;
-            font-size: 0.85rem;
-        }
-
-        button {
-            padding: var(--spacing) calc(var(--spacing) * 2);
-            font-size: 0.85rem;
-        }
-    }
-
     // Tab button group for Jack/Hack
     .tab-container {
         display: flex;
@@ -126,8 +99,6 @@
         height: 100%;
         min-height: 400px;
         resize: none;
-        font-family: var(--font-family-monospace);
-        font-size: var(--font-size-monospace);
     }
 
     // Control rows
@@ -149,63 +120,6 @@
             gap: var(--spacing);
             align-items: center;
         }
-
-        // Checkbox/radio groups
-        .checkbox-group,
-        .radio-group {
-            display: flex;
-            gap: calc(var(--spacing) * 3);
-            align-items: center;
-
-            label {
-                display: flex;
-                align-items: center;
-                gap: var(--spacing);
-                margin: 0;
-                cursor: pointer;
-                font-weight: normal;
-
-                input {
-                    margin: 0;
-                }
-            }
-        }
-
-        // Spacer
-        .spacer {
-            width: calc(var(--spacing) * 4);
-        }
-
-        // Input with label
-        .input-group {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing);
-
-            label {
-                margin: 0;
-                font-weight: normal;
-                white-space: nowrap;
-            }
-
-            input[type="text"] {
-                width: 3rem;
-                margin: 0;
-            }
-        }
-    }
-
-    // Buttons
-    button {
-        margin: 0;
-        padding: var(--spacing) calc(var(--spacing) * 2);
-        white-space: nowrap;
-        font-size: 0.85rem;
-    }
-
-    // Hidden file input
-    .hidden-file-input {
-        display: none;
     }
 }
 

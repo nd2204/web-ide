@@ -20,6 +20,7 @@ import URLs from "../urls";
 import "./compiler.scss";
 import { Tip } from "../shell/tip";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export const Compiler = () => {
   const { setStatus, canUpgradeFs } = useContext(BaseContext);
@@ -309,12 +310,12 @@ const NameDialog = ({
         closeLabel={t`Close`}
         aria-describedby={undefined}
       >
-        <div className="stack stack-row">
-          <input
+        <div className="stack stack-row items-center gap-2">
+          <Input
             aria-label={t`File name`}
             value={value}
             onChange={(e) => setValue(e.target.value)}
-          ></input>
+          />
           <span>.jack</span>
         </div>
         <DialogActions>

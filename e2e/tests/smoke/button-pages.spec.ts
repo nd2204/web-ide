@@ -9,8 +9,8 @@ test(
   { tag: "@smoke" },
   async ({ page }) => {
     await page.goto("bitmap");
-    await page.locator("#inputWidth").fill("8");
-    await page.locator("#inputHeight").fill("4");
+    await page.getByLabel("Width", { exact: true }).fill("8");
+    await page.getByLabel("Height", { exact: true }).fill("4");
     await page.getByRole("button", { name: "Resize" }).click();
     // The column-number header row plus the four pixel rows.
     await expect(page.locator("table.canvas-grid tbody tr")).toHaveCount(5);

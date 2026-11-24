@@ -1,4 +1,5 @@
 import { expect, type Page } from "@playwright/test";
+import { pick } from "../helpers";
 import { FilePicker } from "./FilePicker";
 import { RamPanel } from "./RamPanel";
 
@@ -16,9 +17,9 @@ export class CpuPage {
   }
 
   async selectTst(name: string): Promise<void> {
-    const picker = this._page.locator('select[data-testid="test-picker"]');
-    await picker.selectOption(name);
-    await expect(picker).toHaveValue(name);
+    const picker = this._page.getByRole("combobox", { name: "Test" });
+    await pick(this._page, picker, name);
+    await expect(picker).toHaveText(name);
     await expect(
       this._page
         .locator("article._test_panel")

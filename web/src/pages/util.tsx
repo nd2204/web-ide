@@ -11,7 +11,8 @@ import {
 } from "@nand2tetris/simulator/util/twos.js";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 
-import "./util.scss";
+import { Input } from "../ui/input";
+import "./property.scss";
 
 function validBin(value: string) {
   return /^[01]+$/.test(value) && value.length <= 16;
@@ -68,9 +69,9 @@ export const FormattedInput = (props: {
   };
 
   return (
-    <input
-      id="util_setBin"
-      type="text"
+    <Input
+      id={props.id}
+      className="[font-family:var(--font-family-monospace)]"
       value={
         selected
           ? rawValue

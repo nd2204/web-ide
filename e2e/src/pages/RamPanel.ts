@@ -1,4 +1,5 @@
 import { expect, type Locator } from "@playwright/test";
+import { pick } from "../helpers";
 
 /**
  * Page object for the RAM memory panel as it appears on both the CPU and VM
@@ -13,8 +14,13 @@ export class RamPanel {
   constructor(private readonly root: Locator) {}
 
   private async row(address: number): Promise<Locator> {
-    await this.root.locator("select").selectOption("dec");
-    const addrInput = this.root.getByPlaceholder("Addr");
+    // Opening the list on every poll is slow, so only pick when needed.
+    const format = this.root.getByRole("combobox", { name: "Number format" });
+    if ((await format.textContent())?.trim() !== "dec") {
+      await pick(this.root.page(), format, "dec");
+      await expect(format).toHaveText("dec");
+    }
+    const addrInput = this.root.getByRole("textbox", { name: "Address" });
     await addrInput.fill(String(address));
     await addrInput.press("Enter");
     const indexCell = this.root

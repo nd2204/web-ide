@@ -38,12 +38,15 @@ Run this on every primitive a migration step touches (Dialog, Tooltip, Button, I
 2. Dialogs: Tab and Shift+Tab stay inside while open, Escape closes (or cancels), and focus returns to the control that opened it. Chained dialogs restore focus step by step. Focus never lands on `<body>`: not when a dialog opens, not when its content swaps (Reset, Incomplete Setup) and not after it closes. Clicking outside a dialog does not dismiss it. Behind an open dialog, the page does not scroll or take focus.
 3. Select and menus: Enter, Space and arrow keys open and move through the list, Home and End jump, Escape closes, typing a letter jumps to a match.
 4. Tabs and toggle groups: arrow keys move between items, Tab leaves the group.
-5. Switches and radio groups: Space toggles, and the label is announced with the state.
-6. Tooltips: Tab onto an icon button and the tooltip opens on focus; Escape closes it. The text is also reachable without hover, through the accessible name or a visible label. On touch no tooltip appears and nothing depends on one.
-7. Screen reader (VoiceOver on macOS or NVDA on Windows): each control announces a role, a name and its state. Dialogs announce their title when they open. Icon-only buttons have a name.
-8. Touch (a phone or devtools device mode): every target is at least 44px, and nothing needs hover. At 360px wide, Tab through the header: each tool scrolls fully into view when focused.
-9. Buttons: Enter and Space press every button, a disabled button is skipped by Tab and announced as dimmed, and the theme choices in Settings (Light, Dark, System) move with the arrow keys and announce the selected one.
-10. Record the browser, the screen reader and any defects in the pull request.
+5. Switches and radio groups: Space toggles, and the label is announced with the state. Clicking a switch's label toggles it. In Settings, the storage choices move with the arrow keys, each is announced with its label and its hint (Desktop storage) as the description, and the folder and download controls appear only when Desktop is chosen.
+6. Inputs: every text field has a visible label or an accessible name (Address, File name, Width, Height, Pixel size, the Converter fields, a bus pin's decimal field), the focus ring shows on focus, and Enter still commits where it did before (it jumps to the address in a memory panel and commits a memory cell edit). The Bitmap Import key opens the file chooser, and the imported file name is announced.
+7. Slider (run bar speed): Tab reaches the thumb and it is announced as "Execution speed" with its value; arrow keys, Home and End change the speed one step at a time; the slider is skipped while a program runs.
+8. Selects in a memory panel (number format) and the CPU test picker behave as item 3 and announce the chosen value.
+9. Tooltips: Tab onto an icon button and the tooltip opens on focus; Escape closes it. The text is also reachable without hover, through the accessible name or a visible label. On touch no tooltip appears and nothing depends on one.
+10. Screen reader (VoiceOver on macOS or NVDA on Windows): each control announces a role, a name and its state. Dialogs announce their title when they open. Icon-only buttons have a name.
+11. Touch (a phone or devtools device mode): every target is at least 44px, and nothing needs hover. At 360px wide, Tab through the header: each tool scrolls fully into view when focused.
+12. Buttons: Enter and Space press every button, a disabled button is skipped by Tab and announced as dimmed, and the segmented choices (Settings theme; Bitmap margin and base address) move with the arrow keys and announce the selected one.
+13. Record the browser, the screen reader and any defects in the pull request.
 
 ## Live site update check
 

@@ -14,7 +14,15 @@ import { PageContext } from "../Page.context";
 import { isPath } from "../shell/file_select";
 import { Accordian, Panel } from "../shell/panel";
 import { TestPanel } from "../shell/test_panel";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import "./cpu.scss";
+import "./property.scss";
 
 export const CPU = () => {
   const { filePicker } = useContext(AppContext);
@@ -234,20 +242,27 @@ export const CPU = () => {
           }}
           prefix={
             state.tests.length > 1 ? (
-              <select
+              <Select
                 value={state.test.name}
-                onChange={({ target: { value } }) => {
+                onValueChange={(value) => {
                   actions.loadTest(value);
                 }}
-                aria-label={t`Test`}
-                data-testid="test-picker"
               >
-                {state.tests.map((test) => (
-                  <option key={test} value={test}>
-                    {test}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger
+                  className="w-auto"
+                  aria-label={t`Test`}
+                  data-testid="test-picker"
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {state.tests.map((test) => (
+                    <SelectItem key={test} value={test}>
+                      {test}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             ) : (
               <></>
             )

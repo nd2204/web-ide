@@ -1,4 +1,4 @@
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useStateInitializer } from "@nand2tetris/components/react";
 import {
   CompilationError,
@@ -11,6 +11,7 @@ import { AppContext } from "../App.context";
 import "./editor.scss";
 import { Action } from "@nand2tetris/simulator/types";
 import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
 
 const Monaco = lazy(() => import("./Monaco"));
 
@@ -31,7 +32,7 @@ export const ErrorPanel = ({ error }: { error?: CompilationError }) => {
   );
 };
 
-const Textarea = ({
+const PlainEditor = ({
   value,
   onChange,
   language,
@@ -43,9 +44,12 @@ const Textarea = ({
   disabled?: boolean;
 }) => {
   const [text, setText] = useStateInitializer(value);
+  const { t } = useLingui();
+  const name = language.toUpperCase();
   return (
-    <textarea
+    <Textarea
       data-testid={`editor-${language}`}
+      aria-label={t`${name} source`}
       disabled={disabled}
       value={text}
       onChange={(e) => {
@@ -126,7 +130,7 @@ export const Editor = ({
         </Suspense>
       ) : (
         <>
-          <Textarea
+          <PlainEditor
             value={value}
             onChange={onChange}
             language={language}

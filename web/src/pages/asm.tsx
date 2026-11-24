@@ -20,6 +20,7 @@ import URLs from "../urls";
 import "./asm.scss";
 import { Tip } from "../shell/tip";
 import { Button } from "../ui/button";
+import { Switch } from "../ui/switch";
 
 export const Asm = () => {
   const { filePicker } = useContext(AppContext);
@@ -281,14 +282,14 @@ export const Asm = () => {
         isEditorPanel={true}
         header={
           <>
-            <div className="stack-item-1">
+            <div className="stack-item-1" id="asm-symbol-table-title">
               <Trans>Symbol Table</Trans>
             </div>
-            <input
-              type="checkbox"
-              role="switch"
+            <Switch
+              className="self-center"
+              aria-labelledby="asm-symbol-table-title"
               checked={showSymbolTable}
-              onChange={() => setShowSymbolTable(!showSymbolTable)}
+              onCheckedChange={setShowSymbolTable}
             />
           </>
         }
