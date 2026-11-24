@@ -258,7 +258,7 @@ export const FilePicker = () => {
       }}
     >
       <DialogContent
-        className="file-select w-[min(40rem,calc(100vw-1rem))]"
+        className="file-select"
         heading={<Trans>Choose file</Trans>}
         closeLabel={t`Close`}
         aria-describedby={undefined}

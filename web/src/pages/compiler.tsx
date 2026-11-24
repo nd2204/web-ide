@@ -300,7 +300,7 @@ const NameDialog = ({
       }}
     >
       <DialogContent
-        heading={<Trans>{title}</Trans>}
+        heading={title}
         closeLabel={t`Close`}
         aria-describedby={undefined}
       >
