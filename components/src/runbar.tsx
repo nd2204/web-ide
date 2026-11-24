@@ -1,5 +1,6 @@
 import { Timer } from "@nand2tetris/simulator/timer.js";
 import { ChangeEvent, ReactNode, useEffect, useRef } from "react";
+import { Btn } from "./button.js";
 import { useStateInitializer } from "./react.js";
 import { useTimer } from "./timer.js";
 import { Tip } from "./tooltip.js";
@@ -71,8 +72,7 @@ export const Runbar = (props: {
       <fieldset role="group">
         {props.prefix}
         <Tip label={props.overrideTooltips?.step ?? `Step`}>
-          <button
-            className="stack-item-0"
+          <Btn
             disabled={props.disabled}
             onClick={() => runner.actions.frame()}
             aria-label={props.overrideTooltips?.step ?? `Step`}
@@ -80,7 +80,7 @@ export const Runbar = (props: {
             <span className="material-symbols-outlined" aria-hidden="true">
               skip_next
             </span>
-          </button>
+          </Btn>
         </Tip>
         <Tip
           label={
@@ -89,8 +89,7 @@ export const Runbar = (props: {
               : (props.overrideTooltips?.run ?? `Run`)
           }
         >
-          <button
-            className="stack-item-0"
+          <Btn
             ref={toggleRef}
             disabled={props.disabled}
             onClick={() =>
@@ -107,11 +106,10 @@ export const Runbar = (props: {
             <span className="material-symbols-outlined" aria-hidden="true">
               {runner.state.running ? "pause" : "fast_forward"}
             </span>
-          </button>
+          </Btn>
         </Tip>
         <Tip label={props.overrideTooltips?.reset ?? `Reset`}>
-          <button
-            className="stack-item-0"
+          <Btn
             onClick={() => {
               if (runner.state.running) {
                 runner.actions.stop();
@@ -123,7 +121,7 @@ export const Runbar = (props: {
             <span className="material-symbols-outlined" aria-hidden="true">
               skip_previous
             </span>
-          </button>
+          </Btn>
         </Tip>
       </fieldset>
       <div

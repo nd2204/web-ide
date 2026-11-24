@@ -5,10 +5,10 @@ import { BaseContext } from "@nand2tetris/components/stores/base.context.js";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../App.context";
 import { PageContext } from "../Page.context";
-import "../pico/button-group.scss";
 import "../pico/property.scss";
 import "./settings.scss";
 import { TrackingDisclosure } from "../tracking";
+import { Button } from "../ui/button";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import { getVersion, setVersion } from "../versions";
 import { Tip } from "./tip";
@@ -118,7 +118,7 @@ export const Settings = () => {
           </Trans>
         </div>
         <DialogActions>
-          <button
+          <Button
             onClick={async () => {
               await requestPermission();
               loadFs();
@@ -126,14 +126,14 @@ export const Settings = () => {
             }}
           >
             <Trans>Ok</Trans>
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               permissionPrompt.close();
             }}
           >
             <Trans>Cancel</Trans>
-          </button>
+          </Button>
         </DialogActions>
       </DialogContent>
     </Dialog>
@@ -159,9 +159,9 @@ export const Settings = () => {
       >
         {resetStep === "done" ? (
           <DialogActions>
-            <button onClick={() => setResetStep(null)}>
+            <Button onClick={() => setResetStep(null)}>
               <Trans>Ok</Trans>
-            </button>
+            </Button>
           </DialogActions>
         ) : (
           <>
@@ -174,17 +174,17 @@ export const Settings = () => {
               </Trans>
             </div>
             <DialogActions>
-              <button
+              <Button
                 onClick={async () => {
                   await resetFiles();
                   setResetStep("done");
                 }}
               >
                 <Trans>Reset</Trans>
-              </button>
-              <button onClick={() => setResetStep(null)}>
+              </Button>
+              <Button onClick={() => setResetStep(null)}>
                 <Trans>Cancel</Trans>
-              </button>
+              </Button>
             </DialogActions>
           </>
         )}
@@ -234,10 +234,10 @@ export const Settings = () => {
                 </Trans>
               </div>
               <DialogActions>
-                <button onClick={closeWarning.close}>
+                <Button onClick={closeWarning.close}>
                   <Trans>Select Folder</Trans>
-                </button>
-                <button
+                </Button>
+                <Button
                   className="secondary"
                   onClick={() => {
                     setStorageMode("browser");
@@ -246,7 +246,7 @@ export const Settings = () => {
                   }}
                 >
                   <Trans>Use Browser Storage</Trans>
-                </button>
+                </Button>
               </DialogActions>
             </>
           ) : (
@@ -368,8 +368,9 @@ export const Settings = () => {
                               label={t`Select the folder where the projects are stored on your PC`}
                               placement="bottom"
                             >
-                              <button
-                                disabled={upgrading}
+                              <Button
+                                className="w-full"
+                                disabled={upgrading || storageMode !== "pc"}
                                 onClick={async () => {
                                   // Check if we are already in PC mode but no folder selected, or changing folder
                                   // If we are in browser mode (shouldn't happen due to pointerEvents), switch to PC first?
@@ -390,7 +391,7 @@ export const Settings = () => {
                                 ) : (
                                   <Trans>Select Projects Folder</Trans>
                                 )}
-                              </button>
+                              </Button>
                             </Tip>
                           )}
                         </div>
@@ -408,17 +409,18 @@ export const Settings = () => {
                           label={t`Download (one time) before using PC Storage`}
                           placement="bottom"
                         >
-                          <button
+                          <Button
                             onClick={() =>
                               window.open(
                                 "https://drive.google.com/open?id=1oD0WMJRq1UPEFEXWphKXR6paFwWpBS4o",
                                 "_blank",
                               )
                             }
-                            style={{ width: "100%" }}
+                            className="w-full"
+                            disabled={storageMode !== "pc"}
                           >
                             <Trans>Download the projects folder</Trans>
-                          </button>
+                          </Button>
                         </Tip>
                       </div>
                     </div>
@@ -447,36 +449,57 @@ export const Settings = () => {
                 </dt>
                 <dd>
                   <fieldset role="group">
-                    <label role="button" aria-current={theme === "light"}>
-                      <input
-                        type="radio"
-                        name="theme"
-                        value="light"
-                        checked={theme === "light"}
-                        onChange={() => setTheme("light")}
-                      />
-                      <Trans>Light</Trans>
-                    </label>
-                    <label role="button" aria-current={theme === "dark"}>
-                      <input
-                        type="radio"
-                        name="theme"
-                        value="dark"
-                        checked={theme === "dark"}
-                        onChange={() => setTheme("dark")}
-                      />
-                      <Trans>Dark</Trans>
-                    </label>
-                    <label role="button" aria-current={theme === "system"}>
-                      <input
-                        type="radio"
-                        name="theme"
-                        value="system"
-                        checked={theme === "system"}
-                        onChange={() => setTheme("system")}
-                      />
-                      <Trans>System</Trans>
-                    </label>
+                    <Button
+                      asChild
+                      aria-current={theme === "light"}
+                      className="has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring"
+                    >
+                      <label>
+                        <input
+                          className="sr-only"
+                          type="radio"
+                          name="theme"
+                          value="light"
+                          checked={theme === "light"}
+                          onChange={() => setTheme("light")}
+                        />
+                        <Trans>Light</Trans>
+                      </label>
+                    </Button>
+                    <Button
+                      asChild
+                      aria-current={theme === "dark"}
+                      className="has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring"
+                    >
+                      <label>
+                        <input
+                          className="sr-only"
+                          type="radio"
+                          name="theme"
+                          value="dark"
+                          checked={theme === "dark"}
+                          onChange={() => setTheme("dark")}
+                        />
+                        <Trans>Dark</Trans>
+                      </label>
+                    </Button>
+                    <Button
+                      asChild
+                      aria-current={theme === "system"}
+                      className="has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring"
+                    >
+                      <label>
+                        <input
+                          className="sr-only"
+                          type="radio"
+                          name="theme"
+                          value="system"
+                          checked={theme === "system"}
+                          onChange={() => setTheme("system")}
+                        />
+                        <Trans>System</Trans>
+                      </label>
+                    </Button>
                   </fieldset>
                 </dd>
 
@@ -495,9 +518,12 @@ export const Settings = () => {
                       <Trans>Browser Storage Reset</Trans>
                     </dt>
                     <dd>
-                      <button onClick={() => setResetStep("warn")}>
+                      <Button
+                        className="w-full"
+                        onClick={() => setResetStep("warn")}
+                      >
                         <Trans>Reset browser storage files</Trans>
-                      </button>
+                      </Button>
                     </dd>
                   </>
                 )}

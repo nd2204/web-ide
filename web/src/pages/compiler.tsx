@@ -19,6 +19,7 @@ import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import URLs from "../urls";
 import "./compiler.scss";
 import { Tip } from "../shell/tip";
+import { Button } from "../ui/button";
 
 export const Compiler = () => {
   const { setStatus, canUpgradeFs } = useContext(BaseContext);
@@ -200,52 +201,42 @@ export const Compiler = () => {
                 label={t`Open a folder containing Jack file(s)`}
                 placement="right"
               >
-                <button
+                <Button
                   aria-label={t`Open a folder containing Jack file(s)`}
-                  className="stack-item-0"
                   onClick={uploadFiles}
                 >
                   <Icon name="folder_open" />
-                </button>
+                </Button>
               </Tip>
               <Padding />
               <Tip
                 label={t`Create a new file in the currently opened folder`}
                 placement="right"
               >
-                <button
+                <Button
                   aria-label={t`Create a new file in the currently opened folder`}
-                  className="stack-item-0"
                   onClick={createFile}
                 >
                   +
-                </button>
+                </Button>
               </Tip>
               <Padding />
               <Tip
                 label={t`Compile all the opened Jack files`}
                 placement="bottom"
               >
-                <button
-                  className="stack-item-0"
-                  onClick={compileFiles}
-                  disabled={!state.isValid}
-                >
+                <Button onClick={compileFiles} disabled={!state.isValid}>
                   <Trans>Compile</Trans>
-                </button>
+                </Button>
               </Tip>
               <Padding />
               <Tip
                 label={t`Load the compiled code into the VM emulator`}
                 placement="bottom"
               >
-                <button
-                  className="stack-item-0"
-                  disabled={!state.isCompiled}
-                  onClick={runInVm}
-                >
+                <Button disabled={!state.isCompiled} onClick={runInVm}>
                   <Trans>Run</Trans>
-                </button>
+                </Button>
               </Tip>
             </div>
           </>
@@ -327,7 +318,7 @@ const NameDialog = ({
           <span>.jack</span>
         </div>
         <DialogActions>
-          <button
+          <Button
             disabled={!isValid(value ?? "")}
             onClick={() => {
               dialog.close();
@@ -336,7 +327,7 @@ const NameDialog = ({
             }}
           >
             {buttonText}
-          </button>
+          </Button>
         </DialogActions>
       </DialogContent>
     </Dialog>

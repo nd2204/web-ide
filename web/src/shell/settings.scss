@@ -1,8 +1,4 @@
 .settings-dialog {
-  [role="button"]:not([data-slot]) {
-    width: 100%;
-  }
-
   .storage-mode-selection {
     display: flex;
     flex-direction: column;

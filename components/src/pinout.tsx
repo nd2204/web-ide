@@ -7,6 +7,7 @@ import {
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { ChipDisplayInfo, getDisplayInfo } from "./pin_display.js";
 import "./public/pin.css";
+import { Btn } from "./button.js";
 import { ChipSim } from "./stores/chip.store.js";
 
 export const PinContext = createContext({});
@@ -302,9 +303,9 @@ const Pin = ({
       {pin.bits.length > 1 && (
         <>
           <div style={{ width: "1em" }} />
-          <button className="pin-control" onClick={() => toggleBin()}>
+          <Btn className="pin-control" onClick={() => toggleBin()}>
             {isBin ? "dec" : "bin"}
-          </button>
+          </Btn>
         </>
       )}
     </div>

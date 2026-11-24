@@ -37,7 +37,7 @@ const strip = (text: string) =>
 describe("shadcn migration guard", () => {
   // (a) Pico is imported from outside `web/src/pico`.
   it("limits imports of pico/", () => {
-    const CEILING = 16;
+    const CEILING = 13;
     const hits = SOURCES.filter((path) => !path.includes("/src/pico/")).flatMap(
       (path) =>
         strip(read(path))
@@ -56,20 +56,20 @@ describe("shadcn migration guard", () => {
     const CEILING: Record<string, number> = {
       a: 3,
       article: 9,
-      button: 19,
+      button: 7,
       dd: 3,
       details: 6,
       dialog: 0,
       div: 3,
       dl: 3,
       dt: 3,
-      fieldset: 11,
+      fieldset: 10,
       footer: 3,
       h2: 1,
       header: 7,
       input: 7,
       label: 5,
-      li: 12,
+      li: 9,
       main: 8,
       nav: 4,
       p: 1,
@@ -117,7 +117,7 @@ describe("shadcn migration guard", () => {
       "--accordion-open-summary-color": 1,
       "--block-spacing-horizontal": 5,
       "--block-spacing-vertical": 3,
-      "--border-radius": 4,
+      "--border-radius": 3,
       "--border-width": 5,
       "--card-background-color": 3,
       "--card-border-color": 5,
@@ -137,9 +137,9 @@ describe("shadcn migration guard", () => {
       "--nav-element-spacing-horizontal": 1,
       "--nav-link-spacing-horizontal": 1,
       "--outline-width": 1,
-      "--primary": 5,
+      "--primary": 3,
       "--primary-focus": 1,
-      "--primary-inverse": 4,
+      "--primary-inverse": 2,
       "--secondary": 1,
       "--secondary-hover": 1,
       "--secondary-inverse": 1,

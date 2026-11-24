@@ -43,7 +43,7 @@ export class ChipPage {
 
   private async busInput(pin: string) {
     const row = this.pinRow(pin);
-    const ctrl = row.locator("button.pin-control");
+    const ctrl = row.getByRole("button", { name: /^(dec|bin)$/ });
     if ((await ctrl.textContent()) === "dec") {
       await ctrl.click();
     }

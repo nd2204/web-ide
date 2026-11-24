@@ -269,96 +269,6 @@
     }
   }
 
-  // Button system: one height, one padding and one type size for every button,
-  // grouped or standalone. Icon-only buttons are square. Pin cells, tabs and
-  // the header tool pills have their own rules.
-  button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control):not([data-slot]),
-  [role="button"]:not(li) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: var(--lh-btn-h);
-    padding: 0 var(--lh-btn-px);
-    font-size: var(--lh-btn-fs);
-    font-weight: 700;
-    line-height: 1.2;
-    text-align: center;
-    white-space: nowrap;
-    border-radius: 999px;
-    // A calculator key: a darker lip along the bottom edge.
-    box-shadow: inset 0 -2px 0 rgb(0 0 0 / 14%);
-    transition:
-      background-color 120ms var(--lh-ease),
-      border-color 120ms var(--lh-ease),
-      transform 120ms var(--lh-ease);
-
-    &:active:not(:disabled) {
-      box-shadow: inset 0 1px 0 rgb(0 0 0 / 14%);
-    }
-
-    &:has(> .material-symbols-outlined:only-child) {
-      // An icon-only key is a round button, as wide as it is tall.
-      width: var(--lh-btn-h);
-      min-width: var(--lh-btn-h);
-      padding: 0;
-    }
-
-    // Icon and label together.
-    &:has(> .material-symbols-outlined:not(:only-child)) {
-      gap: 0.4rem;
-    }
-
-    > .material-symbols-outlined {
-      display: block;
-      font-size: var(--lh-btn-icon);
-      line-height: 1;
-    }
-  }
-
-  // Buttons in a group share the row: natural width, equal height.
-  fieldset[role="group"] > button:not([data-testid^="pin-"]):not([data-slot]) {
-    flex: 0 0 auto;
-    width: auto;
-    font-variant-numeric: tabular-nums;
-  }
-
-  // Yellow is the one primary action on a screen (class `lh-primary`), and the
-  // current step. Every other button is a quiet pill.
-  button:not([data-slot]),
-  [role="button"] {
-    background-color: var(--lh-raised);
-    border: 1px solid var(--lh-seam);
-    color: var(--lh-text);
-
-    &:hover:not(:disabled):not([aria-disabled="true"]) {
-      background-color: var(--lh-hover);
-      border-color: var(--lh-muted);
-    }
-
-    &:active:not(:disabled) {
-      transform: scale(0.97);
-    }
-
-    &:disabled,
-    &[aria-disabled="true"] {
-      background-color: transparent;
-      color: var(--lh-muted);
-      opacity: 0.7;
-    }
-  }
-
-  button.lh-primary:not(:disabled):not([data-slot]) {
-    background: var(--lh-yellow);
-    border-color: var(--lh-yellow);
-    color: var(--lh-on-yellow);
-
-    &:hover {
-      background: var(--lh-yellow);
-      border-color: var(--lh-yellow);
-      filter: brightness(1.08);
-    }
-  }
-
   .pin-control {
     --form-element-spacing-horizontal: 0.5rem;
     border-radius: 999px;
@@ -452,7 +362,6 @@
     background: transparent;
     box-shadow: none;
 
-    > button,
     > input,
     > select {
       margin: 0;
@@ -715,12 +624,7 @@
     }
 
     [role="button"] {
-      background: var(--lh-raised);
-      border: 1px solid var(--lh-seam);
-      color: var(--lh-text);
-      border-radius: 999px;
       margin-left: 0.4rem;
-      padding: 0.25rem 1rem;
 
       &.accept {
         background: var(--lh-yellow);
@@ -767,18 +671,6 @@
       > div[style] {
         color: var(--lh-muted) !important;
       }
-    }
-
-    [role="button"]:not([data-slot]),
-    button:not([data-slot]) {
-      width: 100%;
-    }
-
-    button:not([data-slot]):disabled,
-    [role="button"][aria-disabled="true"] {
-      border: 1px solid var(--lh-seam);
-      color: var(--lh-muted);
-      opacity: 1;
     }
 
     a {
@@ -859,8 +751,6 @@
       justify-content: center;
     }
 
-    button:not(.tab-button):not([data-testid^="pin-"]):not(.pin-control):not([data-slot]),
-    [role="button"]:not(li),
     input[type="range"],
     label[role="tab"],
     [role="tab"] label,
@@ -879,15 +769,8 @@
 @media (prefers-reduced-motion: reduce) {
   :root[data-theme="dark"],
   :root[data-theme="light"] {
-    button,
-    [role="button"],
     #root > header ul.icon-list li {
       transition: none;
-    }
-
-    button:active:not(:disabled),
-    [role="button"]:active:not(:disabled) {
-      transform: none;
     }
   }
 }
@@ -972,27 +855,6 @@
 // carry an edge strong enough to read against any panel (3:1 or better).
 :root[data-theme="dark"],
 :root[data-theme="light"] {
-  button:not(.lh-primary):not([data-slot]),
-  [role="button"]:not(li) {
-    background-color: var(--lh-key);
-    border-color: var(--lh-key-edge);
-
-    &:hover:not(:disabled):not([aria-disabled="true"]) {
-      background-color: color-mix(in srgb, var(--lh-key) 88%, var(--lh-text));
-      border-color: var(--lh-text);
-    }
-
-    &:disabled,
-    &[aria-disabled="true"] {
-      background-color: transparent;
-      border-color: var(--lh-seam);
-    }
-  }
-
-  button.lh-primary:not(:disabled):not([data-slot]) {
-    border-color: color-mix(in srgb, var(--lh-yellow) 60%, black);
-  }
-
   // Fields and selects are wells.
   input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
   select,

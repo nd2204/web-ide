@@ -1,6 +1,7 @@
 import { assertExists } from "@davidsouther/jiffies/assert.ts";
 import { Memory } from "@nand2tetris/simulator/cpu/memory.js";
 import { useCallback, useRef, useState } from "react";
+import { Btn } from "../button.js";
 import { useClockFrame, useClockReset } from "../clockface.js";
 
 const WHITE = "white";
@@ -100,24 +101,15 @@ export const Screen = ({
         <div>Screen</div>
         {showScaleControls && (
           <fieldset role="group">
-            <button
-              aria-current={screenScale === 0}
-              onClick={() => onScaleCB(0)}
-            >
+            <Btn aria-current={screenScale === 0} onClick={() => onScaleCB(0)}>
               x0
-            </button>
-            <button
-              aria-current={screenScale === 1}
-              onClick={() => onScaleCB(1)}
-            >
+            </Btn>
+            <Btn aria-current={screenScale === 1} onClick={() => onScaleCB(1)}>
               x1
-            </button>
-            <button
-              aria-current={screenScale === 2}
-              onClick={() => onScaleCB(2)}
-            >
+            </Btn>
+            <Btn aria-current={screenScale === 2} onClick={() => onScaleCB(2)}>
               x2
-            </button>
+            </Btn>
           </fieldset>
         )}
       </header>

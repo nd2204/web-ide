@@ -1,5 +1,6 @@
 import { KeyboardAdapter } from "@nand2tetris/simulator/cpu/memory.js";
 import { useEffect, useRef, useState } from "react";
+import { Btn } from "../button.js";
 import { RegisterComponent } from "./register.js";
 
 const KeyMap: Record<string, number | undefined> = {
@@ -154,14 +155,13 @@ export const Keyboard = ({
   return (
     <article className="panel">
       <div className="stack stack-row stack-align-baseline">
-        <button
+        <Btn
           onClick={toggleEnabled}
           ref={toggleRef}
-          className="stack-item-0"
           style={{ whiteSpace: "pre" }}
         >
           {`${enabled ? "Disable" : "Enable"} Keyboard`}
-        </button>
+        </Btn>
         <div className="stack-item-1"></div> {/* padding */}
         <div className="stack-item-4">Key: {character}</div>
         <div className="stack-item-4">

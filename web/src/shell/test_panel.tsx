@@ -26,6 +26,7 @@ import {
 } from "react";
 import { AppContext } from "../App.context";
 import { Icon } from "../pico/icon";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogActions,
@@ -197,7 +198,7 @@ export const TestPanel = ({
           </p>
         </div>
         <DialogActions>
-          <button
+          <Button
             onClick={() => {
               if (skipWarning) {
                 localStorage.setItem(WARNING_KEY, "true");
@@ -206,7 +207,7 @@ export const TestPanel = ({
             }}
           >
             <Trans>Ok</Trans>
-          </button>
+          </Button>
         </DialogActions>
       </DialogContent>
     </Dialog>
@@ -229,19 +230,18 @@ export const TestPanel = ({
                   <>
                     {prefix}
                     {showClear && (
-                      <button className="stack-item-0" onClick={clear}>
+                      <Button onClick={clear}>
                         <Trans>Clear</Trans>
-                      </button>
+                      </Button>
                     )}
                     {showLoad && (
                       <Tip label={t`Load a test script`} placement="bottom">
-                        <button
-                          className="stack-item-0"
+                        <Button
                           onClick={loadTest}
                           aria-label={t`Load a test script`}
                         >
                           <Icon name="folder_open" />
-                        </button>
+                        </Button>
                       </Tip>
                     )}
                   </>

@@ -43,9 +43,12 @@ export class FilePicker {
 
   private entry(name: string): Locator {
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    return this.dialog.locator(".files-container button").filter({
-      hasText: new RegExp(`^\\s*(?:folder|draft)\\s*${escaped}\\s*$`),
-    });
+    return this.dialog
+      .locator(".files-container")
+      .getByRole("button")
+      .filter({
+        hasText: new RegExp(`^\\s*(?:folder|draft)\\s*${escaped}\\s*$`),
+      });
   }
 
   async selectPath(pathSegments: string[]): Promise<void> {

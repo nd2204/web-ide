@@ -10,6 +10,7 @@ import { PageContext } from "../Page.context";
 import { Icon } from "../pico/icon";
 import URLs, { LAST_ROUTE_KEY, TOOLS, URL } from "../urls";
 import { Tip } from "./tip";
+import "./header.scss";
 
 interface HeaderButton {
   tooltip: string;
@@ -167,6 +168,14 @@ const Header = () => {
                   role={target ? "link" : "button"}
                   tabIndex={0}
                   aria-label={tooltip}
+                  // Chrome leaves a half-clipped tool half clipped on focus; bring
+                  // it fully into the scrolling toolbar.
+                  onFocus={(e) =>
+                    e.currentTarget.scrollIntoView({
+                      block: "nearest",
+                      inline: "nearest",
+                    })
+                  }
                   onClick={() => activate({ href, onClick, target, tool })}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {

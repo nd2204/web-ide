@@ -41,8 +41,9 @@ Run this on every primitive a migration step touches (Dialog, Tooltip, Button, I
 5. Switches and radio groups: Space toggles, and the label is announced with the state.
 6. Tooltips: Tab onto an icon button and the tooltip opens on focus; Escape closes it. The text is also reachable without hover, through the accessible name or a visible label. On touch no tooltip appears and nothing depends on one.
 7. Screen reader (VoiceOver on macOS or NVDA on Windows): each control announces a role, a name and its state. Dialogs announce their title when they open. Icon-only buttons have a name.
-8. Touch (a phone or devtools device mode): every target is at least 44px, and nothing needs hover.
-9. Record the browser, the screen reader and any defects in the pull request.
+8. Touch (a phone or devtools device mode): every target is at least 44px, and nothing needs hover. At 360px wide, Tab through the header: each tool scrolls fully into view when focused.
+9. Buttons: Enter and Space press every button, a disabled button is skipped by Tab and announced as dimmed, and the theme choices in Settings (Light, Dark, System) move with the arrow keys and announce the selected one.
+10. Record the browser, the screen reader and any defects in the pull request.
 
 ## Live site update check
 

@@ -10,15 +10,18 @@ import { AppContext } from "../App.context";
 
 import "./editor.scss";
 import { Action } from "@nand2tetris/simulator/types";
+import { Button } from "../ui/button";
 
 const Monaco = lazy(() => import("./Monaco"));
 
 export const ErrorPanel = ({ error }: { error?: CompilationError }) => {
   return error ? (
     <details className="ErrorPanel" open>
-      <summary role="button" className="secondary">
-        <Trans>Parse Error</Trans>
-      </summary>
+      <Button asChild>
+        <summary role="button" className="secondary">
+          <Trans>Parse Error</Trans>
+        </summary>
+      </Button>
       <pre>
         <code>{error?.message}</code>
       </pre>
