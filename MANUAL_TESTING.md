@@ -35,7 +35,7 @@ Pass criteria: every step above behaves as described, no console errors, and the
 Run this on every primitive a migration step touches (Dialog, Tooltip, Button, Input, Select, Slider, Table, Panel and Accordion, in that order of the migration). Automated axe checks do not replace it.
 
 1. Keyboard only, with the mouse unplugged: Tab reaches every control in a logical order and a visible focus ring shows where you are.
-2. Dialogs: Tab and Shift+Tab stay inside while open, Escape closes (or cancels), and focus returns to the control that opened it. Chained dialogs restore focus step by step.
+2. Dialogs: Tab and Shift+Tab stay inside while open, Escape closes (or cancels), and focus returns to the control that opened it. Chained dialogs restore focus step by step. Focus never lands on `<body>`: not when a dialog opens, not when its content swaps (Reset, Incomplete Setup) and not after it closes. Clicking outside a dialog does not dismiss it. Behind an open dialog, the page does not scroll or take focus.
 3. Select and menus: Enter, Space and arrow keys open and move through the list, Home and End jump, Escape closes, typing a letter jumps to a match.
 4. Tabs and toggle groups: arrow keys move between items, Tab leaves the group.
 5. Switches and radio groups: Space toggles, and the label is announced with the state.

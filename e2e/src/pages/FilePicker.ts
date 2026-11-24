@@ -1,11 +1,12 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { dialog } from "../helpers";
 
 export class FilePicker {
   private readonly dialog: Locator;
   private readonly vmRunbar: Locator;
 
   constructor(private _page: Page) {
-    this.dialog = _page.locator("article.file-select");
+    this.dialog = dialog(_page, "Choose file");
     this.vmRunbar = _page.locator("article.panel.program");
   }
 
@@ -35,7 +36,7 @@ export class FilePicker {
   }
 
   private get cwdHeader(): Locator {
-    return this.dialog.locator("main > div > b");
+    return this.dialog.locator("b");
   }
 
   private entry(name: string): Locator {

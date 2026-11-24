@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { dialog } from "../../src/helpers";
 
 // Radix locks page scroll while a Select or Dialog is open by making <body>
 // `position: relative`. #root is absolutely positioned, so without full-height
@@ -36,9 +37,7 @@ test(
     const before = await root.boundingBox();
 
     await page.locator('li[data-tooltip="Settings"]').click();
-    await expect(
-      page.locator("dialog[open] article.settings-dialog"),
-    ).toBeVisible();
+    await expect(dialog(page, "Settings")).toBeVisible();
     expect(await root.boundingBox()).toEqual(before);
   },
 );

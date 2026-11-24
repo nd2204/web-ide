@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { dialog } from "../../src/helpers";
 
 const TOOL_PAGES = [
   {
@@ -79,7 +80,6 @@ test(
     await page.goto("");
     await page.locator('li[data-tooltip="Settings"]').click();
 
-    const dialogHeader = page.locator("dialog[open] article.settings-dialog header p");
-    await expect(dialogHeader).toHaveText("Śēţţĩńĝś");
+    await expect(dialog(page, "Śēţţĩńĝś")).toBeVisible();
   },
 );

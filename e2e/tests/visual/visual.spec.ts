@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { dialog } from "../../src/helpers";
 
 // Screenshot baselines for the shadcn migration (Linux and Chromium only; see
 // DEVELOPMENT.md "Visual baselines"). The `visual` Playwright project is
@@ -107,9 +108,7 @@ for (const [name, context] of Object.entries(VIEWPORTS)) {
       await page.goto("chip");
       await settle(page, ROUTES.chip);
       await page.locator('li[data-tooltip="Settings"]').click();
-      await expect(
-        page.locator("dialog[open] article.settings-dialog"),
-      ).toBeVisible();
+      await expect(dialog(page, "Settings")).toBeVisible();
       await expect(page).toHaveScreenshot(`settings-dialog-${name}.png`, {
         ...SCREENSHOT,
         mask: masks(page),

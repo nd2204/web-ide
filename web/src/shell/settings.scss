@@ -1,8 +1,5 @@
 .settings-dialog {
-  max-width: 900px;
-  min-height: 80vh;
-
-  [role="button"] {
+  [role="button"]:not([data-slot]) {
     width: 100%;
   }
 
@@ -19,23 +16,5 @@
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing) / 2);
-  }
-}
-
-dialog {
-  .message {
-    margin: var(--spacing);
-  }
-
-  .actions {
-    display: flex;
-    justify-content: space-around;
-    margin-top: var(--block-spacing-vertical);
-    gap: var(--spacing);
-    flex-wrap: wrap;
-
-    >button {
-      width: 100px;
-    }
   }
 }
