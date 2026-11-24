@@ -129,7 +129,7 @@ A warm-grey neutral field with one yellow key colour and three small signal hues
 
 ### Neutral
 - **Ground** (dark #1c1c1a, light #e9e7e1): page, header, footer.
-- **Panel** (dark #242421, light #f6f4ee): cards, dialogs, editor background.
+- **Panel** (dark #242421, light #f6f4ee): cards, editor background.
 - **Raised** (dark #2c2c29, light #efede6): panel title bars, keys, fields, active tabs.
 - **Seam** (dark #3d3d38, light #cfccc3): every 1px border and divider.
 - **Ink** (dark #ece9e1, light #2a2a28): primary text. Light focus ring is Ink; dark focus ring is Key Yellow.
@@ -212,7 +212,7 @@ Pill (999px) for keys, tabs, header tool pills, the tool capsule, toggle switche
 
 ## Component Library
 
-The Chip page's buttons, selects and Builtin switch are shadcn-style components in `src/ui/` (Radix primitives, Tailwind v4 utilities, `cva` variants, `data-slot` attributes). `src/ui/tailwind.css` loads Tailwind's theme and utilities in layers after Pico, without its preflight reset, and maps shadcn's token names onto the `--lh-*` tokens (`--color-primary` is Key Yellow, `--color-key` the key face, `--color-well` the sunk well). Existing global rules in `lecture_hall.scss` skip elements carrying `data-slot`, so the two systems do not fight. Selects draw their own list (not the OS list) in the open-list style above. Other pages still use Pico elements and move over one primitive at a time.
+The Chip page's buttons, selects and Builtin switch, and every dialog in the app, are shadcn-style components in `src/ui/` (Radix primitives, Tailwind v4 utilities, `cva` variants, `data-slot` attributes). `src/ui/tailwind.css` loads Tailwind's theme and utilities in layers after Pico, without its preflight reset, and maps shadcn's token names onto the `--lh-*` tokens (`--color-primary` is Key Yellow, `--color-key` the key face, `--color-well` the sunk well). Existing global rules in `lecture_hall.scss` skip elements carrying `data-slot`, so the two systems do not fight. Selects draw their own list (not the OS list) in the open-list style above. Dialogs (`ui/dialog.tsx`) are modal raised keys: a centred key-face card with a 2px key-edge border and a lip shadow, a Raised title bar with an X key, bounded by the viewport and scrolling inside on a phone. Escape and the X key dismiss them; clicking the overlay does not. Other pages still use Pico elements and move over one primitive at a time.
 
 ## Do's and Don'ts
 

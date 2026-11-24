@@ -1,6 +1,5 @@
 import { FileSystem, Stats } from "@davidsouther/jiffies/fs.ts";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useDialog } from "@nand2tetris/components/dialog";
 import { sortFiles } from "@nand2tetris/components/file_utils";
 import { BaseContext } from "@nand2tetris/components/stores/base.context.js";
@@ -15,6 +14,7 @@ import {
 } from "react";
 import { AppContext } from "../App.context";
 import { Icon } from "../pico/icon";
+import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import "./file_select.scss";
 import { newZip } from "./zip";
 
@@ -148,6 +148,7 @@ function isFileValid(filename: string, validSuffixes: string[]) {
 export const FilePicker = () => {
   const { fs, setStatus, localFsRoot } = useContext(BaseContext);
   const { filePicker } = useContext(AppContext);
+  const { t } = useLingui();
 
   const [files, setFiles] = useState<Stats[]>([]);
   const [chosen, setFile] = useState<Path>({ path: fs.cwd(), isDir: true });
@@ -250,32 +251,26 @@ export const FilePicker = () => {
   }, [chosen]);
 
   return (
-    <dialog open={filePicker.isOpen}>
-      <input
-        type="file"
-        ref={loadRef}
-        onChange={onLoadLocal}
-        style={{ display: "none" }}
-        webkitdirectory={filePicker.allowFolders ? "true" : undefined}
-      ></input>
-      <article className="file-select stack">
-        <header>
-          <p>
-            <Trans>Choose file</Trans>
-          </p>
-          <a
-            style={{ color: "rgba(0, 0, 0, 0)" }}
-            className="close"
-            href="#root"
-            onClick={(e) => {
-              e.preventDefault();
-              filePicker.close();
-            }}
-          >
-            {t`close`}
-          </a>
-        </header>
-        <main>
+    <Dialog
+      open={filePicker.isOpen}
+      onOpenChange={(open) => {
+        if (!open) filePicker.close();
+      }}
+    >
+      <DialogContent
+        className="file-select w-[min(40rem,calc(100vw-1rem))]"
+        heading={<Trans>Choose file</Trans>}
+        closeLabel={t`Close`}
+        aria-describedby={undefined}
+      >
+        <input
+          type="file"
+          ref={loadRef}
+          onChange={onLoadLocal}
+          style={{ display: "none" }}
+          webkitdirectory={filePicker.allowFolders ? "true" : undefined}
+        ></input>
+        <div className="stack">
           <a ref={downloadRef} style={{ display: "none" }} />
           <div>
             <b>{fs.cwd()}</b>
@@ -301,37 +296,37 @@ export const FilePicker = () => {
               />
             ))}
           </div>
-        </main>
-        <footer>
-          <button
-            disabled={
-              !chosen ||
-              chosen.path == ".." ||
-              (filePicker.suffix != undefined &&
-                chosen.path.includes(".") &&
-                !isFileValid(chosen.path, filePicker.suffix)) ||
-              (!filePicker.allowFolders && !chosen.path.includes("."))
-            }
-            onClick={confirm}
-          >
-            {t`Select`}
-          </button>
-          {!localFsRoot && filePicker.allowLocal && (
-            <button onClick={loadLocal}>
-              <Trans>Select local file</Trans>
-            </button>
-          )}
-          {!localFsRoot && (
+          <DialogActions align="start">
             <button
-              onClick={downloadFolder}
-              data-tooltip={t`Download all files in this folder into a zip`}
-              disabled={chosen.path == "" || chosen.path.includes(".")}
+              disabled={
+                !chosen ||
+                chosen.path == ".." ||
+                (filePicker.suffix != undefined &&
+                  chosen.path.includes(".") &&
+                  !isFileValid(chosen.path, filePicker.suffix)) ||
+                (!filePicker.allowFolders && !chosen.path.includes("."))
+              }
+              onClick={confirm}
             >
-              {t`Download`}
+              {t`Select`}
             </button>
-          )}
-        </footer>
-      </article>
-    </dialog>
+            {!localFsRoot && filePicker.allowLocal && (
+              <button onClick={loadLocal}>
+                <Trans>Select local file</Trans>
+              </button>
+            )}
+            {!localFsRoot && (
+              <button
+                onClick={downloadFolder}
+                data-tooltip={t`Download all files in this folder into a zip`}
+                disabled={chosen.path == "" || chosen.path.includes(".")}
+              >
+                {t`Download`}
+              </button>
+            )}
+          </DialogActions>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };

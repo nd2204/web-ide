@@ -57,6 +57,21 @@ function keyPressToHackCharacter(keypress: KeyboardEvent): number {
   return 0;
 }
 
+// Typing into a text field or a dialog (a modal's keys belong to the modal) must
+// neither reach the Hack keyboard nor have its default action cancelled.
+export function isIgnoredTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof Element)) {
+    return false;
+  }
+  if (target.closest('[role="dialog"]')) {
+    return true;
+  }
+  return (
+    target.closest("input, textarea, select") !== null ||
+    (target instanceof HTMLElement && target.isContentEditable)
+  );
+}
+
 export const Keyboard = ({
   keyboard,
   update,
@@ -76,7 +91,7 @@ export const Keyboard = ({
   };
 
   const onKeyDown = (event: KeyboardEvent) => {
-    if (!enabled) {
+    if (!enabled || isIgnoredTarget(event.target)) {
       return;
     }
 
@@ -94,6 +109,9 @@ export const Keyboard = ({
   };
 
   const onKeyUp = (event: KeyboardEvent) => {
+    if (isIgnoredTarget(event.target)) {
+      return;
+    }
     toggleRef.current?.blur();
     if (!enabled) {
       return;

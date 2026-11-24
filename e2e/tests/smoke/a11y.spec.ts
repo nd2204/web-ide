@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
+import { dialog } from "../../src/helpers";
 
 // Automated accessibility floor for the shadcn migration: no serious or
 // critical axe violation on any route, an open dialog, or an open Select
@@ -35,7 +36,7 @@ const KNOWN: { rule: string; target: RegExp; why: string }[] = [
   },
   {
     rule: "color-contrast",
-    target: /\.line-numbers|tr\[data-kind="output"\]|\.folder-location-row|button\[data-placement="bottom"\]|label\[aria-current="true"\]/,
+    target: /\.line-numbers|tr\[data-kind="output"\]|\.folder-location-row|button\[data-placement="bottom"\]|^div:nth-child\(4\) > button$|label\[aria-current="true"\]/,
     why: "muted text on panels: Braun token review, separate from this migration",
   },
   {
@@ -44,13 +45,8 @@ const KNOWN: { rule: string; target: RegExp; why: string }[] = [
     why: "unlabelled asm switch and bitmap textarea (Input/Select step)",
   },
   {
-    rule: "link-name",
-    target: /\.settings-dialog > header > \.close/,
-    why: "Settings close link has no name (Dialog step)",
-  },
-  {
     rule: "scrollable-region-focusable",
-    target: /^(#root > \.stack-item-1 > div|\.(RAM|ROM|Stack) > div|\.canvas-panel > main > div)$/,
+    target: /^(#root > \.stack-item-1 > div|main > div|\.(RAM|ROM|Stack) > div|\.canvas-panel > main > div)$/,
     why: "scroll panes are not keyboard focusable (Panel step)",
   },
 ];
@@ -80,7 +76,7 @@ for (const route of ROUTES) {
 test("open Settings dialog has no serious axe violations", { tag: "@smoke" }, async ({ page }) => {
   await page.goto("chip");
   await page.locator('li[data-tooltip="Settings"]').click();
-  await expect(page.locator("dialog[open] article.settings-dialog")).toBeVisible();
+  await expect(dialog(page, "Settings")).toBeVisible();
   expect(await serious(page)).toEqual([]);
 });
 

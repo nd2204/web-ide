@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { dialog } from "../../src/helpers";
 
 // Touch phone layout (390x844, coarse pointer). The `phone` Playwright project
 // runs these. Primitives in web/src/ui carry `data-slot`; each must reach the
@@ -81,9 +82,9 @@ test.describe("phone", { tag: "@smoke" }, () => {
   test("settings dialog fits the viewport", async ({ page }) => {
     await page.goto("chip");
     await page.locator('li[data-tooltip="Settings"]').click();
-    const dialog = page.locator("dialog[open] article.settings-dialog");
-    await expect(dialog).toBeVisible();
-    const box = await dialog.boundingBox();
+    const settings = dialog(page, "Settings");
+    await expect(settings).toBeVisible();
+    const box = await settings.boundingBox();
     const viewport = page.viewportSize();
     expect(box).not.toBeNull();
     expect(box?.x ?? -1).toBeGreaterThanOrEqual(0);
@@ -97,14 +98,14 @@ test.describe("phone", { tag: "@smoke" }, () => {
 
   // Known defect today: the Settings content is wider than the dialog and is
   // clipped on a phone. `test.fail` keeps this honest: it starts failing (and
-  // must be turned into a plain test) when the Dialog and form steps fix it.
+  // must be turned into a plain test) when the form step fixes it.
   test("settings dialog content does not overflow", async ({ page }) => {
-    test.fail(true, "Settings content overflows on a phone until the Dialog and form steps");
+    test.fail(true, "Settings content overflows on a phone until the form step");
     await page.goto("chip");
     await page.locator('li[data-tooltip="Settings"]').click();
-    await expect(page.locator("dialog[open] article.settings-dialog")).toBeVisible();
+    await expect(dialog(page, "Settings")).toBeVisible();
     const spill = await page.evaluate(() => {
-      const root = document.querySelector("dialog[open] article.settings-dialog");
+      const root = document.querySelector("[role=dialog]");
       const edge = root?.getBoundingClientRect().right ?? 0;
       return [...(root?.querySelectorAll("*") ?? [])]
         .filter((el) => el.getBoundingClientRect().right > edge + 1)

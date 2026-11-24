@@ -646,8 +646,7 @@
     --table-border-color: var(--lh-seam);
   }
 
-  // Dialogs, dropdowns, tooltips take the same slate.
-  dialog > article,
+  // Dropdowns take the same slate.
   details[role="list"] ul {
     background: var(--lh-panel);
     border: 1px solid var(--lh-seam);
@@ -731,33 +730,7 @@
     }
   }
 
-  // Settings and other dialogs.
-  dialog > article {
-    padding: 0;
-    overflow: hidden;
-
-    > header {
-      background: var(--lh-raised);
-      border-bottom: 1px solid var(--lh-seam);
-      padding: 0.85rem 1.25rem;
-      margin: 0;
-      font-weight: 700;
-
-      p {
-        margin: 0;
-      }
-    }
-
-    > main {
-      padding: 1.25rem;
-    }
-
-    > footer {
-      padding: 0.85rem 1.25rem;
-      margin: 0;
-    }
-  }
-
+  // Settings content (the dialog shell itself is ui/dialog.tsx).
   .settings-dialog {
     min-height: 0;
 
@@ -796,12 +769,12 @@
       }
     }
 
-    [role="button"],
-    button {
+    [role="button"]:not([data-slot]),
+    button:not([data-slot]) {
       width: 100%;
     }
 
-    button:disabled,
+    button:not([data-slot]):disabled,
     [role="button"][aria-disabled="true"] {
       border: 1px solid var(--lh-seam);
       color: var(--lh-muted);

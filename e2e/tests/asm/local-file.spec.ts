@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { dialog } from "../../src/helpers";
 
 // https://github.com/nand2tetris/web-ide/issues/602
 // The Assembler's "Load file" used `filePicker.select`, so unlike the CPU and VM
@@ -10,10 +11,10 @@ test(
   async ({ page }) => {
     await page.goto("asm");
     await page.locator('[data-tooltip="Load file"]').click();
-    const dialog = page.locator("article.file-select");
-    await expect(dialog).toBeVisible();
+    const picker = dialog(page, "Choose file");
+    await expect(picker).toBeVisible();
     await expect(
-      dialog.getByRole("button", { name: "Select local file" }),
+      picker.getByRole("button", { name: "Select local file" }),
     ).toBeVisible({ timeout: 2_000 });
   },
 );

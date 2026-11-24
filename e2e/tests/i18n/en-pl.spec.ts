@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { dialog } from "../../src/helpers";
 
 // The `en-pl` project seeds the pseudolocale (accented text) before load. If a
 // string is not wrapped in Lingui it stays plain ASCII English, which these
@@ -14,8 +15,7 @@ test.describe("en-PL pseudolocale", { tag: "@smoke" }, () => {
         has: page.locator(".material-symbols-outlined", { hasText: /^settings$/ }),
       })
       .click();
-    const header = page.locator("dialog[open] article.settings-dialog header p");
-    await expect(header).toHaveText("Śēţţĩńĝś");
+    await expect(dialog(page, "Śēţţĩńĝś")).toBeVisible();
   });
 
   test("a wrapped tooltip shows accented text", async ({ page }) => {

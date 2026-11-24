@@ -1,6 +1,5 @@
 import { FileSystem } from "@davidsouther/jiffies/fs.ts";
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useDialog } from "@nand2tetris/components/dialog";
 import {
   FileSystemAccessFileSystemAdapter,
@@ -16,12 +15,14 @@ import { Icon } from "../pico/icon";
 import { Editor } from "../shell/editor";
 import { Panel } from "../shell/panel";
 import { Tab, TabList } from "../shell/tabs";
+import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import URLs from "../urls";
 import "./compiler.scss";
 
 export const Compiler = () => {
   const { setStatus, canUpgradeFs } = useContext(BaseContext);
   const { tracking } = useContext(AppContext);
+  const { t } = useLingui();
   const { stores, setTool } = useContext(PageContext);
   const { state, dispatch, actions } = stores.compiler;
 
@@ -285,31 +286,33 @@ const NameDialog = ({
   isValid: (value: string) => boolean;
   onExit: (value?: string) => void;
 }) => {
+  const { t } = useLingui();
   const [value, setValue] = useState<string>();
 
   return (
-    <dialog open={dialog.isOpen}>
-      <article>
-        <header>
-          <Trans>{title}</Trans>
-          <a
-            className="close"
-            href="#root"
-            onClick={(e) => {
-              e.preventDefault();
-              onExit();
-              dialog.close();
-            }}
-          />
-        </header>
-        <main>
-          <div className="stack stack-row">
-            <input
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            ></input>
-            <span>.jack</span>
-          </div>
+    <Dialog
+      open={dialog.isOpen}
+      onOpenChange={(open) => {
+        if (!open) {
+          onExit();
+          dialog.close();
+        }
+      }}
+    >
+      <DialogContent
+        heading={<Trans>{title}</Trans>}
+        closeLabel={t`Close`}
+        aria-describedby={undefined}
+      >
+        <div className="stack stack-row">
+          <input
+            aria-label={t`File name`}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          ></input>
+          <span>.jack</span>
+        </div>
+        <DialogActions>
           <button
             disabled={!isValid(value ?? "")}
             onClick={() => {
@@ -320,8 +323,8 @@ const NameDialog = ({
           >
             {buttonText}
           </button>
-        </main>
-      </article>
-    </dialog>
+        </DialogActions>
+      </DialogContent>
+    </Dialog>
   );
 };

@@ -1,6 +1,5 @@
 import { isErr, unwrap } from "@davidsouther/jiffies/result.ts";
-import { t } from "@lingui/core/macro";
-import { Plural, Trans } from "@lingui/react/macro";
+import { Plural, Trans, useLingui } from "@lingui/react/macro";
 import {
   DecorationType,
   DiffDisplay,
@@ -27,6 +26,12 @@ import {
 } from "react";
 import { AppContext } from "../App.context";
 import { Icon } from "../pico/icon";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogDescription,
+} from "../ui/dialog";
 import { Editor } from "./editor";
 import { isPath } from "./file_select";
 import { Panel } from "./panel";
@@ -71,6 +76,7 @@ export const TestPanel = ({
 }) => {
   const { fs, setStatus } = useContext(BaseContext);
   const { filePicker, tracking } = useContext(AppContext);
+  const { t } = useLingui();
 
   const [showHighlight, setShowHighlight] = useState(true);
   const runner = useRef<Timer | undefined>(undefined);
@@ -164,34 +170,32 @@ export const TestPanel = ({
   }, [out, cmp]);
 
   const editWarning = (
-    <dialog open={editDialog.isOpen}>
-      <article>
-        <header>
-          <Trans>Warning</Trans>
-        </header>
-        <main>
+    <Dialog
+      open={editDialog.isOpen}
+      onOpenChange={(open) => {
+        if (!open) editDialog.close();
+      }}
+    >
+      <DialogContent heading={<Trans>Warning</Trans>} closeLabel={t`Close`}>
+        <DialogDescription>
+          <Trans>
+            The test script can be edited during this IDE session. In the next
+            session, the original script will be restored.
+          </Trans>
+        </DialogDescription>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <input
+            type="checkbox"
+            checked={skipWarning}
+            onChange={(e) => {
+              setSkipWarning(e.target.checked);
+            }}
+          />
           <p>
-            <Trans>
-              The test script can be edited during this IDE session. In the next
-              session, the original script will be restored.
-            </Trans>
-            <br />
+            <Trans>Do not show this again</Trans>
           </p>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <input
-              type="checkbox"
-              checked={skipWarning}
-              onChange={(e) => {
-                setSkipWarning(e.target.checked);
-              }}
-            />
-            <p>
-              <Trans>Do not show this again</Trans>
-            </p>
-          </div>
-          <p>
-            <br />
-          </p>
+        </div>
+        <DialogActions>
           <button
             onClick={() => {
               if (skipWarning) {
@@ -202,9 +206,9 @@ export const TestPanel = ({
           >
             <Trans>Ok</Trans>
           </button>
-        </main>
-      </article>
-    </dialog>
+        </DialogActions>
+      </DialogContent>
+    </Dialog>
   );
 
   return (
