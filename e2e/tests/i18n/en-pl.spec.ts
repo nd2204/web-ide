@@ -20,8 +20,12 @@ test.describe("en-PL pseudolocale", { tag: "@smoke" }, () => {
 
   test("a wrapped tooltip shows accented text", async ({ page }) => {
     await page.goto("chip");
-    const tip = page.locator(".ChipPage [data-tooltip][aria-label]").first();
-    await expect(tip).toHaveAttribute("data-tooltip", /[^\x00-\x7f]/);
+    const button = page
+      .locator(".ChipPage")
+      .getByRole("button", { name: /[^\x00-\x7f]/ })
+      .first();
+    await button.focus();
+    await expect(page.getByRole("tooltip")).toHaveText(/[^\x00-\x7f]/);
   });
 
   test("the chip picker Select shows accented labels in its list", async ({

@@ -8,9 +8,10 @@ test(
   { tag: "@smoke" },
   async ({ page }) => {
     await page.goto("compiler");
-    const create = page.locator(
-      '[data-tooltip="Create a new file in the currently opened folder"]',
-    );
+    const create = page.getByRole("button", {
+      name: "Create a new file in the currently opened folder",
+      exact: true,
+    });
     await expect(create).toBeVisible();
     await create.click();
     await expect(page.getByText("No project folder loaded")).toBeVisible();

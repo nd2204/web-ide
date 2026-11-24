@@ -18,6 +18,7 @@ import { Tab, TabList } from "../shell/tabs";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import URLs from "../urls";
 import "./compiler.scss";
+import { Tip } from "../shell/tip";
 
 export const Compiler = () => {
   const { setStatus, canUpgradeFs } = useContext(BaseContext);
@@ -195,44 +196,57 @@ export const Compiler = () => {
               <Trans>Source</Trans>
             </div>
             <div className="stack stack-row stack-item-1">
-              <button
-                aria-label={t`Open a folder containing Jack file(s)`}
-                data-tooltip={t`Open a folder containing Jack file(s)`}
-                data-placement="right"
-                className="stack-item-0"
-                onClick={uploadFiles}
+              <Tip
+                label={t`Open a folder containing Jack file(s)`}
+                placement="right"
               >
-                <Icon name="folder_open" />
-              </button>
+                <button
+                  aria-label={t`Open a folder containing Jack file(s)`}
+                  className="stack-item-0"
+                  onClick={uploadFiles}
+                >
+                  <Icon name="folder_open" />
+                </button>
+              </Tip>
               <Padding />
-              <button
-                data-tooltip={t`Create a new file in the currently opened folder`}
-                data-placement="right"
-                className="stack-item-0"
-                onClick={createFile}
+              <Tip
+                label={t`Create a new file in the currently opened folder`}
+                placement="right"
               >
-                +
-              </button>
+                <button
+                  aria-label={t`Create a new file in the currently opened folder`}
+                  className="stack-item-0"
+                  onClick={createFile}
+                >
+                  +
+                </button>
+              </Tip>
               <Padding />
-              <button
-                className="stack-item-0"
-                data-tooltip={`Compile all the opened Jack files`}
-                data-placement="bottom"
-                onClick={compileFiles}
-                disabled={!state.isValid}
+              <Tip
+                label={t`Compile all the opened Jack files`}
+                placement="bottom"
               >
-                <Trans>Compile</Trans>
-              </button>
+                <button
+                  className="stack-item-0"
+                  onClick={compileFiles}
+                  disabled={!state.isValid}
+                >
+                  <Trans>Compile</Trans>
+                </button>
+              </Tip>
               <Padding />
-              <button
-                className="stack-item-0"
-                disabled={!state.isCompiled}
-                data-tooltip={t`Load the compiled code into the VM emulator`}
-                data-placement="bottom"
-                onClick={runInVm}
+              <Tip
+                label={t`Load the compiled code into the VM emulator`}
+                placement="bottom"
               >
-                <Trans>Run</Trans>
-              </button>
+                <button
+                  className="stack-item-0"
+                  disabled={!state.isCompiled}
+                  onClick={runInVm}
+                >
+                  <Trans>Run</Trans>
+                </button>
+              </Tip>
             </div>
           </>
         }

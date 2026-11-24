@@ -23,6 +23,7 @@ import InlineEdit from "../inline_edit.js";
 import { LOADING } from "../messages.js";
 import { useStateInitializer } from "../react.js";
 import { BaseContext } from "../stores/base.context.js";
+import { Tip, type TipPlacement } from "../tooltip.js";
 import VirtualScroll, { VirtualScrollSettings } from "../virtual_scroll.js";
 
 const ITEM_HEIGHT = 34;
@@ -213,7 +214,7 @@ export const Memory = forwardRef(
       showClear?: boolean;
       onChange?: () => void;
       onClear?: () => void;
-      loadTooltip?: { value: string; placement: string };
+      loadTooltip?: { value: string; placement: TipPlacement };
     },
     ref,
   ) => {
@@ -308,30 +309,39 @@ export const Memory = forwardRef(
           <div style={{ whiteSpace: "nowrap" }}>{name}</div>
           <fieldset role="group">
             {fileSelect && (
-              <button
-                onClick={doLoad}
-                className="stack-item-0"
-                aria-label={loadTooltip?.value ?? "Load file"}
-                data-tooltip={loadTooltip?.value ?? "Load file"}
-                data-placement={loadTooltip?.placement ?? "bottom"}
+              <Tip
+                label={loadTooltip?.value ?? "Load file"}
+                placement={loadTooltip?.placement ?? "bottom"}
               >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  folder_open
-                </span>
-              </button>
+                <button
+                  onClick={doLoad}
+                  className="stack-item-0"
+                  aria-label={loadTooltip?.value ?? "Load file"}
+                >
+                  <span
+                    className="material-symbols-outlined"
+                    aria-hidden="true"
+                  >
+                    folder_open
+                  </span>
+                </button>
+              </Tip>
             )}
             {showClear && (
-              <button
-                onClick={clear}
-                className="stack-item-0"
-                aria-label="Clear"
-                data-tooltip={"Clear"}
-                data-placement="bottom"
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  delete_sweep
-                </span>
-              </button>
+              <Tip label="Clear">
+                <button
+                  onClick={clear}
+                  className="stack-item-0"
+                  aria-label="Clear"
+                >
+                  <span
+                    className="material-symbols-outlined"
+                    aria-hidden="true"
+                  >
+                    delete_sweep
+                  </span>
+                </button>
+              </Tip>
             )}
             <input
               style={{ width: "4em", height: "100%" }}
@@ -341,17 +351,17 @@ export const Memory = forwardRef(
               onKeyDown={({ key }) => key === "Enter" && jumpTo()}
               onChange={({ target: { value } }) => setJmp(value)}
             />
-            <button
-              onClick={jumpTo}
-              className="stack-item-0"
-              aria-label="Scroll to address"
-              data-tooltip={"Scroll to address"}
-              data-placement="bottom"
-            >
-              <span className="material-symbols-outlined" aria-hidden="true">
-                move_down
-              </span>
-            </button>
+            <Tip label="Scroll to address">
+              <button
+                onClick={jumpTo}
+                className="stack-item-0"
+                aria-label="Scroll to address"
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  move_down
+                </span>
+              </button>
+            </Tip>
             <select
               value={fmt}
               aria-label="Number format"

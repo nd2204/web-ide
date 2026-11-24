@@ -1,3 +1,4 @@
+import { headerButton } from "../../src/helpers";
 import { expect, test } from "@playwright/test";
 
 // Regression test for #667 / #672. The Guide button must open the PDF under
@@ -17,7 +18,7 @@ for (const tool of ["chip", "cpu", "asm", "vm", "compiler", "bitmap"]) {
       };
     });
     await page.goto(`${tool}/`);
-    await page.locator('[data-tooltip="Guide"]').click();
+    await headerButton(page, "Guide").click();
     const opened = await page.evaluate(
       () => (window as unknown as { opened?: string }).opened,
     );

@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
-import { dialog } from "../../src/helpers";
+import { dialog, headerButton } from "../../src/helpers";
 
 // Automated accessibility floor for the shadcn migration: no serious or
 // critical axe violation on any route, an open dialog, or an open Select
@@ -36,7 +36,7 @@ const KNOWN: { rule: string; target: RegExp; why: string }[] = [
   },
   {
     rule: "color-contrast",
-    target: /\.line-numbers|tr\[data-kind="output"\]|\.folder-location-row|button\[data-placement="bottom"\]|^div:nth-child\(4\) > button$|label\[aria-current="true"\]/,
+    target: /\.line-numbers|tr\[data-kind="output"\]|\.folder-location-row|^div:nth-child\(4\) > button$|label\[aria-current="true"\]/,
     why: "muted text on panels: Braun token review, separate from this migration",
   },
   {
@@ -75,7 +75,7 @@ for (const route of ROUTES) {
 
 test("open Settings dialog has no serious axe violations", { tag: "@smoke" }, async ({ page }) => {
   await page.goto("chip");
-  await page.locator('li[data-tooltip="Settings"]').click();
+  await headerButton(page, "Settings").click();
   await expect(dialog(page, "Settings")).toBeVisible();
   expect(await serious(page)).toEqual([]);
 });

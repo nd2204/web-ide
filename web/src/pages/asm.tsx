@@ -18,6 +18,7 @@ import { isPath } from "../shell/file_select";
 import { Panel } from "../shell/panel";
 import URLs from "../urls";
 import "./asm.scss";
+import { Tip } from "../shell/tip";
 
 export const Asm = () => {
   const { filePicker } = useContext(AppContext);
@@ -161,15 +162,15 @@ export const Asm = () => {
                   runner={runner.current}
                   disabled={state.error != undefined}
                   prefix={
-                    <button
-                      className="stack-item-0"
-                      onClick={loadAsm}
-                      aria-label={t`Load file`}
-                      data-tooltip={t`Load file`}
-                      data-placement="bottom"
-                    >
-                      <Icon name="folder_open" />
-                    </button>
+                    <Tip label={t`Load file`} placement="bottom">
+                      <button
+                        className="stack-item-0"
+                        onClick={loadAsm}
+                        aria-label={t`Load file`}
+                      >
+                        <Icon name="folder_open" />
+                      </button>
+                    </Tip>
                   }
                   overrideTooltips={{ step: "Translate", run: "Translate all" }}
                   speed={state.config.speed}
@@ -179,14 +180,11 @@ export const Asm = () => {
             </div>
             {!localFsRoot && (
               <fieldset role="group">
-                <button
-                  aria-label={t`Download`}
-                  data-tooltip={t`Download`}
-                  data-placement="left"
-                  onClick={downloadAsm}
-                >
-                  <Icon name="download" />
-                </button>
+                <Tip label={t`Download`} placement="left">
+                  <button aria-label={t`Download`} onClick={downloadAsm}>
+                    <Icon name="download" />
+                  </button>
+                </Tip>
               </fieldset>
             )}
           </>
@@ -240,23 +238,20 @@ export const Asm = () => {
                 to={URLs["cpu"].href}
               />
               <fieldset role="group">
-                <button
-                  aria-label={t`Load in CPU Emulator`}
-                  data-tooltip={t`Load in CPU Emulator`}
-                  data-placement="left"
-                  onClick={loadToCpu}
-                >
-                  <Icon name="developer_board" />
-                </button>
-                {!localFsRoot && (
+                <Tip label={t`Load in CPU Emulator`} placement="left">
                   <button
-                    aria-label={t`Download`}
-                    data-tooltip={t`Download`}
-                    data-placement="left"
-                    onClick={downloadHack}
+                    aria-label={t`Load in CPU Emulator`}
+                    onClick={loadToCpu}
                   >
-                    <Icon name="download" />
+                    <Icon name="developer_board" />
                   </button>
+                </Tip>
+                {!localFsRoot && (
+                  <Tip label={t`Download`} placement="left">
+                    <button aria-label={t`Download`} onClick={downloadHack}>
+                      <Icon name="download" />
+                    </button>
+                  </Tip>
                 )}
               </fieldset>
             </div>

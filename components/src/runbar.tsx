@@ -2,6 +2,7 @@ import { Timer } from "@nand2tetris/simulator/timer.js";
 import { ChangeEvent, ReactNode, useEffect, useRef } from "react";
 import { useStateInitializer } from "./react.js";
 import { useTimer } from "./timer.js";
+import { Tip } from "./tooltip.js";
 
 interface RunbarTooltipOverrides {
   step: string;
@@ -69,59 +70,61 @@ export const Runbar = (props: {
     <div className="stack stack-row stack-wrap">
       <fieldset role="group">
         {props.prefix}
-        <button
-          className="stack-item-0"
-          disabled={props.disabled}
-          onClick={() => runner.actions.frame()}
-          aria-label={props.overrideTooltips?.step ?? `Step`}
-          data-tooltip={props.overrideTooltips?.step ?? `Step`}
-          data-placement="bottom"
-        >
-          <span className="material-symbols-outlined" aria-hidden="true">
-            skip_next
-          </span>
-        </button>
-        <button
-          className="stack-item-0"
-          ref={toggleRef}
-          disabled={props.disabled}
-          onClick={() =>
-            runner.state.running
-              ? runner.actions.stop()
-              : runner.actions.start()
-          }
-          aria-label={
+        <Tip label={props.overrideTooltips?.step ?? `Step`}>
+          <button
+            className="stack-item-0"
+            disabled={props.disabled}
+            onClick={() => runner.actions.frame()}
+            aria-label={props.overrideTooltips?.step ?? `Step`}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">
+              skip_next
+            </span>
+          </button>
+        </Tip>
+        <Tip
+          label={
             runner.state.running
               ? (props.overrideTooltips?.pause ?? `Pause`)
               : (props.overrideTooltips?.run ?? `Run`)
           }
-          data-tooltip={
-            runner.state.running
-              ? (props.overrideTooltips?.pause ?? `Pause`)
-              : (props.overrideTooltips?.run ?? `Run`)
-          }
-          data-placement="bottom"
         >
-          <span className="material-symbols-outlined" aria-hidden="true">
-            {runner.state.running ? "pause" : "fast_forward"}
-          </span>
-        </button>
-        <button
-          className="stack-item-0"
-          onClick={() => {
-            if (runner.state.running) {
-              runner.actions.stop();
+          <button
+            className="stack-item-0"
+            ref={toggleRef}
+            disabled={props.disabled}
+            onClick={() =>
+              runner.state.running
+                ? runner.actions.stop()
+                : runner.actions.start()
             }
-            runner.actions.reset();
-          }}
-          aria-label={props.overrideTooltips?.reset ?? `Reset`}
-          data-tooltip={props.overrideTooltips?.reset ?? `Reset`}
-          data-placement="bottom"
-        >
-          <span className="material-symbols-outlined" aria-hidden="true">
-            skip_previous
-          </span>
-        </button>
+            aria-label={
+              runner.state.running
+                ? (props.overrideTooltips?.pause ?? `Pause`)
+                : (props.overrideTooltips?.run ?? `Run`)
+            }
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">
+              {runner.state.running ? "pause" : "fast_forward"}
+            </span>
+          </button>
+        </Tip>
+        <Tip label={props.overrideTooltips?.reset ?? `Reset`}>
+          <button
+            className="stack-item-0"
+            onClick={() => {
+              if (runner.state.running) {
+                runner.actions.stop();
+              }
+              runner.actions.reset();
+            }}
+            aria-label={props.overrideTooltips?.reset ?? `Reset`}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">
+              skip_previous
+            </span>
+          </button>
+        </Tip>
       </fieldset>
       <div
         style={{
@@ -148,19 +151,19 @@ export const Runbar = (props: {
         }}
       >
         <span style={{ padding: "0.2rem" }}>Slow</span>
-        <input
-          type="range"
-          min={0}
-          max={4}
-          step={1}
-          value={speedValue}
-          disabled={runner.state.running}
-          onChange={onChange}
-          style={{ width: "150px", padding: "0.2rem" }}
-          aria-label="Execution speed"
-          data-tooltip={"Execution speed"}
-          data-placement={"bottom"}
-        />
+        <Tip label="Execution speed">
+          <input
+            type="range"
+            min={0}
+            max={4}
+            step={1}
+            value={speedValue}
+            disabled={runner.state.running}
+            onChange={onChange}
+            style={{ width: "150px", padding: "0.2rem" }}
+            aria-label="Execution speed"
+          />
+        </Tip>
         <span style={{ padding: "0.2rem" }}>Fast</span>
       </div>
       {props.children}

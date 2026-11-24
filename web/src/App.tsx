@@ -17,7 +17,8 @@ import { FilePicker } from "./shell/file_select";
 import Footer from "./shell/footer";
 import Header from "./shell/header";
 import { Settings } from "./shell/settings";
-import { Tooltip } from "./shell/Tooltip";
+import { TipRoot } from "./shell/tip";
+import { TooltipProvider } from "./ui/tooltip";
 import urls from "./urls";
 import "./pico/flex.scss";
 import "./pico/pico.scss";
@@ -67,32 +68,35 @@ function App() {
         <AppContext.Provider value={appContext}>
           {initialized ? (
             <PageContextProvider>
-              <Settings />
-              <FilePicker />
-              <Router basename={import.meta.env.BASE_URL}>
-                <Header />
-                <main className="stack stack-item-1">
-                  <ErrorBoundary fallback={RenderError}>
-                    <Suspense
-                      fallback={
-                        <div>
-                          <Trans>Loading...</Trans>
-                        </div>
-                      }
-                    >
-                      <Routes>
-                        <Route path="/" element={<Redirect />} />
-                        {Object.values(urls).map(({ href, target }) => (
-                          <Route key={href} path={href} element={target} />
-                        ))}
-                      </Routes>
-                    </Suspense>
-                  </ErrorBoundary>
-                </main>
-                <Footer />
-                <TrackingBanner />
-              </Router>
-              <Tooltip />
+              <TooltipProvider>
+                <TipRoot>
+                  <Settings />
+                  <FilePicker />
+                  <Router basename={import.meta.env.BASE_URL}>
+                    <Header />
+                    <main className="stack stack-item-1">
+                      <ErrorBoundary fallback={RenderError}>
+                        <Suspense
+                          fallback={
+                            <div>
+                              <Trans>Loading...</Trans>
+                            </div>
+                          }
+                        >
+                          <Routes>
+                            <Route path="/" element={<Redirect />} />
+                            {Object.values(urls).map(({ href, target }) => (
+                              <Route key={href} path={href} element={target} />
+                            ))}
+                          </Routes>
+                        </Suspense>
+                      </ErrorBoundary>
+                    </main>
+                    <Footer />
+                    <TrackingBanner />
+                  </Router>
+                </TipRoot>
+              </TooltipProvider>
             </PageContextProvider>
           ) : (
             <div>

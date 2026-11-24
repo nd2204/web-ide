@@ -35,3 +35,8 @@ export async function openTab(page: Page, name: string | RegExp) {
 export function dialog(page: Page, name: string | RegExp): Locator {
   return page.getByRole("dialog", { name });
 }
+
+/** A button or link in the header toolbar, by accessible name (e.g. "Settings"). */
+export function headerButton(page: Page, name: string): Locator {
+  return page.getByRole("toolbar").getByLabel(name, { exact: true });
+}

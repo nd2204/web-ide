@@ -20,15 +20,16 @@ export class CpuPage {
     await picker.selectOption(name);
     await expect(picker).toHaveValue(name);
     await expect(
-      this._page.locator('article._test_panel [data-tooltip="Run Test"]'),
+      this._page
+        .locator("article._test_panel")
+        .getByRole("button", { name: "Run Test", exact: true }),
     ).toBeEnabled();
   }
 
   async loadProgram(pathSegments: string[]): Promise<void> {
     await this._page
-      .locator(
-        'article.panel.memory.ROM [data-tooltip="Load an .asm or .hack file"]',
-      )
+      .locator("article.panel.memory.ROM")
+      .getByRole("button", { name: "Load an .asm or .hack file", exact: true })
       .click();
     await this.filePicker.selectPath(pathSegments);
   }
@@ -46,11 +47,13 @@ export class CpuPage {
   }
 
   async step(): Promise<void> {
-    await this.ioPanel.locator('[data-tooltip="Step Code"]').click();
+    await this.ioPanel
+      .getByRole("button", { name: "Step Code", exact: true })
+      .click();
   }
 
   async reset(): Promise<void> {
-    await this.ioPanel.locator('[data-tooltip="Reset"]').click();
+    await this.ioPanel.getByLabel("Reset", { exact: true }).click();
     await expect.poll(async () => await this.readRegister("PC")).toBe(0);
   }
 
