@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { dialog } from "../../src/helpers";
+import { dialog, headerButton } from "../../src/helpers";
 
 const TOOL_PAGES = [
   {
@@ -51,7 +51,7 @@ test(
     await page.goto("");
 
     for (const { path, tooltip, sentinel } of TOOL_PAGES) {
-      await page.locator(`li[data-tooltip="${tooltip}"]`).click();
+      await headerButton(page, tooltip).click();
       await expect(page).toHaveURL(new RegExp(`${path}$`));
       await expect(sentinel(page)).toBeVisible();
     }
@@ -78,7 +78,7 @@ test(
     });
 
     await page.goto("");
-    await page.locator('li[data-tooltip="Settings"]').click();
+    await headerButton(page, "Settings").click();
 
     await expect(dialog(page, "Śēţţĩńĝś")).toBeVisible();
   },

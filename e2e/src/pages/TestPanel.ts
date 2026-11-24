@@ -16,9 +16,13 @@ export class TestPanel {
   async runTest(options?: { stuckTimeoutMs?: number }): Promise<void> {
     const stuckTimeout = options?.stuckTimeoutMs ?? 5_000;
 
-    await this.panel.locator(`[data-tooltip="${this.runTooltip}"]`).click();
+    await this.panel
+      .getByRole("button", { name: this.runTooltip, exact: true })
+      .click();
 
-    await expect(this.panel.locator('[data-tooltip="Pause"]')).toBeVisible({
+    await expect(
+      this.panel.getByRole("button", { name: "Pause", exact: true }),
+    ).toBeVisible({
       timeout: START_TIMEOUT_MS,
     });
 
@@ -27,7 +31,7 @@ export class TestPanel {
 
     while (true) {
       const pauseCount = await this.panel
-        .locator('[data-tooltip="Pause"]')
+        .getByRole("button", { name: "Pause", exact: true })
         .count();
       if (pauseCount === 0) return;
 
@@ -46,7 +50,7 @@ export class TestPanel {
   }
 
   async reset(): Promise<void> {
-    await this.panel.locator('[data-tooltip="Reset"]').click();
+    await this.panel.getByLabel("Reset", { exact: true }).click();
   }
 
   async #progressSnapshot(): Promise<string> {

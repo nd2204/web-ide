@@ -45,7 +45,9 @@ export class VmPage {
   }
 
   private async clickRunbarButton(tooltip: string): Promise<void> {
-    await this.vmRunbar.locator(`[data-tooltip="${tooltip}"]`).click();
+    await this.vmRunbar
+      .getByRole("button", { name: tooltip, exact: true })
+      .click();
   }
 
   async waitForHalt(): Promise<void> {

@@ -36,6 +36,7 @@ import { Editor } from "./editor";
 import { isPath } from "./file_select";
 import { Panel } from "./panel";
 import { Tab, TabList } from "./tabs";
+import { Tip } from "./tip";
 
 const WARNING_KEY = "skipTestEditWarning";
 
@@ -233,15 +234,15 @@ export const TestPanel = ({
                       </button>
                     )}
                     {showLoad && (
-                      <button
-                        className="stack-item-0"
-                        onClick={loadTest}
-                        aria-label={t`Load a test script`}
-                        data-tooltip={t`Load a test script`}
-                        data-placement="bottom"
-                      >
-                        <Icon name="folder_open" />
-                      </button>
+                      <Tip label={t`Load a test script`} placement="bottom">
+                        <button
+                          className="stack-item-0"
+                          onClick={loadTest}
+                          aria-label={t`Load a test script`}
+                        >
+                          <Icon name="folder_open" />
+                        </button>
+                      </Tip>
                     )}
                   </>
                 }

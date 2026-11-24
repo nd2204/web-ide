@@ -10,7 +10,11 @@ test(
   { tag: "@asm" },
   async ({ page }) => {
     await page.goto("asm");
-    await page.locator('[data-tooltip="Load file"]').click();
+    // The runbar's button comes first; the Compare panel has a second one.
+    await page
+      .getByRole("button", { name: "Load file", exact: true })
+      .first()
+      .click();
     const picker = dialog(page, "Choose file");
     await expect(picker).toBeVisible();
     await expect(

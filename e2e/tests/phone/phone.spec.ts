@@ -1,5 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
-import { dialog } from "../../src/helpers";
+import { dialog, headerButton } from "../../src/helpers";
 
 // Touch phone layout (390x844, coarse pointer). The `phone` Playwright project
 // runs these. Primitives in web/src/ui carry `data-slot`; each must reach the
@@ -81,7 +81,7 @@ test.describe("phone", { tag: "@smoke" }, () => {
 
   test("settings dialog fits the viewport", async ({ page }) => {
     await page.goto("chip");
-    await page.locator('li[data-tooltip="Settings"]').click();
+    await headerButton(page, "Settings").click();
     const settings = dialog(page, "Settings");
     await expect(settings).toBeVisible();
     const box = await settings.boundingBox();
@@ -102,7 +102,7 @@ test.describe("phone", { tag: "@smoke" }, () => {
   test("settings dialog content does not overflow", async ({ page }) => {
     test.fail(true, "Settings content overflows on a phone until the form step");
     await page.goto("chip");
-    await page.locator('li[data-tooltip="Settings"]').click();
+    await headerButton(page, "Settings").click();
     await expect(dialog(page, "Settings")).toBeVisible();
     const spill = await page.evaluate(() => {
       const root = document.querySelector("[role=dialog]");

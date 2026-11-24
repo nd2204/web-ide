@@ -9,6 +9,7 @@ import { AppContext, useAppContext } from "../App.context";
 import { PageContext } from "../Page.context";
 import { Icon } from "../pico/icon";
 import URLs, { LAST_ROUTE_KEY, TOOLS, URL } from "../urls";
+import { Tip } from "./tip";
 
 interface HeaderButton {
   tooltip: string;
@@ -155,11 +156,9 @@ const Header = () => {
         >
           {headerButtons.map(
             ({ href, icon, onClick, tooltip, target, tool }) => {
-              return (
+              const item = (
                 <li
-                  key={icon}
-                  data-tooltip={tooltip}
-                  data-placement="bottom"
+                  key={tooltip ? undefined : icon}
                   aria-current={
                     target && href?.replaceAll("/", "") === pathname
                       ? "page"
@@ -193,6 +192,13 @@ const Header = () => {
                       />
                     ))}
                 </li>
+              );
+              return tooltip ? (
+                <Tip key={icon} label={tooltip} placement="bottom">
+                  {item}
+                </Tip>
+              ) : (
+                item
               );
             },
           )}

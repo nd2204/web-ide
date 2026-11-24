@@ -11,6 +11,7 @@ import "./settings.scss";
 import { TrackingDisclosure } from "../tracking";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import { getVersion, setVersion } from "../versions";
+import { Tip } from "./tip";
 
 const showUpgradeFs = true;
 
@@ -363,31 +364,34 @@ export const Settings = () => {
                             </span>
                           )}
                           {showUpgradeFs && canUpgradeFs && (
-                            <button
-                              disabled={upgrading}
-                              onClick={async () => {
-                                // Check if we are already in PC mode but no folder selected, or changing folder
-                                // If we are in browser mode (shouldn't happen due to pointerEvents), switch to PC first?
-                                // No, pointerEvents handles it.
-                                try {
-                                  await upgradeFsAction();
-                                  // After action, check if we have a root.
-                                  // Note: localFsRoot might not be updated immediately in this closure.
-                                  // We rely on the catch block in upgradeFsAction to handle cancellation.
-                                } catch (_e) {
-                                  // Should be caught inside upgradeFsAction
-                                }
-                              }}
-                              data-tooltip={t`Select the folder where the projects are stored on your PC`}
-                              data-placement="bottom"
-                              style={{ marginLeft: "auto" }}
+                            <Tip
+                              label={t`Select the folder where the projects are stored on your PC`}
+                              placement="bottom"
                             >
-                              {localFsRoot ? (
-                                <Trans>Change folder</Trans>
-                              ) : (
-                                <Trans>Select Projects Folder</Trans>
-                              )}
-                            </button>
+                              <button
+                                disabled={upgrading}
+                                onClick={async () => {
+                                  // Check if we are already in PC mode but no folder selected, or changing folder
+                                  // If we are in browser mode (shouldn't happen due to pointerEvents), switch to PC first?
+                                  // No, pointerEvents handles it.
+                                  try {
+                                    await upgradeFsAction();
+                                    // After action, check if we have a root.
+                                    // Note: localFsRoot might not be updated immediately in this closure.
+                                    // We rely on the catch block in upgradeFsAction to handle cancellation.
+                                  } catch (_e) {
+                                    // Should be caught inside upgradeFsAction
+                                  }
+                                }}
+                                style={{ marginLeft: "auto" }}
+                              >
+                                {localFsRoot ? (
+                                  <Trans>Change folder</Trans>
+                                ) : (
+                                  <Trans>Select Projects Folder</Trans>
+                                )}
+                              </button>
+                            </Tip>
                           )}
                         </div>
                       </div>
@@ -400,19 +404,22 @@ export const Settings = () => {
                           pointerEvents: storageMode === "pc" ? "auto" : "none",
                         }}
                       >
-                        <button
-                          onClick={() =>
-                            window.open(
-                              "https://drive.google.com/open?id=1oD0WMJRq1UPEFEXWphKXR6paFwWpBS4o",
-                              "_blank",
-                            )
-                          }
-                          data-tooltip={t`Download (one time) before using PC Storage`}
-                          data-placement="bottom"
-                          style={{ width: "100%" }}
+                        <Tip
+                          label={t`Download (one time) before using PC Storage`}
+                          placement="bottom"
                         >
-                          <Trans>Download the projects folder</Trans>
-                        </button>
+                          <button
+                            onClick={() =>
+                              window.open(
+                                "https://drive.google.com/open?id=1oD0WMJRq1UPEFEXWphKXR6paFwWpBS4o",
+                                "_blank",
+                              )
+                            }
+                            style={{ width: "100%" }}
+                          >
+                            <Trans>Download the projects folder</Trans>
+                          </button>
+                        </Tip>
                       </div>
                     </div>
                   </div>

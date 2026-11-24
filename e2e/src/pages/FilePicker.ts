@@ -11,7 +11,9 @@ export class FilePicker {
   }
 
   async open(): Promise<void> {
-    await this.vmRunbar.locator('[data-tooltip="Load files"]').click();
+    await this.vmRunbar
+      .getByRole("button", { name: "Load files", exact: true })
+      .click();
     await expect(this.dialog).toBeVisible();
   }
 

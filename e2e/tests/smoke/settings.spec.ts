@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { dialog } from "../../src/helpers";
+import { dialog, headerButton } from "../../src/helpers";
 
 test(
   "user picks Dark theme in Settings and the choice survives a reload",
@@ -8,7 +8,7 @@ test(
     await page.goto("");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
-    await page.locator('li[data-tooltip="Settings"]').click();
+    await headerButton(page, "Settings").click();
     const settings = dialog(page, "Settings");
     await expect(settings).toBeVisible();
 

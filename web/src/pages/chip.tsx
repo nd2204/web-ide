@@ -42,6 +42,7 @@ import { PageContext } from "../Page.context";
 import { Editor } from "../shell/editor";
 import { Accordian, Panel } from "../shell/panel";
 import { TestPanel } from "../shell/test_panel";
+import { Tip } from "../shell/tip";
 import { zip } from "../shell/zip";
 
 interface CompileInput {
@@ -233,54 +234,62 @@ export const Chip = () => {
     URL.revokeObjectURL(url);
   };
 
+  // The picker tooltip stays closed while either Select is open, so Escape
+  // reaches the list rather than the tooltip.
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const selectors = (
     <>
-      <fieldset
-        role="group"
-        data-tooltip={t`Open an HDL file using this menu`}
-        data-placement="bottom"
+      <Tip
+        label={t`Open an HDL file using this menu`}
+        placement="bottom"
+        disabled={menuOpen}
       >
-        <Select
-          value={state.controls.project}
-          onValueChange={(value) => {
-            actions.setProject(value);
-          }}
-        >
-          <SelectTrigger aria-label={t`Project`} data-testid="project-picker">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {state.controls.projects.map((project) => (
-              <SelectItem key={project} value={project}>
-                {`Project ${project.replace(/^0/, "")}`}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select
-          value={state.controls.chipName}
-          onValueChange={(value) => {
-            if (value != "") {
-              let path = `/${state.controls.project}/${value}.hdl`;
-              if (!localFsRoot) {
-                path = `/projects${path}`;
+        <fieldset role="group">
+          <Select
+            onOpenChange={setMenuOpen}
+            value={state.controls.project}
+            onValueChange={(value) => {
+              actions.setProject(value);
+            }}
+          >
+            <SelectTrigger aria-label={t`Project`} data-testid="project-picker">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {state.controls.projects.map((project) => (
+                <SelectItem key={project} value={project}>
+                  {`Project ${project.replace(/^0/, "")}`}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select
+            onOpenChange={setMenuOpen}
+            value={state.controls.chipName}
+            onValueChange={(value) => {
+              if (value != "") {
+                let path = `/${state.controls.project}/${value}.hdl`;
+                if (!localFsRoot) {
+                  path = `/projects${path}`;
+                }
+                actions.loadChip(path);
               }
-              actions.loadChip(path);
-            }
-          }}
-        >
-          <SelectTrigger aria-label={t`Chip`} data-testid="chip-picker">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {state.controls.chips.map((chip) => (
-              <SelectItem key={chip} value={chip}>
-                {chip}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </fieldset>
+            }}
+          >
+            <SelectTrigger aria-label={t`Chip`} data-testid="chip-picker">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {state.controls.chips.map((chip) => (
+                <SelectItem key={chip} value={chip}>
+                  {chip}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </fieldset>
+      </Tip>
     </>
   );
   const hdlPanel = (
@@ -309,25 +318,25 @@ export const Chip = () => {
           <div style={{ width: "30px" }}></div>
           <div className="stack-item-4">{selectors}</div>
           <fieldset role="group">
-            <Button
-              size="icon"
-              aria-label={t`Open an HDL file directly`}
-              data-tooltip={t`Open an HDL file directly`}
-              data-placement="bottom"
-              onClick={loadFile}
-            >
-              <Icon name="folder_open" />
-            </Button>
+            <Tip label={t`Open an HDL file directly`} placement="bottom">
+              <Button
+                size="icon"
+                aria-label={t`Open an HDL file directly`}
+                onClick={loadFile}
+              >
+                <Icon name="folder_open" />
+              </Button>
+            </Tip>
             <a ref={downloadRef} style={{ display: "none" }} />
-            <Button
-              size="icon"
-              onClick={downloadProject}
-              aria-label={t`Download .hdl files`}
-              data-tooltip={t`Download .hdl files`}
-              data-placement="left"
-            >
-              <Icon name="download" />
-            </Button>
+            <Tip label={t`Download .hdl files`} placement="left">
+              <Button
+                size="icon"
+                onClick={downloadProject}
+                aria-label={t`Download .hdl files`}
+              >
+                <Icon name="download" />
+              </Button>
+            </Tip>
           </fieldset>
         </>
       }

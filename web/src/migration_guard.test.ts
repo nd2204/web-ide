@@ -146,8 +146,6 @@ describe("shadcn migration guard", () => {
       "--spacing": 27,
       "--table-border-color": 1,
       "--table-row-stripped-background-color": 1,
-      "--tooltip-background-color": 5,
-      "--tooltip-color": 1,
       "--transition": 2,
     };
     const pico = read(join(WEB, "public/pico.min.css"));
