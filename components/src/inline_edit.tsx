@@ -1,6 +1,7 @@
 import { width } from "@davidsouther/jiffies/dom/css/sizing.ts";
 import { Action } from "@nand2tetris/simulator/types.js";
 import { useCallback, useState } from "react";
+import { Field } from "./field.js";
 import { useStateInitializer } from "./react.js";
 
 const Mode = { VIEW: 0, EDIT: 1 };
@@ -55,7 +56,7 @@ export const InlineEdit = (props: {
   const edit = () => {
     const edit = (
       <span style={{ display: "block", position: "relative" }}>
-        <input
+        <Field
           ref={doSelect}
           style={{
             zIndex: "10",

@@ -1,5 +1,4 @@
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Panel } from "../shell/panel";
 import {
@@ -10,7 +9,12 @@ import {
   getWordValue,
 } from "../utils/bitmapUtils";
 import "./bitmap.scss";
+import { SwitchRow } from "../shell/switch_row";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 
 // Constants
 const STATE_KEY = "bitmap_editor_state";
@@ -48,6 +52,7 @@ type CodeMode = "jack" | "hack";
 type MarginType = "fitToDrawing" | "rectangular" | "fullCanvas";
 
 export const BitmapEditor = () => {
+  const { t } = useLingui();
   // Load state from localStorage
   const loadState = (): BitmapState => {
     try {
@@ -114,6 +119,7 @@ export const BitmapEditor = () => {
   const pixelSizeInputRef = useRef<HTMLInputElement>(null);
   const marginFramesInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importedName, setImportedName] = useState<string>();
 
   // Save state to localStorage
   useEffect(() => {
@@ -594,6 +600,9 @@ export const BitmapEditor = () => {
 
       const extension = file.name.toLowerCase().split(".").pop();
 
+      if (extension === "bmp" || extension === "png") {
+        setImportedName(file.name);
+      }
       if (extension === "bmp") {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -708,51 +717,67 @@ export const BitmapEditor = () => {
       <Panel
         className="canvas-panel"
         header={
-          <div className="canvas-size-controls">
-            <label htmlFor="inputWidth">
-              <Trans>Canvas Size:</Trans>
-            </label>
-            <input
-              ref={widthInputRef}
-              id="inputWidth"
-              type="text"
-              placeholder={t`width`}
-              maxLength={3}
-              defaultValue={width}
-            />
-            <span>x</span>
-            <input
-              ref={heightInputRef}
-              id="inputHeight"
-              type="text"
-              placeholder={t`height`}
-              maxLength={3}
-              defaultValue={height}
-            />
-            <label htmlFor="pixelSize">
-              <Trans>Pixel size:</Trans>
-            </label>
-            <input
-              ref={pixelSizeInputRef}
-              id="pixelSize"
-              type="text"
-              placeholder={t`px`}
-              maxLength={2}
-              defaultValue={pixelSize}
-            />
-            <Button
-              onClick={handleResize}
-              title={t`Resize Canvas Preserving Upper-left Contents`}
-            >
-              <Trans>Resize</Trans>
-            </Button>
-            <Button
-              onClick={handleReset}
-              title={t`Reset Canvas Size, Settings, and Clear Contents`}
-            >
-              <Trans>Reset</Trans>
-            </Button>
-          </div>
+          <fieldset
+            className="canvas-size-controls mb-0 inline-flex w-auto gap-x-3 gap-y-1 border-0 py-1"
+            style={{ alignItems: "flex-end", flexWrap: "wrap" }}
+          >
+            <legend className="float-left mb-0 inline-flex min-h-7 items-center font-bold">
+              <Trans>Canvas size</Trans>
+            </legend>
+            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+              <Label htmlFor="inputWidth">
+                <Trans>Width</Trans>
+              </Label>
+              <Input
+                ref={widthInputRef}
+                id="inputWidth"
+                className="w-[calc(4ch+1.25rem)] [font-family:var(--font-family-monospace)]"
+                inputMode="numeric"
+                maxLength={3}
+                defaultValue={width}
+              />
+            </div>
+            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+              <Label htmlFor="inputHeight">
+                <Trans>Height</Trans>
+              </Label>
+              <Input
+                ref={heightInputRef}
+                id="inputHeight"
+                className="w-[calc(4ch+1.25rem)] [font-family:var(--font-family-monospace)]"
+                inputMode="numeric"
+                maxLength={3}
+                defaultValue={height}
+              />
+            </div>
+            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+              <Label htmlFor="pixelSize">
+                <Trans>Pixel size</Trans>
+              </Label>
+              <Input
+                ref={pixelSizeInputRef}
+                id="pixelSize"
+                className="w-[calc(3ch+1.25rem)] [font-family:var(--font-family-monospace)]"
+                inputMode="numeric"
+                maxLength={2}
+                defaultValue={pixelSize}
+              />
+            </div>
+            <div className="inline-flex w-auto gap-1.5">
+              <Button
+                onClick={handleResize}
+                title={t`Resize Canvas Preserving Upper-left Contents`}
+              >
+                <Trans>Resize</Trans>
+              </Button>
+              <Button
+                onClick={handleReset}
+                title={t`Reset Canvas Size, Settings, and Clear Contents`}
+              >
+                <Trans>Reset</Trans>
+              </Button>
+            </div>
+          </fieldset>
         }
       >
         <div style={{ overflow: "auto", padding: "var(--spacing)" }}>
@@ -821,26 +846,44 @@ export const BitmapEditor = () => {
           </div>
         }
       >
-        <textarea className="generated-code" readOnly value={generatedCode} />
+        <Textarea
+          className="generated-code"
+          aria-label={
+            codeMode === "jack"
+              ? t`Generated Jack Code`
+              : t`Generated Hack Assembly`
+          }
+          readOnly
+          value={generatedCode}
+        />
       </Panel>
 
       {/* Controls Panel */}
       <Panel className="controls-panel">
-        {/* Row 1: Manipulation buttons */}
+        {/* Row 1: image import, manipulation keys and switches */}
         <div className="control-row">
           <input
             ref={fileInputRef}
             type="file"
-            className="hidden-file-input"
+            className="hidden"
             accept=".bmp, .png, image/bmp, image/png"
             onChange={handleFileSelect}
           />
-          <Button
-            onClick={() => fileInputRef.current?.click()}
-            title={t`Import BMP (24-bit) or PNG (black and white) file`}
-          >
-            <Trans>Import Image</Trans>
-          </Button>
+          <div className="inline-flex w-auto max-w-full items-stretch">
+            <output
+              aria-live="polite"
+              className="inline-flex min-h-7 min-w-[10ch] items-center break-all rounded-l-sm border border-r-0 border-well-edge bg-well px-2 text-[0.9rem] text-foreground"
+            >
+              {importedName ?? <Trans>No image imported</Trans>}
+            </output>
+            <Button
+              className="rounded-l-none"
+              onClick={() => fileInputRef.current?.click()}
+              title={t`Import BMP (24-bit) or PNG (black and white) file`}
+            >
+              <Trans>Import Image</Trans>
+            </Button>
+          </div>
 
           <div className="button-group">
             <Button onClick={shiftLeft}>
@@ -860,8 +903,6 @@ export const BitmapEditor = () => {
             </Button>
           </div>
 
-          <div className="spacer" />
-
           <div className="button-group">
             <Button onClick={rotateBitmapRight} disabled={width !== height}>
               <Trans>Rotate right</Trans>
@@ -873,89 +914,62 @@ export const BitmapEditor = () => {
               <Trans>Invert</Trans>
             </Button>
           </div>
-
-          <div className="checkbox-group">
-            <label>
-              <input
-                type="checkbox"
-                checked={invertMode}
-                onChange={(e) => setInvertMode(e.target.checked)}
-              />
-              <Trans>Inverted Mode</Trans>
-            </label>
-          </div>
-
-          <div className="spacer" />
-
-          <div className="checkbox-group">
-            <label>
-              <input
-                type="checkbox"
-                checked={pauseCode}
-                onChange={(e) => setPauseCode(e.target.checked)}
-              />
-              <Trans>Pause Code Generation</Trans>
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={comments}
-                onChange={(e) => setComments(e.target.checked)}
-              />
-              <Trans>Comments On</Trans>
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={obviousStyling}
-                onChange={(e) => setObviousStyling(e.target.checked)}
-              />
-              <Trans>Obvious Word Edges</Trans>
-            </label>
-          </div>
         </div>
 
-        {/* Row 2: Margin type controls */}
         <div className="control-row">
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="marginType"
-                checked={marginType === "fitToDrawing"}
-                onChange={() => setMarginType("fitToDrawing")}
-              />
-              <Trans>Fit to drawing</Trans>
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="marginType"
-                checked={marginType === "rectangular"}
-                onChange={() => setMarginType("rectangular")}
-              />
-              <Trans>Rectangular</Trans>
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="marginType"
-                checked={marginType === "fullCanvas"}
-                onChange={() => setMarginType("fullCanvas")}
-              />
-              <Trans>Full Canvas</Trans>
-            </label>
+          <SwitchRow checked={invertMode} onCheckedChange={setInvertMode}>
+            <Trans>Inverted Mode</Trans>
+          </SwitchRow>
+          <SwitchRow checked={pauseCode} onCheckedChange={setPauseCode}>
+            <Trans>Pause Code Generation</Trans>
+          </SwitchRow>
+          <SwitchRow checked={comments} onCheckedChange={setComments}>
+            <Trans>Comments On</Trans>
+          </SwitchRow>
+          <SwitchRow
+            checked={obviousStyling}
+            onCheckedChange={setObviousStyling}
+          >
+            <Trans>Obvious Word Edges</Trans>
+          </SwitchRow>
+        </div>
+
+        {/* Row 2: margin type */}
+        <div className="control-row" style={{ alignItems: "flex-end" }}>
+          <div className="inline-flex w-auto flex-wrap items-center gap-2">
+            <span
+              id="bitmapMarginLabel"
+              className="text-[0.9rem] leading-tight"
+            >
+              <Trans>Margin</Trans>
+            </span>
+            <ToggleGroup
+              aria-labelledby="bitmapMarginLabel"
+              value={marginType}
+              onValueChange={(value) => setMarginType(value as MarginType)}
+            >
+              <ToggleGroupItem value="fitToDrawing">
+                <Trans>Fit to drawing</Trans>
+              </ToggleGroupItem>
+              <ToggleGroupItem value="rectangular">
+                <Trans>Rectangular</Trans>
+              </ToggleGroupItem>
+              <ToggleGroupItem value="fullCanvas">
+                <Trans>Full Canvas</Trans>
+              </ToggleGroupItem>
+            </ToggleGroup>
           </div>
 
           {marginType === "fitToDrawing" && (
-            <div className="input-group">
-              <label htmlFor="marginSaveFrames">
-                <Trans># horizontal shifts per animation frame:</Trans>
-              </label>
-              <input
+            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+              <Label htmlFor="marginSaveFrames">
+                <Trans>Horizontal shifts per animation frame</Trans>
+              </Label>
+              <Input
                 ref={marginFramesInputRef}
                 id="marginSaveFrames"
-                type="text"
+                className="w-[calc(3ch+1.25rem)] [font-family:var(--font-family-monospace)]"
+                inputMode="numeric"
                 maxLength={2}
                 defaultValue={marginSaveFrames}
                 onChange={handleMarginFramesChange}
@@ -964,30 +978,24 @@ export const BitmapEditor = () => {
           )}
         </div>
 
-        {/* Row 3: Base address controls */}
+        {/* Row 3: base address */}
         <div className="control-row">
-          <span>
-            <Trans>Base address:</Trans>
-          </span>
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="baseRowFrom"
-                checked={baseTopLeft}
-                onChange={() => setBaseTopLeft(true)}
-              />
-              <Trans>Top Left</Trans>
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="baseRowFrom"
-                checked={!baseTopLeft}
-                onChange={() => setBaseTopLeft(false)}
-              />
-              <Trans>Bottom Left</Trans>
-            </label>
+          <div className="inline-flex w-auto flex-wrap items-center gap-2">
+            <span id="bitmapBaseLabel" className="text-[0.9rem] leading-tight">
+              <Trans>Base address</Trans>
+            </span>
+            <ToggleGroup
+              aria-labelledby="bitmapBaseLabel"
+              value={baseTopLeft ? "topLeft" : "bottomLeft"}
+              onValueChange={(value) => setBaseTopLeft(value === "topLeft")}
+            >
+              <ToggleGroupItem value="topLeft">
+                <Trans>Top Left</Trans>
+              </ToggleGroupItem>
+              <ToggleGroupItem value="bottomLeft">
+                <Trans>Bottom Left</Trans>
+              </ToggleGroupItem>
+            </ToggleGroup>
           </div>
         </div>
       </Panel>

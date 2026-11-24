@@ -36,13 +36,8 @@ const KNOWN: { rule: string; target: RegExp; why: string }[] = [
   },
   {
     rule: "color-contrast",
-    target: /\.line-numbers|tr\[data-kind="output"\]|\.folder-location-row|^div:nth-child\(4\) > button$|label\[aria-current="true"\]/,
+    target: /\.line-numbers|tr\[data-kind="output"\]/,
     why: "muted text on panels: Braun token review, separate from this migration",
-  },
-  {
-    rule: "label",
-    target: /input\[role="switch"\]|^textarea$/,
-    why: "unlabelled asm switch and bitmap textarea (Input/Select step)",
   },
   {
     rule: "scrollable-region-focusable",

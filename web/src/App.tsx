@@ -5,7 +5,7 @@ import {
   BaseContext,
   useBaseContext,
 } from "@nand2tetris/components/stores/base.context.js";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AppContext, useAppContext } from "./App.context";
 import { ErrorBoundary, RenderError } from "./ErrorBoundary";
@@ -25,6 +25,10 @@ import "./pico/flex.scss";
 import "./pico/pico.scss";
 import { TrackingBanner } from "./tracking";
 import { updateVersion } from "./versions";
+
+// Select and Slider are only needed once a tool page renders, so the providers
+// that hand them to `components` load with the pages, not with the entry chunk.
+const FormRoot = lazy(() => import("./shell/form_controls"));
 
 i18n.load(messages);
 i18n.load("en-US", messages.en);
@@ -85,16 +89,18 @@ function App() {
                               </div>
                             }
                           >
-                            <Routes>
-                              <Route path="/" element={<Redirect />} />
-                              {Object.values(urls).map(({ href, target }) => (
-                                <Route
-                                  key={href}
-                                  path={href}
-                                  element={target}
-                                />
-                              ))}
-                            </Routes>
+                            <FormRoot>
+                              <Routes>
+                                <Route path="/" element={<Redirect />} />
+                                {Object.values(urls).map(({ href, target }) => (
+                                  <Route
+                                    key={href}
+                                    path={href}
+                                    element={target}
+                                  />
+                                ))}
+                              </Routes>
+                            </FormRoot>
                           </Suspense>
                         </ErrorBoundary>
                       </main>

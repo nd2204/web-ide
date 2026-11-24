@@ -10,8 +10,7 @@ test(
   async ({ page }) => {
     await page.goto("util");
     await page.getByLabel("Binary").fill("101");
-    // Fields in order: Binary, Decimal, Unsigned, Hex, HACK ASM.
-    await expect(page.getByRole("textbox").nth(1)).toHaveValue("5");
+    await expect(page.getByLabel("Decimal")).toHaveValue("5");
   },
 );
 
@@ -20,7 +19,7 @@ test(
   { tag: "@smoke" },
   async ({ page }) => {
     await page.goto("bitmap");
-    const code = page.locator(".code-panel textarea");
+    const code = page.getByRole("textbox", { name: "Generated Jack Code" });
     await expect(code).toHaveValue(/\/\//);
 
     await page.getByLabel("Comments On").click();

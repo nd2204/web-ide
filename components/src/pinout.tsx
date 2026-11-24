@@ -8,6 +8,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { ChipDisplayInfo, getDisplayInfo } from "./pin_display.js";
 import "./public/pin.css";
 import { Btn } from "./button.js";
+import { Field } from "./field.js";
 import { ChipSim } from "./stores/chip.store.js";
 
 export const PinContext = createContext({});
@@ -289,8 +290,8 @@ const Pin = ({
             </button>
           ))
         ) : (
-          <input
-            className="colored"
+          <Field
+            aria-label={pin.pin.name}
             value={decimal}
             onChange={(e) => {
               handleDecimalChange(e.target.value);

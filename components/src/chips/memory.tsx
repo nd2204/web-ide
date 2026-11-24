@@ -18,7 +18,9 @@ import {
   useState,
 } from "react";
 import { Btn } from "../button.js";
+import { Choice } from "../choice.js";
 import { useClockReset } from "../clockface.js";
+import { Field } from "../field.js";
 import InlineEdit from "../inline_edit.js";
 import { LOADING } from "../messages.js";
 import { useStateInitializer } from "../react.js";
@@ -338,8 +340,8 @@ export const Memory = forwardRef(
                 </Btn>
               </Tip>
             )}
-            <input
-              style={{ width: "4em", height: "100%" }}
+            <Field
+              style={{ width: "4em" }}
               placeholder="Addr"
               aria-label="Address"
               value={jmp}
@@ -353,17 +355,14 @@ export const Memory = forwardRef(
                 </span>
               </Btn>
             </Tip>
-            <select
+            <Choice
               value={fmt}
               aria-label="Number format"
-              onChange={(e) => doSetFormat(e.target.value)}
-            >
-              {FORMATS.filter(
+              onChange={(value) => doSetFormat(value as Format)}
+              options={FORMATS.filter(
                 (option) => !excludedFormats.includes(option),
-              ).map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
+              )}
+            />
           </fieldset>
         </header>
         {displayEnabled ? (

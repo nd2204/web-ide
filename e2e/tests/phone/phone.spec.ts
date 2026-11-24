@@ -128,11 +128,7 @@ test.describe("phone", { tag: "@smoke" }, () => {
     );
   });
 
-  // Known defect today: the Settings content is wider than the dialog and is
-  // clipped on a phone. `test.fail` keeps this honest: it starts failing (and
-  // must be turned into a plain test) when the form step fixes it.
   test("settings dialog content does not overflow", async ({ page }) => {
-    test.fail(true, "Settings content overflows on a phone until the form step");
     await page.goto("chip");
     await headerButton(page, "Settings").click();
     await expect(dialog(page, "Settings")).toBeVisible();

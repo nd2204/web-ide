@@ -2,15 +2,16 @@ import { i18n } from "@lingui/core";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useDialog } from "@nand2tetris/components/dialog";
 import { BaseContext } from "@nand2tetris/components/stores/base.context.js";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useId, useMemo, useState } from "react";
 import { AppContext } from "../App.context";
 import { PageContext } from "../Page.context";
-import "../pico/property.scss";
-import "./settings.scss";
 import { TrackingDisclosure } from "../tracking";
 import { Button } from "../ui/button";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { getVersion, setVersion } from "../versions";
+import { SwitchRow } from "./switch_row";
 import { Tip } from "./tip";
 
 const showUpgradeFs = true;
@@ -30,6 +31,7 @@ export const Settings = () => {
   } = useContext(BaseContext);
   const { settings, monaco, theme, setTheme } = useContext(AppContext);
   const { t } = useLingui();
+  const id = useId();
 
   const [storageMode, setStorageMode] = useState<"browser" | "pc">(
     localFsRoot ? "pc" : "browser",
@@ -251,160 +253,95 @@ export const Settings = () => {
             </>
           ) : (
             <>
-              <dl>
+              <div className="grid grid-flow-row grid-cols-1 items-start gap-x-6 gap-y-3 phone:grid-cols-[minmax(8rem,max-content)_minmax(0,1fr)]">
                 {/* Storage Mode Selection */}
-                <dt>
-                  <Trans>Project files</Trans>
-                  <div style={{ marginTop: "3rem" }}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.open(
-                          import.meta.env.BASE_URL +
-                            "user_guide/file_system.pdf",
-                          "_blank",
-                          "width=1000,height=800",
-                        );
-                      }}
-                      style={{ fontSize: "0.9rem" }}
-                    >
-                      <Trans>File System User Guide</Trans>
-                    </a>
-                  </div>
-                </dt>
-                <dd>
-                  <div className="storage-mode-selection">
-                    <div className="storage-option">
-                      <label>
-                        <input
-                          type="radio"
-                          name="storage-mode"
-                          checked={storageMode === "browser"}
-                          onChange={async () => {
-                            setStorageMode("browser");
-                            if (localFsRoot) {
-                              await closeFs();
-                            }
-                          }}
-                        />
-                        <Trans>Use browser storage</Trans>
-                      </label>
-                    </div>
-
-                    <div className="storage-option">
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "1rem",
-                        }}
-                      >
-                        <label style={{ width: "auto" }}>
-                          <input
-                            type="radio"
-                            name="storage-mode"
-                            checked={storageMode === "pc"}
-                            onChange={() => {
-                              setStorageMode("pc");
-                              // Do NOT trigger upgradeFsAction here anymore
-                            }}
-                          />
-                          <Trans>Use Desktop Storage</Trans>
-                        </label>
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "0.85rem",
-                          color: "#888",
-                          marginLeft: "1.8rem",
-                          marginTop: "-0.5rem",
-                          marginBottom: "0.5rem",
-                        }}
-                      >
+                <div className="grid grid-flow-row grid-cols-1 gap-1 phone:pt-2">
+                  <span id={`${id}-storage`} className="font-bold">
+                    <Trans>Project files</Trans>
+                  </span>
+                  <a
+                    href="#"
+                    className="text-[0.9rem]"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open(
+                        import.meta.env.BASE_URL + "user_guide/file_system.pdf",
+                        "_blank",
+                        "width=1000,height=800",
+                      );
+                    }}
+                  >
+                    <Trans>File System User Guide</Trans>
+                  </a>
+                </div>
+                <div className="grid grid-flow-row grid-cols-1 gap-2">
+                  <RadioGroup
+                    aria-labelledby={`${id}-storage`}
+                    value={storageMode}
+                    onValueChange={async (value) => {
+                      if (value === "pc") {
+                        setStorageMode("pc");
+                        return;
+                      }
+                      setStorageMode("browser");
+                      if (localFsRoot) {
+                        await closeFs();
+                      }
+                    }}
+                  >
+                    <RadioGroupItem
+                      value="browser"
+                      label={<Trans>Use browser storage</Trans>}
+                    />
+                    <RadioGroupItem
+                      value="pc"
+                      label={<Trans>Use Desktop Storage</Trans>}
+                      hint={
                         <Trans>
                           Works on Chrome, Edge, Opera, and other Chromium-based
                           browsers
                         </Trans>
-                      </div>
-                      <div
-                        className="folder-location-row"
-                        style={{
-                          opacity: storageMode === "pc" ? 1 : 0.5,
-                          pointerEvents: storageMode === "pc" ? "auto" : "none",
-                          marginLeft: "2rem",
-                          marginTop: "0.5rem",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "1rem",
-                            flexWrap: "wrap",
-                          }}
-                        >
-                          <span>
-                            <Trans>Projects folder location (on your PC)</Trans>
-                            :
+                      }
+                    />
+                  </RadioGroup>
+                  {storageMode === "pc" && (
+                    <div className="grid grid-flow-row grid-cols-1 gap-2 rounded-sm border border-border p-3">
+                      <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+                        <span className="text-[0.85rem]">
+                          <Trans>Projects folder location (on your PC)</Trans>
+                        </span>
+                        {localFsRoot ? (
+                          <code className="break-all">{localFsRoot}</code>
+                        ) : (
+                          <span className="italic text-muted-foreground">
+                            <Trans>Not selected</Trans>
                           </span>
-                          {localFsRoot ? (
-                            <code style={{ flex: "1", minWidth: "200px" }}>
-                              {localFsRoot}
-                            </code>
-                          ) : (
-                            <span
-                              style={{
-                                flex: "1",
-                                minWidth: "200px",
-                                fontStyle: "italic",
+                        )}
+                      </div>
+                      <div className="inline-flex w-full flex-wrap gap-2">
+                        {showUpgradeFs && canUpgradeFs && (
+                          <Tip
+                            label={t`Select the folder where the projects are stored on your PC`}
+                            placement="bottom"
+                          >
+                            <Button
+                              disabled={upgrading}
+                              onClick={async () => {
+                                try {
+                                  await upgradeFsAction();
+                                } catch (_e) {
+                                  // Handled inside upgradeFsAction.
+                                }
                               }}
                             >
-                              <Trans>Not selected</Trans>
-                            </span>
-                          )}
-                          {showUpgradeFs && canUpgradeFs && (
-                            <Tip
-                              label={t`Select the folder where the projects are stored on your PC`}
-                              placement="bottom"
-                            >
-                              <Button
-                                className="w-full"
-                                disabled={upgrading || storageMode !== "pc"}
-                                onClick={async () => {
-                                  // Check if we are already in PC mode but no folder selected, or changing folder
-                                  // If we are in browser mode (shouldn't happen due to pointerEvents), switch to PC first?
-                                  // No, pointerEvents handles it.
-                                  try {
-                                    await upgradeFsAction();
-                                    // After action, check if we have a root.
-                                    // Note: localFsRoot might not be updated immediately in this closure.
-                                    // We rely on the catch block in upgradeFsAction to handle cancellation.
-                                  } catch (_e) {
-                                    // Should be caught inside upgradeFsAction
-                                  }
-                                }}
-                                style={{ marginLeft: "auto" }}
-                              >
-                                {localFsRoot ? (
-                                  <Trans>Change folder</Trans>
-                                ) : (
-                                  <Trans>Select Projects Folder</Trans>
-                                )}
-                              </Button>
-                            </Tip>
-                          )}
-                        </div>
-                      </div>
-                      {/* Download Projects Folder */}
-                      <div
-                        style={{
-                          marginTop: "1rem",
-                          marginLeft: "2rem",
-                          opacity: storageMode === "pc" ? 1 : 0.5,
-                          pointerEvents: storageMode === "pc" ? "auto" : "none",
-                        }}
-                      >
+                              {localFsRoot ? (
+                                <Trans>Change folder</Trans>
+                              ) : (
+                                <Trans>Select Projects Folder</Trans>
+                              )}
+                            </Button>
+                          </Tip>
+                        )}
                         <Tip
                           label={t`Download (one time) before using PC Storage`}
                           placement="bottom"
@@ -416,142 +353,82 @@ export const Settings = () => {
                                 "_blank",
                               )
                             }
-                            className="w-full"
-                            disabled={storageMode !== "pc"}
                           >
                             <Trans>Download the projects folder</Trans>
                           </Button>
                         </Tip>
                       </div>
                     </div>
-                  </div>
-                </dd>
-                <dt>
+                  )}
+                </div>
+
+                <span className="font-bold phone:pt-1">
                   <Trans>Editor</Trans>
-                </dt>
-                <dd>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="switch"
-                      role="switch"
-                      checked={monaco.wants}
-                      disabled={!monaco.canUse}
-                      onChange={(e) => monaco.toggle(e.target.checked)}
-                    />
-                    <Trans>Use Monaco Editor</Trans>
-                  </label>
-                </dd>
+                </span>
+                <SwitchRow
+                  checked={monaco.wants}
+                  disabled={!monaco.canUse}
+                  onCheckedChange={(checked) => monaco.toggle(checked)}
+                >
+                  <Trans>Use Monaco Editor</Trans>
+                </SwitchRow>
 
                 {/* Theme Section */}
-                <dt>
+                <span id={`${id}-theme`} className="font-bold phone:pt-1">
                   <Trans>Theme</Trans>
-                </dt>
-                <dd>
-                  <fieldset role="group">
-                    <Button
-                      asChild
-                      aria-current={theme === "light"}
-                      className="has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring"
-                    >
-                      <label>
-                        <input
-                          className="sr-only"
-                          type="radio"
-                          name="theme"
-                          value="light"
-                          checked={theme === "light"}
-                          onChange={() => setTheme("light")}
-                        />
-                        <Trans>Light</Trans>
-                      </label>
-                    </Button>
-                    <Button
-                      asChild
-                      aria-current={theme === "dark"}
-                      className="has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring"
-                    >
-                      <label>
-                        <input
-                          className="sr-only"
-                          type="radio"
-                          name="theme"
-                          value="dark"
-                          checked={theme === "dark"}
-                          onChange={() => setTheme("dark")}
-                        />
-                        <Trans>Dark</Trans>
-                      </label>
-                    </Button>
-                    <Button
-                      asChild
-                      aria-current={theme === "system"}
-                      className="has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring"
-                    >
-                      <label>
-                        <input
-                          className="sr-only"
-                          type="radio"
-                          name="theme"
-                          value="system"
-                          checked={theme === "system"}
-                          onChange={() => setTheme("system")}
-                        />
-                        <Trans>System</Trans>
-                      </label>
-                    </Button>
-                  </fieldset>
-                </dd>
-
-                {/* Divider for bottom section */}
-                <div
-                  style={{
-                    borderTop: "1px solid var(--contrast-lower)",
-                    margin: "0.5rem 0 1rem 0",
-                  }}
-                />
+                </span>
+                <ToggleGroup
+                  aria-labelledby={`${id}-theme`}
+                  value={theme}
+                  onValueChange={(value) => setTheme(value as typeof theme)}
+                >
+                  <ToggleGroupItem value="light">
+                    <Trans>Light</Trans>
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="dark">
+                    <Trans>Dark</Trans>
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="system">
+                    <Trans>System</Trans>
+                  </ToggleGroupItem>
+                </ToggleGroup>
 
                 {/* Bottom Section - Utility Items */}
+                <div className="border-t border-border phone:col-span-2" />
+
                 {!localFsRoot && (
                   <>
-                    <dt>
+                    <span className="font-bold phone:pt-1">
                       <Trans>Browser Storage Reset</Trans>
-                    </dt>
-                    <dd>
-                      <Button
-                        className="w-full"
-                        onClick={() => setResetStep("warn")}
-                      >
+                    </span>
+                    <div>
+                      <Button onClick={() => setResetStep("warn")}>
                         <Trans>Reset browser storage files</Trans>
                       </Button>
-                    </dd>
+                    </div>
                   </>
                 )}
 
-                <dt>
+                <span className="font-bold">
                   <Trans>References</Trans>
-                </dt>
-                <dd>
-                  <div>
-                    <a
-                      href="https://nand2tetris.org"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Trans>nand2tetris.org (course website)</Trans>
-                    </a>
-                  </div>
-                  <div>
-                    <a
-                      href="https://github.com/davidsouther/nand2tetris"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Trans>nand2tetris/web-IDE on Github (open source)</Trans>
-                    </a>
-                  </div>
-                </dd>
-              </dl>
+                </span>
+                <div className="grid grid-flow-row grid-cols-1 gap-1">
+                  <a
+                    href="https://nand2tetris.org"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Trans>nand2tetris.org (course website)</Trans>
+                  </a>
+                  <a
+                    href="https://github.com/davidsouther/nand2tetris"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Trans>nand2tetris/web-IDE on Github (open source)</Trans>
+                  </a>
+                </div>
+              </div>
             </>
           )}
         </DialogContent>

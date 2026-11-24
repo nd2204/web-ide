@@ -1,6 +1,7 @@
 import { Timer } from "@nand2tetris/simulator/timer.js";
-import { ChangeEvent, ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { Btn } from "./button.js";
+import { Range } from "./range.js";
 import { useStateInitializer } from "./react.js";
 import { useTimer } from "./timer.js";
 import { Tip } from "./tooltip.js";
@@ -45,8 +46,8 @@ export const Runbar = (props: {
     runner.dispatch({ action: "setSteps", payload: steps });
   };
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const speed = Number(e.target.value) as RunSpeed;
+  const onChange = (value: number) => {
+    const speed = value as RunSpeed;
     setSpeed(speed);
     props.onSpeedChange?.(speed);
   };
@@ -149,19 +150,16 @@ export const Runbar = (props: {
         }}
       >
         <span style={{ padding: "0.2rem" }}>Slow</span>
-        <Tip label="Execution speed">
-          <input
-            type="range"
-            min={0}
-            max={4}
-            step={1}
-            value={speedValue}
-            disabled={runner.state.running}
-            onChange={onChange}
-            style={{ width: "150px", padding: "0.2rem" }}
-            aria-label="Execution speed"
-          />
-        </Tip>
+        <Range
+          min={0}
+          max={4}
+          step={1}
+          value={speedValue}
+          disabled={runner.state.running}
+          onChange={onChange}
+          style={{ width: "150px", margin: "0 0.5rem" }}
+          aria-label="Execution speed"
+        />
         <span style={{ padding: "0.2rem" }}>Fast</span>
       </div>
       {props.children}
