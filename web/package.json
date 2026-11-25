@@ -61,7 +61,8 @@
     "build": "vite build",
     "postbuild": "node ./scripts/predeploy.js",
     "test": "vitest run",
-    "extract": "lingui extract"
+    "extract": "lingui extract",
+    "icons": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON ./scripts/material_symbols.mjs"
   },
   "browserslist": {
     "production": [

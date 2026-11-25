@@ -35,3 +35,13 @@
   font-display: swap;
   src: url(./be_vietnam_pro_700.ttf) format("truetype");
 }
+
+/* Material Symbols Outlined, the icon font: a static FILL 0, wght 400, GRAD 0,
+   opsz 24 instance holding only the icons in src/icons.ts (npm run icons). */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./material_symbols_outlined.woff2) format("woff2");
+}

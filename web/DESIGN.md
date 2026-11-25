@@ -145,6 +145,7 @@ A warm-grey neutral field with one yellow key colour and three small signal hues
 **Display Font:** none; the IDE has no display tier.
 **Body Font:** Be Vietnam Pro (system-ui, Segoe UI, Roboto, Noto Sans), self-hosted TTF at 400, 600 and 700 from `public/`.
 **Label/Mono Font:** JetBrains Mono (self-hosted TTF, `public/jet_brains_mono.ttf`, 400) at 15px (`--font-size-monospace`).
+**Icon Font:** Material Symbols Outlined, self-hosted `public/material_symbols_outlined.woff2`: one static style (FILL 0, wght 400, GRAD 0, opsz 24) holding only the icons listed in `src/icons.ts`, so it works offline.
 
 **Character:** A friendly, geometric sans designed for Vietnamese diacritics, paired with a plain mono for bits and code. Weight does the hierarchy, not size.
 

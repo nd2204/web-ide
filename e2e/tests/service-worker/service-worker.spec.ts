@@ -24,6 +24,7 @@ const TYPES: Record<string, string> = {
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".ttf": "font/ttf",
+  ".woff2": "font/woff2",
   ".pdf": "application/pdf",
   ".txt": "text/plain",
 };
@@ -140,6 +141,16 @@ test.describe("service worker", () => {
       await expect(page.locator(".monaco-editor").first()).toBeVisible({
         timeout: 30_000,
       });
+    });
+
+    await test.step("offline, the precached icon font still loads", async () => {
+      const icons = await page.evaluate(async () => {
+        await document.fonts.ready;
+        return [...document.fonts]
+          .filter((face) => face.family.includes("Material Symbols"))
+          .map((face) => face.status);
+      });
+      expect(icons).toEqual(["loaded"]);
     });
 
     await test.step("offline, a route not visited yet loads from the precached shell", async () => {
