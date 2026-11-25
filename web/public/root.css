@@ -1,3 +1,10 @@
+/* One layer order for Tailwind, Pico and our own rules, declared before the
+   first @import because a layer's place is fixed where it first appears.
+   Tailwind's preflight, theme.css and utilities.css are imported into `base`,
+   `theme` and `utilities` (src/ui/tailwind.css); preflight sits below Pico, so it
+   only reaches what Pico leaves unset. Unlayered rules (lecture_hall.scss) still
+   beat every layer. */
+@layer base, pico, theme, components, utilities;
 @import "./pico.min.css" layer(pico);
 @font-face {
   font-family: "JetBrains Mono";
@@ -7,11 +14,6 @@
   /* src: url(https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPQ.ttf) format('truetype'); */
   src: url(./jet_brains_mono.ttf) format("truetype");
 }
-
-/* One layer order for Pico, Tailwind and our own rules. Tailwind's theme.css and
-   utilities.css are imported into `theme` and `utilities` (src/ui/tailwind.css).
-   Unlayered rules (lecture_hall.scss) still beat every layer. */
-@layer pico, theme, components, utilities;
 
 /* Be Vietnam Pro: the UI face of the Braun theme, designed for Vietnamese. */
 @font-face {

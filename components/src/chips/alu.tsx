@@ -3,6 +3,7 @@ import {
   COMMANDS_OP,
   Flags,
 } from "@nand2tetris/simulator/cpu/alu.js";
+import "../public/alu.css";
 
 export const ALUComponent = ({
   A,

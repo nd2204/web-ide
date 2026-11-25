@@ -1,7 +1,8 @@
-// Pico styles bare elements (`button`, `input`, `textarea`, ...) in the `pico`
-// cascade layer, so it reaches into Monaco's find widget, hovers and hidden
-// input. Monaco's own stylesheet is unlayered and still wins for every
-// property it sets; `all: revert` here only removes what Pico adds on top.
+// Pico (in the `pico` layer) and Tailwind's preflight (in `base`) style bare
+// elements (`button`, `input`, `textarea`, ...), so they reach into Monaco's
+// find widget, hovers and hidden input. Monaco's own stylesheet is unlayered
+// and still wins for every property it sets; `all: revert` here only removes
+// what Pico and preflight add on top.
 // The `components` layer comes after `pico` in `public/root.css`.
 @layer components {
   .monaco-editor,
