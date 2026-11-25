@@ -55,17 +55,18 @@
 
         td {
             padding: 0;
-            border: 1px solid var(--light-grey);
+            vertical-align: top;
+            border: 1px solid var(--lh-seam);
 
             &.cell {
                 cursor: crosshair;
 
                 &.filled {
-                    background-color: var(--text-color);
+                    background-color: var(--lh-text);
                 }
 
                 &.empty {
-                    background-color: var(--card-background-color);
+                    background-color: var(--lh-panel);
                 }
             }
 
@@ -73,7 +74,8 @@
             &.col-label {
                 text-align: center;
                 font-size: 10px;
-                color: var(--light-grey);
+                // Muted ink, not the seam colour: the numbers must pass AA contrast.
+                color: var(--lh-muted);
                 padding: 2px;
                 width: auto;
                 min-width: 0;

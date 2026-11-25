@@ -31,11 +31,6 @@ const KNOWN: { rule: string; target: RegExp; why: string }[] = [
   },
   {
     rule: "color-contrast",
-    target: /\.col-label|\.row-label/,
-    why: "bitmap editor axis labels (table step)",
-  },
-  {
-    rule: "color-contrast",
     target: /\.line-numbers|tr\[data-kind="output"\]/,
     why: "muted text on panels: Braun token review, separate from this migration",
   },

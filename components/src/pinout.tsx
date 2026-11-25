@@ -46,60 +46,39 @@ export const FullPinout = (props: {
   const { inPins, outPins, internalPins } = props.sim;
   const displayInfo = getDisplayInfo(props.sim.chip[0].name ?? "");
   return (
-    <>
-      <style>{`
-        table.pinout th {
-          font-weight: bold;
-        }
-
-        table.pinout tbody td:first-child {
-          text-align: right;
-          --font-size: 1rem;
-          width: 0;
-          white-space: nowrap;
-          border-right: var(--border-width) solid var(--table-border-color);
-        }
-
-        table.pinout tbody button {
-          --font-size: 0.875em;
-          font-family: var(--font-family-monospace);
-          max-width: 2em;
-        }
-        `}</style>
-      <table className="pinout">
-        <tbody>
+    <table className="pinout">
+      <tbody>
+        <PinoutBlock
+          pins={inPins}
+          header="Input pins"
+          kind="input"
+          trace={props.trace}
+          toggle={props.toggle}
+          setInputValid={props.setInputValid}
+          displayInfo={displayInfo}
+        />
+        <PinoutBlock
+          pins={outPins}
+          header="Output pins"
+          kind="output"
+          trace={props.trace}
+          disabled={props.sim.pending}
+          enableEdit={false}
+          displayInfo={displayInfo}
+        />
+        {!props.hideInternal && (
           <PinoutBlock
-            pins={inPins}
-            header="Input pins"
-            kind="input"
-            trace={props.trace}
-            toggle={props.toggle}
-            setInputValid={props.setInputValid}
-            displayInfo={displayInfo}
-          />
-          <PinoutBlock
-            pins={outPins}
-            header="Output pins"
-            kind="output"
+            pins={internalPins}
+            header="Internal pins"
+            kind="internal"
             trace={props.trace}
             disabled={props.sim.pending}
             enableEdit={false}
             displayInfo={displayInfo}
           />
-          {!props.hideInternal && (
-            <PinoutBlock
-              pins={internalPins}
-              header="Internal pins"
-              kind="internal"
-              trace={props.trace}
-              disabled={props.sim.pending}
-              enableEdit={false}
-              displayInfo={displayInfo}
-            />
-          )}
-        </tbody>
-      </table>
-    </>
+        )}
+      </tbody>
+    </table>
   );
 };
 
@@ -117,13 +96,15 @@ export const PinoutBlock = (
   <>
     {props.pins.length > 0 && (
       <tr>
-        <th colSpan={2}>{props.header}</th>
+        <th className="pinout-heading" colSpan={2}>
+          {props.header}
+        </th>
       </tr>
     )}
     {[...props.pins].map((immPin) => (
-      <tr key={immPin.pin.name} data-kind={props.kind}>
-        <td>{immPin.pin.name}</td>
-        <td>
+      <tr key={immPin.pin.name} className="pinout-row" data-kind={props.kind}>
+        <td className="pinout-name">{immPin.pin.name}</td>
+        <td className="pinout-value">
           <Pin
             pin={immPin}
             trace={props.trace}
@@ -132,7 +113,6 @@ export const PinoutBlock = (
             enableEdit={props.enableEdit}
             signed={props.displayInfo.isSigned(immPin.pin.name)}
             setInputValid={props.setInputValid}
-            internal={props.header === "Internal pins" ? true : false}
           />
         </td>
       </tr>
@@ -154,16 +134,16 @@ export const Pinout = ({
     <table className="pinout">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Value</th>
+          <th className="pinout-heading">Name</th>
+          <th className="pinout-heading">Value</th>
         </tr>
       </thead>
       <tbody>
         {[...pins].map((immPin) => (
-          <tr key={immPin.pin.name}>
-            <td>{immPin.pin.name}</td>
-            <td>
-              <Pin pin={immPin} toggle={toggle} internal />
+          <tr key={immPin.pin.name} className="pinout-row" data-kind="internal">
+            <td className="pinout-name">{immPin.pin.name}</td>
+            <td className="pinout-value">
+              <Pin pin={immPin} toggle={toggle} />
             </td>
           </tr>
         ))}
@@ -179,7 +159,6 @@ const Pin = ({
   enableEdit = true,
   signed = true,
   setInputValid,
-  internal = false,
   trace = false,
 }: {
   trace?: boolean;
@@ -189,7 +168,6 @@ const Pin = ({
   enableEdit?: boolean;
   signed?: boolean;
   setInputValid?: (valid: boolean) => void;
-  internal: boolean;
 }) => {
   const [isBin, setIsBin] = useState(true);
   const history = usePinHistory(pin);
@@ -273,6 +251,7 @@ const Pin = ({
     >
       <fieldset
         role="group"
+        className="pin-bits"
         style={{ width: `${pin.bits.length}rem` }}
         data-changed={history.changed || undefined}
       >
@@ -280,8 +259,8 @@ const Pin = ({
           pin.bits.map(([i, v]) => (
             <button
               key={i}
+              className="pin-bit"
               disabled={disabled}
-              style={internal ? { backgroundColor: "grey" } : {}}
               onClick={() => toggle?.(pin.pin, i)}
               data-testid={`pin-${i}`}
               data-value={v}

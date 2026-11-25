@@ -1,74 +1,53 @@
-import { rounded } from "@davidsouther/jiffies/dom/css/border.ts";
-import type { CSSProperties } from "react";
-import { TranslatorSymbol } from "./stores/asm.store.js";
+import {
+  type ComponentProps,
+  createContext,
+  type ReactNode,
+  useContext,
+} from "react";
 
-export const Table = ({
-  values = [],
-  highlight = -1,
-  onClick,
-}: {
-  values?: TranslatorSymbol[];
-  highlight?: number;
-  onClick?: (id: string, value: string) => void;
-}) => {
-  return (
-    <div>
-      {values.map((entry, i) => (
-        <TableRow
-          key={i}
-          identifier={entry.name}
-          value={entry.value}
-          highlight={i === highlight}
-          onClick={() => onClick?.(entry.name, entry.value)}
-        />
-      ))}
-    </div>
-  );
+export interface TableProps extends ComponentProps<"table"> {
+  /** `compact` rows fit a long list into a small panel. */
+  density?: "default" | "compact";
+}
+
+export interface CellProps extends Omit<ComponentProps<"td">, "align"> {
+  align?: "start" | "end";
+  /** `fail` marks a value that differs from the expected one. */
+  tone?: "default" | "fail";
+}
+
+export interface HeadProps extends Omit<ComponentProps<"th">, "align"> {
+  align?: "start" | "end";
+}
+
+/**
+ * The parts of a data table. Mark the current row with `aria-current="true"`.
+ * `web` provides the shadcn Table; widgets here stay free of Radix and Tailwind.
+ */
+export interface TableParts {
+  Table: (props: TableProps) => ReactNode;
+  Header: (props: ComponentProps<"thead">) => ReactNode;
+  Body: (props: ComponentProps<"tbody">) => ReactNode;
+  Row: (props: ComponentProps<"tr">) => ReactNode;
+  Head: (props: HeadProps) => ReactNode;
+  Cell: (props: CellProps) => ReactNode;
+}
+
+/** Without a provider the parts are plain elements that the page styles itself. */
+const PlainParts: TableParts = {
+  Table: ({ density: _density, ...props }) => <table {...props} />,
+  Header: (props) => <thead {...props} />,
+  Body: (props) => <tbody {...props} />,
+  Row: (props) => <tr {...props} />,
+  Head: ({ align: _align, ...props }) => <th {...props} />,
+  Cell: ({ align: _align, tone: _tone, ...props }) => <td {...props} />,
 };
 
-const TableRow = ({
-  identifier,
-  value,
-  highlight = false,
-  onClick,
-}: {
-  identifier: string;
-  value: string;
-  highlight?: boolean;
-  onClick?: () => void;
-}) => {
-  return (
-    <div style={{ display: "flex", alignItems: "center" }} onClick={onClick}>
-      {identifier.length > 0 && (
-        <code
-          style={{
-            flex: "1",
-            ...(rounded("none") as CSSProperties),
-            ...(highlight
-              ? { background: "var(--mark-background-color)" }
-              : {}),
-            whiteSpace: "pre",
-            padding: "3px",
-          }}
-        >
-          {identifier}
-        </code>
-      )}
-      {value.length > 0 && (
-        <code
-          style={{
-            flex: "1",
-            textAlign: "right",
-            padding: "3px",
-            ...(rounded("none") as CSSProperties),
-            ...(highlight
-              ? { background: "var(--mark-background-color)" }
-              : {}),
-          }}
-        >
-          {value}
-        </code>
-      )}
-    </div>
-  );
-};
+const TableContext = createContext<TableParts>(PlainParts);
+
+export const TablePartsProvider = TableContext.Provider;
+
+/** The table parts `web` provides, or plain elements without a provider. */
+export function useTableParts(): TableParts {
+  return useContext(TableContext);
+}

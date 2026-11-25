@@ -1,5 +1,208 @@
-.pin-control {
-  max-width: 3em !important;
-  background: var(--light-grey);
-  border-color: var(--light-grey);
+/* Pin table: the chip's input, output and internal pins with their bit keys and
+   traces. Kind colour is the point of the signature: orange input, green
+   output, grey internal (the --lh-blue and --lh-amber names predate Braun).
+
+   The rules carry a `:root[data-theme] .pinout` prefix so they outrank the
+   generic button-group rule in web's lecture_hall.scss, which also matches the
+   bit fieldset. Pico's bare `td` and `th` rules still apply until Pico is deleted,
+   so each cell sets its own border, padding, colour and alignment. */
+
+:root[data-theme] .pinout {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+:root[data-theme] .pinout-heading,
+:root[data-theme] .pinout-name,
+:root[data-theme] .pinout-value {
+  border-bottom: 1px solid var(--lh-seam);
+  vertical-align: middle;
+  text-align: start;
+}
+
+:root[data-theme] .pinout-heading {
+  color: var(--lh-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.75rem 0.25rem 0.125rem;
+}
+
+:root[data-theme] .pinout-name {
+  width: 0;
+  min-width: 3rem;
+  padding: 0.125rem 0.5rem 0.125rem 0.75rem;
+  white-space: nowrap;
+  text-align: right;
+  font-family: var(--font-family-monospace);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--pin, var(--lh-muted));
+}
+
+:root[data-theme] .pinout-value {
+  padding: 0.125rem 0.4rem;
+  font-size: 0.875em;
+  font-weight: 400;
+  color: var(--lh-text);
+}
+
+:root[data-theme] .pinout-row[data-kind="input"] {
+  --pin: var(--lh-blue);
+}
+
+:root[data-theme] .pinout-row[data-kind="output"] {
+  --pin: var(--lh-green);
+}
+
+:root[data-theme] .pinout-row[data-kind="internal"] {
+  --pin: var(--lh-amber);
+}
+
+/* Bits: the joined bus is the one fused button group in the design. Reserve a
+   2px bottom edge so single-bit and bus rows share one height. */
+:root[data-theme] .pinout .pin-bits {
+  gap: 0;
+  border-bottom: 2px solid transparent;
+}
+
+:root[data-theme] .pinout .pin-bits:has(> .pin-bit:nth-child(2)) {
+  /* Beats the inline width, which is one rem per bit. A 16 bit bus must leave
+     room for the bin/dec toggle. */
+  width: 14rem !important;
+}
+
+/* Bit cells: 0 is hollow, 1 is filled with the pin's key colour. */
+:root[data-theme] .pinout .pin-bit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.1rem;
+  max-width: 2em;
+  min-height: 1.5rem;
+  margin: 0;
+  padding: 0;
+  border: 1.5px solid var(--pin);
+  border-radius: 0;
+  background: transparent;
+  color: var(--pin);
+  font-family: var(--font-family-monospace);
+  font-weight: 700;
+  line-height: 1;
+}
+
+:root[data-theme] .pinout .pin-bit:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pin) 20%, transparent);
+}
+
+:root[data-theme] .pinout .pin-bit:first-child {
+  border-radius: 999px 0 0 999px;
+}
+
+:root[data-theme] .pinout .pin-bit:last-child {
+  border-radius: 0 999px 999px 0;
+}
+
+/* A single bit is a round cell; bus bits stay narrow so 16 fit. */
+:root[data-theme] .pinout .pin-bit:not(:only-child) {
+  font-size: 0.8rem;
+  min-width: 0;
+}
+
+/* A calculator key: it presses in and springs back, a 1 is filled with the pin
+   colour, and a pin that changed on the last step keeps a lamp lit. */
+:root[data-theme] .pinout .pin-bit:only-child {
+  --lip: color-mix(in srgb, var(--pin) 55%, black);
+  min-width: 1.5rem;
+  border-radius: 999px;
+  box-shadow: inset 0 -3px 0 var(--lip);
+  transition:
+    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 120ms var(--lh-ease),
+    color 120ms var(--lh-ease);
+}
+
+:root[data-theme] .pinout .pin-bit:only-child[data-value="1"] {
+  background: var(--pin);
+  color: var(--lh-ground);
+}
+
+:root[data-theme] .pinout .pin-bit:only-child:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: inset 0 0 0 var(--lip);
+  transition-duration: 60ms;
+}
+
+:root[data-theme] .pinout .pin-bits[data-changed] {
+  position: relative;
+}
+
+:root[data-theme] .pinout .pin-bits[data-changed]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -0.75rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: -0.2rem;
+  border-radius: 50%;
+  background: var(--pin);
+}
+
+/* The bin/dec toggle beside a bus. */
+:root[data-theme] .pinout .pin-control {
+  min-width: 2.4rem;
+  max-width: 3em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-family: var(--font-family-monospace);
+  font-size: 0.75rem;
+  background: var(--lh-seam);
+  border-color: var(--lh-seam);
+}
+
+/* The trace fills the rest of the row. A gridline marks each step and the
+   newest step is tinted, so values line up in time down the panel. */
+:root[data-theme] .pinout .pin-trace {
+  margin-left: 1.25rem;
+  margin-right: 0.5rem;
+  flex: 1 1 auto;
+  min-width: 8rem;
+  height: 1.6rem;
+  align-self: center;
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--pin) 16%, transparent),
+      color-mix(in srgb, var(--pin) 16%, transparent)
+    ),
+    linear-gradient(to right, var(--lh-seam) 1px, transparent 1px);
+  background-size:
+    calc(100% / 16) 100%,
+    calc(100% / 16) 100%;
+  background-position:
+    right top,
+    left top;
+  background-repeat: no-repeat, repeat-x;
+}
+
+:root[data-theme] .pinout .pin-trace polyline {
+  fill: none;
+  stroke: var(--pin);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Touch: 44px targets on coarse pointers. */
+@media (pointer: coarse) {
+  :root[data-theme] .pinout .pin-bit {
+    min-height: 44px;
+  }
+
+  :root[data-theme] .pinout .pin-bit:not(:only-child) {
+    min-width: 1.6rem;
+  }
 }

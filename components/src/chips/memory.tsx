@@ -1,4 +1,3 @@
-import { rounded } from "@davidsouther/jiffies/dom/css/border.ts";
 import {
   FORMATS,
   Format,
@@ -8,7 +7,6 @@ import { loadAsm, loadBlob, loadHack } from "@nand2tetris/simulator/loader.js";
 import { asm } from "@nand2tetris/simulator/util/asm.js";
 import { bin, dec, hex } from "@nand2tetris/simulator/util/twos.js";
 import {
-  type CSSProperties,
   forwardRef,
   ReactNode,
   useCallback,
@@ -27,6 +25,7 @@ import { useStateInitializer } from "../react.js";
 import { BaseContext } from "../stores/base.context.js";
 import { Tip, type TipPlacement } from "../tooltip.js";
 import VirtualScroll, { VirtualScrollSettings } from "../virtual_scroll.js";
+import "../public/memory.css";
 
 const ITEM_HEIGHT = 34;
 
@@ -127,37 +126,20 @@ export const MemoryCell = ({
   onChange?: (i: number, value: string, previous: number) => void;
   onFocus?: (i: number) => void;
 }) => (
-  <div style={{ display: "flex", height: "100%" }}>
-    {showLabel && (
-      <code
-        style={{
-          ...(rounded("none") as CSSProperties),
-          ...(highlight ? { background: "var(--mark-background-color)" } : {}),
-          whiteSpace: "pre",
-        }}
-      >
-        {label ?? ""}
-      </code>
-    )}
-    <code
-      style={{
-        ...(rounded("none") as CSSProperties),
-        ...(highlight ? { background: "var(--mark-background-color)" } : {}),
-        whiteSpace: "pre",
-      }}
-    >
+  <div
+    className="memory-cell"
+    data-current={highlight || undefined}
+    style={{ display: "flex", height: "100%" }}
+  >
+    {showLabel && <code>{label ?? ""}</code>}
+    <code>
       {size
         ? dec(index).padStart(Math.ceil(Math.log10(size)), " ")
         : dec(index)}
     </code>
     <code
-      style={{
-        flex: "1",
-        textAlign: justifyLeft ? "left" : "right",
-        color: "var(--text-color)",
-        ...(rounded("none") as CSSProperties),
-        ...(highlight ? { background: "var(--mark-background-color)" } : {}),
-      }}
+      className="memory-cell-value"
+      style={{ flex: "1", textAlign: justifyLeft ? "left" : "right" }}
     >
       {editable ? (
         <InlineEdit
@@ -169,7 +151,7 @@ export const MemoryCell = ({
           onFocus={() => onFocus(index)}
         />
       ) : (
-        <span style={{ color: "var(--text-color)" }}>{value}</span>
+        <span>{value}</span>
       )}
     </code>
   </div>

@@ -56,12 +56,4 @@
   ._test_panel {
     grid-area: test;
   }
-
-  tbody {
-    font-family: var(--font-family-monospace);
-  }
-
-  tr.highlight {
-    background-color: antiquewhite;
-  }
 }

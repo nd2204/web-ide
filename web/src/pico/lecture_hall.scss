@@ -49,7 +49,6 @@
   --card-background-color: var(--lh-panel);
   --card-border-color: var(--lh-seam);
   --card-sectionning-background-color: var(--lh-raised);
-  --table-border-color: var(--lh-seam);
   --form-element-background-color: var(--lh-raised);
   --form-element-border-color: var(--lh-seam);
   --form-element-color: var(--lh-text);
@@ -261,15 +260,6 @@
     }
   }
 
-  .pin-control {
-    --form-element-spacing-horizontal: 0.5rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    white-space: nowrap;
-    padding: 0.2rem 0.55rem;
-    min-width: 2.4rem;
-  }
-
   // Tabs become pills inside the panel.
   [role="tablist"] {
     --border: 1px solid transparent;
@@ -338,192 +328,6 @@
     border: 0;
     background: transparent;
     box-shadow: none;
-  }
-
-  // Pin table: kind colour is the point of the signature.
-  table.pinout {
-    border-collapse: separate;
-    border-spacing: 0;
-
-    th {
-      color: var(--lh-muted);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding-top: 0.75rem;
-    }
-
-    tbody td:first-child {
-      font-family: var(--font-family-monospace);
-      font-size: 0.9rem;
-      color: var(--lh-muted);
-      border-right: 0;
-      min-width: 3rem;
-      padding-left: 0.75rem;
-      padding-right: 0.5rem;
-    }
-
-    tr[data-kind="input"] {
-      --pin: var(--lh-blue);
-    }
-
-    tr[data-kind="output"] {
-      --pin: var(--lh-green);
-    }
-
-    tr[data-kind="internal"] {
-      --pin: var(--lh-amber);
-    }
-
-    tr[data-kind] td:first-child {
-      color: var(--pin);
-    }
-
-    // Bit cells: 0 is hollow, 1 is filled with the pin's key colour.
-    tr[data-kind] fieldset button,
-    tr[data-kind] fieldset button[style] {
-      background: transparent !important;
-      border: 1.5px solid var(--pin);
-      color: var(--pin);
-      font-family: var(--font-family-monospace);
-      font-weight: 700;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 1.1rem;
-      min-height: 1.5rem;
-      padding: 0;
-      line-height: 1;
-
-      // A single bit is a round cell; bus bits stay narrow so 16 fit.
-      &:not(:only-child) {
-        font-size: 0.8rem;
-        min-width: 0;
-      }
-
-      &:only-child {
-        min-width: 1.5rem;
-      }
-
-      &:hover:not(:disabled) {
-        background: color-mix(in srgb, var(--pin) 20%, transparent) !important;
-      }
-    }
-
-    // Reserve a 2px bottom edge so single-bit and bus rows share one height.
-    tr[data-kind] fieldset {
-      border-bottom: 2px solid transparent;
-    }
-
-    // A 16 bit bus must leave room for the bin/dec toggle.
-    tr[data-kind] fieldset {
-      gap: 0;
-
-      > button {
-        margin: 0;
-        border-radius: 0;
-
-        &:first-child {
-          border-radius: 999px 0 0 999px;
-        }
-
-        &:last-child {
-          border-radius: 0 999px 999px 0;
-        }
-
-        &:only-child {
-          border-radius: 999px;
-        }
-      }
-    }
-
-    tr[data-kind] fieldset:has(> button:nth-child(2)) {
-      width: 14rem !important;
-    }
-
-    // A calculator key: it presses in and springs back, a 1 is filled with the
-    // pin colour, and a pin that changed on the last step keeps a lamp lit.
-    tr[data-kind] fieldset button:only-child {
-      --lip: color-mix(in srgb, var(--pin) 55%, black);
-      box-shadow: inset 0 -3px 0 var(--lip);
-      transition:
-        transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
-        background-color 120ms var(--lh-ease),
-        color 120ms var(--lh-ease);
-
-      &[data-value="1"] {
-        background: var(--pin) !important;
-        color: var(--lh-ground);
-      }
-
-      &:active:not(:disabled) {
-        transform: translateY(2px);
-        box-shadow: inset 0 0 0 var(--lip);
-        transition-duration: 60ms;
-      }
-    }
-
-    tr[data-kind] fieldset[data-changed] {
-      position: relative;
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        right: -0.75rem;
-        width: 0.4rem;
-        height: 0.4rem;
-        margin-top: -0.2rem;
-        border-radius: 50%;
-        background: var(--pin);
-      }
-    }
-
-    td {
-      vertical-align: middle;
-      padding-left: 0.4rem;
-      padding-right: 0.4rem;
-    }
-
-    // The trace fills the rest of the row. A gridline marks each step and the
-    // newest step is tinted, so values line up in time down the panel.
-    .pin-trace {
-      margin-left: 1.25rem;
-      margin-right: 0.5rem;
-      flex: 1 1 auto;
-      min-width: 8rem;
-      height: 1.6rem;
-      align-self: center;
-      background-image:
-        linear-gradient(
-          color-mix(in srgb, var(--pin) 16%, transparent),
-          color-mix(in srgb, var(--pin) 16%, transparent)
-        ),
-        linear-gradient(to right, var(--lh-seam) 1px, transparent 1px);
-      background-size:
-        calc(100% / 16) 100%,
-        calc(100% / 16) 100%;
-      background-position:
-        right top,
-        left top;
-      background-repeat: no-repeat, repeat-x;
-
-      polyline {
-        fill: none;
-        stroke: var(--pin);
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-    }
-  }
-
-  // Tables elsewhere (diff table, compare output).
-  table {
-    --table-border-color: var(--lh-seam);
   }
 
   // Dropdowns take the same slate.
@@ -723,13 +527,8 @@
     }
 
     label[role="tab"],
-    [role="tab"] label,
-    table.pinout tr[data-kind] fieldset button {
+    [role="tab"] label {
       min-height: 44px;
-    }
-
-    table.pinout tr[data-kind] fieldset button:not(:only-child) {
-      min-width: 1.6rem;
     }
   }
 }
@@ -755,7 +554,7 @@
     padding: 0.4rem 0.75rem;
   }
 
-  // Accordions (Registers) and the tables inside them.
+  // Accordions (Registers) and the register list inside them.
   details {
     margin: 0;
 
@@ -763,18 +562,8 @@
       padding: 0.35rem 0.75rem;
     }
 
-    table {
-      width: auto;
-      margin: 0 0.75rem 0.6rem;
-    }
-
     dl {
       margin: 0 0.75rem 0.6rem;
-    }
-
-    td,
-    th {
-      padding: 0.3rem 0.75rem;
     }
   }
 

@@ -28,10 +28,12 @@
 
   .sym {
     grid-area: sym;
+  }
 
-    // Override `article.panel.editor { overflow-y: hidden }` so many labels scroll.
-    &.editor {
-      overflow-y: auto;
-    }
+  // Override `article.panel.editor { overflow-y: hidden }` so many labels
+  // scroll. That rule in lecture_hall.scss sits under `:root[data-theme]`, so
+  // this one needs the same prefix to outrank it.
+  :root[data-theme] & .sym.editor {
+    overflow-y: auto;
   }
 }
