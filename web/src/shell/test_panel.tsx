@@ -33,14 +33,16 @@ import {
   DialogContent,
   DialogDescription,
 } from "../ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Editor } from "./editor";
 import { isPath } from "./file_select";
 import { Panel } from "./panel";
 import { SwitchRow } from "./switch_row";
-import { Tab, TabList } from "./tabs";
 import { Tip } from "./tip";
 
 const WARNING_KEY = "skipTestEditWarning";
+
+type TestTab = "tst" | "cmp" | "out" | "diff";
 
 export const TestPanel = ({
   runner: baseRunner,
@@ -111,7 +113,7 @@ export const TestPanel = ({
   }, [baseRunner]);
 
   const setSelectedTestTab = useCallback(
-    (tab: "tst" | "cmp" | "out" | "diff") => {
+    (tab: TestTab) => {
       tracking.trackEvent("tab", "change", tab);
     },
     [tracking],
@@ -208,14 +210,16 @@ export const TestPanel = ({
   return (
     <Panel
       className="_test_panel"
+      title={
+        <>
+          <Trans>Test</Trans>
+          {showName && (name == "" ? ": Default" : `: ${name}`)}
+        </>
+      }
       header={
         <>
-          <div>
-            <Trans>Test</Trans>
-            {showName && (name == "" ? ": Default" : `: ${name}`)}
-          </div>
           {editWarning}
-          <div className="stack-item-1">
+          <div className="flex-1">
             {runner.current && (
               <Runbar
                 prefix={
@@ -250,8 +254,25 @@ export const TestPanel = ({
         </>
       }
     >
-      <TabList>
-        <Tab title={t`Test Script`} onSelect={() => setSelectedTestTab("tst")}>
+      <Tabs
+        defaultValue="tst"
+        onValueChange={(tab) => setSelectedTestTab(tab as TestTab)}
+      >
+        <TabsList>
+          <TabsTrigger value="tst">
+            <Trans>Test Script</Trans>
+          </TabsTrigger>
+          <TabsTrigger value="cmp">
+            <Trans>Compare File</Trans>
+          </TabsTrigger>
+          <TabsTrigger value="out">
+            <Trans>Output File</Trans>
+          </TabsTrigger>
+          <TabsTrigger value="diff">
+            <Trans>Diff Table</Trans>
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="tst">
           <Editor
             value={tst}
             path={`${tstName ?? "test"}.tst`}
@@ -261,8 +282,8 @@ export const TestPanel = ({
             disabled={true}
             highlight={showHighlight ? tstHighlight : undefined}
           />
-        </Tab>
-        <Tab title={t`Compare File`} onSelect={() => setSelectedTestTab("cmp")}>
+        </TabsContent>
+        <TabsContent value="cmp">
           <Editor
             value={cmp}
             path={`${tstName ?? "test"}.cmp`}
@@ -272,8 +293,8 @@ export const TestPanel = ({
             lineNumberTransform={(_) => ""}
             disabled={true}
           />
-        </Tab>
-        <Tab title={t`Output File`} onSelect={() => setSelectedTestTab("out")}>
+        </TabsContent>
+        <TabsContent value="out">
           {out == "" && (
             <p>
               <Trans>Execute test script to generate output.</Trans>
@@ -289,8 +310,8 @@ export const TestPanel = ({
             disabled={true}
             lineNumberTransform={(_) => ""}
           />
-        </Tab>
-        <Tab title={t`Diff Table`} onSelect={() => setSelectedTestTab("diff")}>
+        </TabsContent>
+        <TabsContent value="diff">
           {out == "" && (
             <p>
               <Trans>Execute test script to compare output.</Trans>
@@ -321,8 +342,8 @@ export const TestPanel = ({
               };
             })}
           />
-        </Tab>
-      </TabList>
+        </TabsContent>
+      </Tabs>
     </Panel>
   );
 };

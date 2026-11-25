@@ -275,12 +275,12 @@ export const FilePicker = () => {
           style={{ display: "none" }}
           webkitdirectory={filePicker.allowFolders ? "true" : undefined}
         ></input>
-        <div className="stack">
+        <div className="flex flex-col">
           <a ref={downloadRef} style={{ display: "none" }} />
           <div>
             <b>{fs.cwd()}</b>
           </div>
-          <div className="stack stack-wrap files-container">
+          <div className="flex flex-col flex-wrap files-container">
             {files.map((file) => (
               <FileEntry
                 key={file.name}

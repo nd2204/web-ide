@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { panel } from "../helpers";
 import { FilePicker } from "./FilePicker";
 import { RamPanel } from "./RamPanel";
 
@@ -8,7 +9,7 @@ export class VmPage {
 
   constructor(private _page: Page) {
     this.filePicker = new FilePicker(_page);
-    this.ramPanel = new RamPanel(_page.locator("article.panel.memory.RAM"));
+    this.ramPanel = new RamPanel(panel(_page, "RAM").first());
   }
 
   get page(): Page {
@@ -16,11 +17,11 @@ export class VmPage {
   }
 
   get vmStructures(): Locator {
-    return this._page.locator("article.panel.vm");
+    return panel(this._page, "VM Structures");
   }
 
   private get vmRunbar(): Locator {
-    return this._page.locator("article.panel.program");
+    return panel(this._page, "VM Code");
   }
 
   async loadProjectFile(

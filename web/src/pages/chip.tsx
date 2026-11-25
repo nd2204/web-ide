@@ -40,10 +40,16 @@ import { registerCustomChip, resetCustomChips } from "../languages/hdl";
 import { reloadHdlLanguage } from "../languages/loader";
 import { PageContext } from "../Page.context";
 import { Editor } from "../shell/editor";
-import { Accordian, Panel } from "../shell/panel";
+import { Panel } from "../shell/panel";
 import { TestPanel } from "../shell/test_panel";
 import { Tip } from "../shell/tip";
 import { zip } from "../shell/zip";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 
 interface CompileInput {
   hdl: string;
@@ -295,15 +301,13 @@ export const Chip = () => {
   const hdlPanel = (
     <Panel
       className="_hdl_panel"
-      isEditorPanel={true}
+      overflow="clip"
+      title={<span tabIndex={0}>HDL</span>}
       header={
         <>
-          <div tabIndex={0}>HDL</div>
           <label
+            className="flex items-center gap-2 self-center"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
               visibility: hasBuiltinChip(state.controls.chipName)
                 ? "visible"
                 : "hidden",
@@ -316,7 +320,7 @@ export const Chip = () => {
             <Trans>Builtin</Trans>
           </label>
           <div style={{ width: "30px" }}></div>
-          <div className="stack-item-4">{selectors}</div>
+          <div className="flex-4">{selectors}</div>
           <fieldset role="group">
             <Tip label={t`Open an HDL file directly`} placement="bottom">
               <Button
@@ -342,7 +346,7 @@ export const Chip = () => {
       }
     >
       <Editor
-        className="stack-item-1"
+        className="flex-1"
         value={hdl}
         error={state.controls.error}
         onChange={async (source) => {
@@ -432,14 +436,12 @@ export const Chip = () => {
   const pinsPanel = (
     <Panel
       className="_parts_panel"
-      header={
+      title={
         <>
-          <div>
-            <Trans>Chip</Trans> {state.controls.chipName}
-          </div>
-          {chipButtons}
+          <Trans>Chip</Trans> {state.controls.chipName}
         </>
       }
+      header={chipButtons}
     >
       {state.sim.invalid ? (
         <Trans>Syntax errors in the HDL code or test</Trans>
@@ -456,9 +458,16 @@ export const Chip = () => {
               />
             </PinContext.Provider>
             {visualizations.length > 0 && (
-              <Accordian summary={<Trans>Visualization</Trans>} open={true}>
-                <main>{visualizations.map(([_, v]) => v)}</main>
-              </Accordian>
+              <Accordion defaultValue={["visualization"]}>
+                <AccordionItem value="visualization">
+                  <AccordionTrigger>
+                    <Trans>Visualization</Trans>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    {visualizations.map(([_, v]) => v)}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             )}
           </>
         )

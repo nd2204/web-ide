@@ -1,48 +1,45 @@
-import { CSSProperties, ReactNode } from "react";
-import "./../pico/accordion.scss";
+import type { PanelProps } from "@nand2tetris/components/panel.js";
+import { useId } from "react";
+import {
+  PanelBody,
+  PanelHeader,
+  Panel as PanelRoot,
+  PanelTitle,
+} from "../ui/panel";
 
-export const Panel = (props: {
-  children: ReactNode;
-  header?: ReactNode;
-  footer?: ReactNode;
-  className?: string;
-  style?: CSSProperties;
-  isEditorPanel?: boolean;
-}) => {
+/**
+ * A tool panel: a title bar (the title, then its controls) over the content.
+ * A titled panel is a region named by its title. `components` widgets get the
+ * same panel through `PanelProvider` (see `form_controls.tsx`).
+ */
+export function Panel({
+  children,
+  title,
+  header,
+  className,
+  style,
+  overflow,
+  "aria-label": label,
+}: PanelProps) {
+  const titleId = useId();
   return (
-    <article
-      className={[
-        "panel",
-        props.className ?? "",
-        props.isEditorPanel ? "editor" : "",
-      ].join(" ")}
+    <PanelRoot
+      role={title || label ? "region" : undefined}
+      aria-labelledby={title ? titleId : undefined}
+      aria-label={title ? undefined : label}
+      className={className}
+      style={style}
+      overflow={overflow}
     >
-      {props.header && <header>{props.header}</header>}
-      <main>{props.children}</main>
-      {props.footer && <footer>{props.footer}</footer>}
-    </article>
+      {(title || header) && (
+        <PanelHeader>
+          {title && <PanelTitle id={titleId}>{title}</PanelTitle>}
+          {header}
+        </PanelHeader>
+      )}
+      <PanelBody layout={overflow === "clip" ? "fill" : "flow"}>
+        {children}
+      </PanelBody>
+    </PanelRoot>
   );
-};
-
-export const Accordian = (props: {
-  children: ReactNode;
-  summary: ReactNode;
-  className?: string;
-  style?: CSSProperties;
-  open?: boolean;
-}) => {
-  return (
-    <details
-      className={props.className ?? ""}
-      open={props.open}
-      style={props.style}
-    >
-      <summary>
-        <div className="stack stack-row stack-align-baseline">
-          {props.summary}
-        </div>
-      </summary>
-      {props.children}
-    </details>
-  );
-};
+}

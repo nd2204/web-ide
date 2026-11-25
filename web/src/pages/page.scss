@@ -1,11 +1,6 @@
-@use "../shell/tab.scss";
-
 .Page {
-  h2 {
-    margin: 0 var(--nav-element-spacing-horizontal);
-  }
-
-  --screen-size: calc(512px + calc(var(--block-spacing-horizontal) * 5));
+  // The Hack screen is 512px wide, plus room for its panel's edges.
+  --screen-size: calc(512px + 1.25rem);
 
   height: 100%;
 

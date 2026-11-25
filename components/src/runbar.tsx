@@ -5,6 +5,7 @@ import { Range } from "./range.js";
 import { useStateInitializer } from "./react.js";
 import { useTimer } from "./timer.js";
 import { Tip } from "./tooltip.js";
+import "./public/runbar.css";
 
 interface RunbarTooltipOverrides {
   step: string;
@@ -69,7 +70,7 @@ export const Runbar = (props: {
   });
 
   return (
-    <div className="stack stack-row stack-wrap">
+    <div className="runbar">
       <fieldset role="group">
         {props.prefix}
         <Tip label={props.overrideTooltips?.step ?? `Step`}>

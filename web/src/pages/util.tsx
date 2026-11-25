@@ -11,6 +11,7 @@ import {
 } from "@nand2tetris/simulator/util/twos.js";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 
+import { Panel } from "../shell/panel";
 import { Input } from "../ui/input";
 import "./property.scss";
 
@@ -94,13 +95,14 @@ export const Util = () => {
   const [error, setError] = useState<string | undefined>();
 
   return (
-    <article>
-      <header>
-        <h2>
+    <Panel
+      title={
+        <h2 className="m-0 whitespace-normal text-base font-bold leading-tight">
           <Trans>Convert Hack Number Types</Trans>
         </h2>
-      </header>
-      <main>
+      }
+    >
+      <div className="px-3 py-2">
         <dl>
           <dt>
             <label htmlFor="util_setBin">
@@ -182,8 +184,8 @@ export const Util = () => {
           </dd>
         </dl>
         {error && <p>{error}</p>}
-      </main>
-    </article>
+      </div>
+    </Panel>
   );
 };
 

@@ -51,6 +51,16 @@ export function dialog(page: Page, name: string | RegExp): Locator {
   return page.getByRole("dialog", { name });
 }
 
+/** A titled panel (a `region` named by its title), e.g. "RAM" or "VM Code". */
+export function panel(page: Page, name: string | RegExp): Locator {
+  return page.getByRole("region", { name, exact: typeof name === "string" });
+}
+
+/** The test panel; its title is "Test", or "Test: <name>" on some pages. */
+export function testPanel(page: Page): Locator {
+  return panel(page, /^Test(:|$)/);
+}
+
 /** A button or link in the header toolbar, by accessible name (e.g. "Settings"). */
 export function headerButton(page: Page, name: string): Locator {
   return page.getByRole("toolbar").getByLabel(name, { exact: true });

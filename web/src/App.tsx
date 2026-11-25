@@ -21,7 +21,6 @@ import { Settings } from "./shell/settings";
 import { TipRoot } from "./shell/tip";
 import { TooltipProvider } from "./ui/tooltip";
 import urls from "./urls";
-import "./pico/flex.scss";
 import "./pico/pico.scss";
 import { TrackingBanner } from "./tracking";
 import { updateVersion } from "./versions";
@@ -80,7 +79,7 @@ function App() {
                     <FilePicker />
                     <Router basename={import.meta.env.BASE_URL}>
                       <Header />
-                      <main className="stack stack-item-1">
+                      <main className="flex flex-1 flex-col">
                         <ErrorBoundary fallback={RenderError}>
                           <Suspense
                             fallback={

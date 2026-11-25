@@ -1,4 +1,4 @@
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import Markdown from "../shell/markdown";
 import aboutContent from "./ABOUT.md?raw";
 
@@ -12,8 +12,15 @@ const useVersion = () => {
 
 export const About = () => {
   const version = useVersion();
+  const { t } = useLingui();
   return (
-    <div style={{ overflowY: "scroll" }}>
+    // The page scrolls here; focusable so the keyboard can scroll it.
+    <div
+      role="group"
+      aria-label={t`About`}
+      tabIndex={0}
+      className="overflow-y-scroll"
+    >
       <div className="container">
         <Markdown>{aboutContent}</Markdown>
         <p>

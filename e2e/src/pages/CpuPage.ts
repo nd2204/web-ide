@@ -1,5 +1,5 @@
 import { expect, type Page } from "@playwright/test";
-import { pick } from "../helpers";
+import { panel, pick, testPanel } from "../helpers";
 import { FilePicker } from "./FilePicker";
 import { RamPanel } from "./RamPanel";
 
@@ -9,7 +9,7 @@ export class CpuPage {
 
   constructor(private _page: Page) {
     this.filePicker = new FilePicker(_page);
-    this.ramPanel = new RamPanel(_page.locator("article.panel.memory.RAM"));
+    this.ramPanel = new RamPanel(panel(_page, "RAM"));
   }
 
   get page(): Page {
@@ -21,22 +21,22 @@ export class CpuPage {
     await pick(this._page, picker, name);
     await expect(picker).toHaveText(name);
     await expect(
-      this._page
-        .locator("article._test_panel")
-        .getByRole("button", { name: "Run Test", exact: true }),
+      testPanel(this._page).getByRole("button", {
+        name: "Run Test",
+        exact: true,
+      }),
     ).toBeEnabled();
   }
 
   async loadProgram(pathSegments: string[]): Promise<void> {
-    await this._page
-      .locator("article.panel.memory.ROM")
+    await panel(this._page, "ROM")
       .getByRole("button", { name: "Load an .asm or .hack file", exact: true })
       .click();
     await this.filePicker.selectPath(pathSegments);
   }
 
   private get ioPanel() {
-    return this._page.locator("article.panel.IO");
+    return panel(this._page, "Computer");
   }
 
   async readRamCell(address: number): Promise<number> {

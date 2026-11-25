@@ -23,11 +23,18 @@ dl {
 
   dd,
   dt {
-    padding: 0.15rem 0.25rem;
+    display: flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
     border: 1px solid var(--lh-seam);
 
     &:nth-of-type(even) {
       background-color: color-mix(in srgb, var(--lh-text) 3%, transparent);
     }
   }
+}
+
+// The CPU registers sit inset under their accordion bar.
+dl.registers {
+  margin: 0 0.75rem 0.6rem;
 }

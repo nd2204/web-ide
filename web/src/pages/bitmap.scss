@@ -7,7 +7,6 @@
 
     .canvas-panel {
         grid-area: canvas;
-        overflow: auto;
     }
 
     .code-panel {
@@ -17,35 +16,6 @@
 
     .controls-panel {
         grid-area: controls;
-    }
-
-    // Tab button group for Jack/Hack
-    .tab-container {
-        display: flex;
-        gap: 0;
-
-        .tab-button {
-            padding: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
-            border: 1px solid var(--card-border-color);
-            background-color: var(--secondary);
-            color: var(--secondary-inverse);
-            cursor: pointer;
-            margin-bottom: -1px;
-            position: relative;
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-            font-weight: normal;
-
-            &.active {
-                background-color: var(--primary);
-                color: var(--primary-inverse);
-                border-bottom: 1px solid var(--primary);
-                font-weight: bold;
-            }
-
-            &:hover:not(.active) {
-                background-color: var(--secondary-hover);
-            }
-        }
     }
 
     // Canvas grid styling
@@ -107,10 +77,10 @@
     .control-row {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--spacing);
+        gap: 0.4rem 0.75rem;
         align-items: center;
-        padding: var(--spacing);
-        border-top: 1px solid var(--card-border-color);
+        padding: 0.4rem 0.75rem;
+        border-top: 1px solid var(--lh-seam);
 
         &:first-child {
             border-top: none;
@@ -119,7 +89,7 @@
         // Button groups
         .button-group {
             display: flex;
-            gap: var(--spacing);
+            gap: 0.25rem;
             align-items: center;
         }
     }

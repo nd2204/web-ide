@@ -7,7 +7,7 @@ import { pick } from "../helpers";
  * scrollable list of two-cell rows: an address cell followed by a value cell.
  *
  * The constructor takes a parent locator (not a Page) so the same component
- * can be scoped under whatever article/section contains the RAM panel on each
+ * can be scoped to the RAM panel region on each
  * tool.
  */
 export class RamPanel {

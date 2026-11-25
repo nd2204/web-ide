@@ -66,14 +66,8 @@ test.describe("phone", { tag: "@smoke" }, () => {
     await expectPrimitiveTargets(page);
   });
 
-  // Known defect today: the Chip page's editor wrappers are wider than a phone
-  // and are clipped by their panels. `test.fail` starts failing (and must
-  // become a plain test) when the Panel step fixes it.
+  // The test panel's tabs wrap onto more rows instead of widening the panel.
   test("chip page content does not overflow the viewport", async ({ page }) => {
-    test.fail(
-      true,
-      "Chip editor wrappers overflow a phone until the Panel step",
-    );
     await page.goto("chip");
     await expect(page.locator(".ChipPage")).toBeVisible();
     await expectNoHorizontalOverflow(page, ".ChipPage");

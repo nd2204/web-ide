@@ -28,12 +28,6 @@
 
     ._test_panel {
       grid-area: tst;
-
-      main {
-        > .Editor {
-          max-height: 50%;
-        }
-      }
     }
   }
 }
@@ -50,12 +44,6 @@
 
     ._test_panel {
       grid-area: tst;
-
-      main {
-        > .Editor {
-          max-height: 40%;
-        }
-      }
     }
   }
 }

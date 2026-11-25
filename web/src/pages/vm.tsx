@@ -224,30 +224,26 @@ const VM = () => {
     >
       <Panel
         className="program"
-        isEditorPanel={true}
+        overflow="clip"
+        title={<Trans>VM Code</Trans>}
         header={
-          <>
-            <div className="stack-item-0" style={{ whiteSpace: "nowrap" }}>
-              <Trans>VM Code</Trans>
-            </div>
-            <div className="stack-item-1">
-              {runnersAssigned && vmRunner.current && (
-                <Runbar
-                  prefix={
-                    <Tip label={t`Load files`} placement="bottom">
-                      <Button onClick={load} aria-label={t`Load files`}>
-                        <Icon name="folder_open" />
-                      </Button>
-                    </Tip>
-                  }
-                  runner={vmRunner.current}
-                  disabled={!state.controls.valid}
-                  speed={state.config.speed}
-                  onSpeedChange={(speed) => onSpeedChange(speed, false)}
-                />
-              )}
-            </div>
-          </>
+          <div className="flex-1">
+            {runnersAssigned && vmRunner.current && (
+              <Runbar
+                prefix={
+                  <Tip label={t`Load files`} placement="bottom">
+                    <Button onClick={load} aria-label={t`Load files`}>
+                      <Icon name="folder_open" />
+                    </Button>
+                  </Tip>
+                }
+                runner={vmRunner.current}
+                disabled={!state.controls.valid}
+                speed={state.config.speed}
+                onSpeedChange={(speed) => onSpeedChange(speed, false)}
+              />
+            )}
+          </div>
         }
       >
         <Editor
@@ -262,7 +258,7 @@ const VM = () => {
           error={state.controls.error}
         />
       </Panel>
-      <Panel className="vm" header={<Trans>VM Structures</Trans>}>
+      <Panel className="vm" title={<Trans>VM Structures</Trans>}>
         <>
           {state.vm.Stack.length > 0 && (
             <VMStackFrame
@@ -433,7 +429,7 @@ function VMStackFrame({
 }) {
   return (
     <section>
-      <main>
+      <div>
         <p>
           <Trans>Stack:</Trans>
           <code>[{frame.stack.values.join(", ")}]</code>
@@ -480,7 +476,7 @@ function VMStackFrame({
             <code>[{temp.join(", ")}]</code>
           </p>
         )}
-      </main>
+      </div>
     </section>
   );
 }

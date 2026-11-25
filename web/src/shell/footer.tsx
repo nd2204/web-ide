@@ -2,7 +2,7 @@ import StatusLine from "./statusline";
 
 const Footer = () => {
   return (
-    <footer className="stack stack-row stack-justify-between">
+    <footer className="flex flex-row items-baseline justify-between">
       <StatusLine />
     </footer>
   );

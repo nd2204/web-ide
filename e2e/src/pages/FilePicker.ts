@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { dialog } from "../helpers";
+import { dialog, panel } from "../helpers";
 
 export class FilePicker {
   private readonly dialog: Locator;
@@ -7,7 +7,7 @@ export class FilePicker {
 
   constructor(private _page: Page) {
     this.dialog = dialog(_page, "Choose file");
-    this.vmRunbar = _page.locator("article.panel.program");
+    this.vmRunbar = panel(_page, "VM Code");
   }
 
   async open(): Promise<void> {

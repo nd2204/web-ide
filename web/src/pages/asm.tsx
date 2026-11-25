@@ -152,13 +152,11 @@ export const Asm = () => {
     <div className={`AsmPage grid ${showSymbolTable ? "" : "hide-sym"}`}>
       <Panel
         className="source"
-        isEditorPanel={true}
+        overflow="clip"
+        title={<Trans>Source</Trans>}
         header={
           <>
-            <div>
-              <Trans>Source</Trans>
-            </div>
-            <div className="stack-item-1">
+            <div className="flex-1">
               {runnerAssigned && runner.current && (
                 <Runbar
                   runner={runner.current}
@@ -222,12 +220,10 @@ export const Asm = () => {
       </Panel>
       <Panel
         className="result"
-        isEditorPanel={true}
+        overflow="clip"
+        title={<Trans>Binary Code</Trans>}
         header={
           <>
-            <div>
-              <Trans>Binary Code</Trans>
-            </div>
             <div>
               <a ref={fileDownloadRef} style={{ display: "none" }} />
               <Link
@@ -279,12 +275,13 @@ export const Asm = () => {
       </Panel>
       <Panel
         className="sym"
-        isEditorPanel={true}
+        title={
+          <span id="asm-symbol-table-title">
+            <Trans>Symbol Table</Trans>
+          </span>
+        }
         header={
           <>
-            <div className="stack-item-1" id="asm-symbol-table-title">
-              <Trans>Symbol Table</Trans>
-            </div>
             <Switch
               className="self-center"
               aria-labelledby="asm-symbol-table-title"
@@ -304,18 +301,20 @@ export const Asm = () => {
       </Panel>
       <Panel
         className="compare"
+        title={
+          <>
+            <Trans>Compare Code</Trans>
+            {state.compareName && `: ${state.compareName}`}
+          </>
+        }
         header={
           <>
-            <div>
-              <Trans>Compare Code</Trans>
-              {state.compareName && `: ${state.compareName}`}
-            </div>
             <fieldset role="group">
               <Button aria-label={t`Load file`} onClick={loadCompare}>
                 <Icon name="folder_open" />
               </Button>
             </fieldset>
-            <div className="stack-item-1" />
+            <div className="flex-1" />
             <fieldset role="group">
               <Button onClick={compare}>
                 <Trans>Compare</Trans>

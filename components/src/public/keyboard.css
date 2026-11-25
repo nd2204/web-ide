@@ -1,0 +1,16 @@
+/* The keyboard row: the enable key, then the current key and its char code. */
+.keyboard-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.75rem;
+}
+
+.keyboard-row-gap {
+  flex: 1;
+}
+
+.keyboard-row-cell {
+  flex: 4;
+}
