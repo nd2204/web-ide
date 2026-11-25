@@ -38,9 +38,8 @@ registerRoute(
   }),
 );
 
-// Build output: hashed JS and CSS (Monaco included), fonts (Material Symbols
-// included), icons, the manifest
-// and the user guide PDFs.
+// Build output: hashed JS and CSS (Monaco included), fonts (the Material
+// Symbols icon font included), icons, the manifest and the user guide PDFs.
 precacheAndRoute(self.__WB_MANIFEST);
 cleanupOutdatedCaches();
 
