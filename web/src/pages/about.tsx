@@ -22,7 +22,7 @@ export const About = () => {
       className="overflow-y-scroll"
     >
       {/* The markdown's <hr> keeps the browser's 0.5em spacing that preflight resets. */}
-      <div className="container [&_hr]:my-[0.5em]">
+      <div className="container mx-auto px-1 phone:px-0 [&_hr]:my-[0.5em]">
         <Markdown>{aboutContent}</Markdown>
         <p>
           <b>

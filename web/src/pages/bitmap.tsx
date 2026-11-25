@@ -725,7 +725,7 @@ export const BitmapEditor = () => {
             <legend className="float-left mb-0 inline-flex min-h-7 items-center font-bold">
               <Trans>Canvas size</Trans>
             </legend>
-            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+            <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-0.5">
               <Label htmlFor="inputWidth">
                 <Trans>Width</Trans>
               </Label>
@@ -738,7 +738,7 @@ export const BitmapEditor = () => {
                 defaultValue={width}
               />
             </div>
-            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+            <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-0.5">
               <Label htmlFor="inputHeight">
                 <Trans>Height</Trans>
               </Label>
@@ -751,7 +751,7 @@ export const BitmapEditor = () => {
                 defaultValue={height}
               />
             </div>
-            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+            <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-0.5">
               <Label htmlFor="pixelSize">
                 <Trans>Pixel size</Trans>
               </Label>
@@ -975,7 +975,7 @@ export const BitmapEditor = () => {
           </div>
 
           {marginType === "fitToDrawing" && (
-            <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+            <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-0.5">
               <Label htmlFor="marginSaveFrames">
                 <Trans>Horizontal shifts per animation frame</Trans>
               </Label>

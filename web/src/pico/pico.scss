@@ -45,21 +45,6 @@
       overflow: hidden;
     }
   }
-
-  nav :is(ol, ul) {
-    margin-right: 0;
-  }
-
-  nav li {
-    padding: 0 var(--nav-link-spacing-horizontal);
-  }
-
-  // Pico floats a zero-width space before every nav li. In the header's flex
-  // column items that pseudo-element becomes a 25px row and stretches the
-  // active pill upward.
-  nav li::before {
-    display: none;
-  }
 }
 
 @layer components {

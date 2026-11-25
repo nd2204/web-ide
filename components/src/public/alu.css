@@ -3,3 +3,12 @@
 .alu > svg {
   display: inline;
 }
+
+/* Its outlines and labels draw in the text colour. */
+.alu :is(path, polygon) {
+  stroke: var(--lh-text);
+}
+
+.alu text {
+  fill: var(--lh-text);
+}

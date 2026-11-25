@@ -13,7 +13,10 @@ export function RadioGroup({
   return (
     <RadioGroupPrimitive.Root
       data-slot="radio-group"
-      className={cn("grid grid-flow-row grid-cols-1 gap-2", className)}
+      className={cn(
+        "grid grid-flow-row grid-cols-1 *:min-w-0 gap-2",
+        className,
+      )}
       {...props}
     />
   );
@@ -53,7 +56,7 @@ export function RadioGroupItem({
           className="block size-2 rounded-full bg-primary"
         />
       </span>
-      <span className="grid grid-flow-row grid-cols-1 gap-0.5">
+      <span className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-0.5">
         <span
           id={`${id}-label`}
           className="text-[1rem] font-bold leading-tight"

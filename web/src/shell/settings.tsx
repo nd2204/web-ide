@@ -253,9 +253,9 @@ export const Settings = () => {
             </>
           ) : (
             <>
-              <div className="grid grid-flow-row grid-cols-1 items-start gap-x-6 gap-y-3 phone:grid-cols-[minmax(8rem,max-content)_minmax(0,1fr)]">
+              <div className="grid grid-flow-row grid-cols-1 *:min-w-0 items-start gap-x-6 gap-y-3 phone:grid-cols-[minmax(8rem,max-content)_minmax(0,1fr)]">
                 {/* Storage Mode Selection */}
-                <div className="grid grid-flow-row grid-cols-1 gap-1 phone:pt-2">
+                <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-1 phone:pt-2">
                   <span id={`${id}-storage`} className="font-bold">
                     <Trans>Project files</Trans>
                   </span>
@@ -274,7 +274,7 @@ export const Settings = () => {
                     <Trans>File System User Guide</Trans>
                   </a>
                 </div>
-                <div className="grid grid-flow-row grid-cols-1 gap-2">
+                <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-2">
                   <RadioGroup
                     aria-labelledby={`${id}-storage`}
                     value={storageMode}
@@ -305,8 +305,8 @@ export const Settings = () => {
                     />
                   </RadioGroup>
                   {storageMode === "pc" && (
-                    <div className="grid grid-flow-row grid-cols-1 gap-2 rounded-sm border border-border p-3">
-                      <div className="grid grid-flow-row grid-cols-1 gap-0.5">
+                    <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-2 rounded-sm border border-border p-3">
+                      <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-0.5">
                         <span className="text-[0.85rem]">
                           <Trans>Projects folder location (on your PC)</Trans>
                         </span>
@@ -412,7 +412,7 @@ export const Settings = () => {
                 <span className="font-bold">
                   <Trans>References</Trans>
                 </span>
-                <div className="grid grid-flow-row grid-cols-1 gap-1">
+                <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-1">
                   <a
                     href="https://nand2tetris.org"
                     target="_blank"
