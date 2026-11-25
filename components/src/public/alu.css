@@ -1,0 +1,5 @@
+/* The ALU diagram. Its svg sits inline after the "ALU" label, as browsers draw
+   an svg by default; Tailwind's preflight would otherwise make it a block. */
+.alu > svg {
+  display: inline;
+}

@@ -1,6 +1,6 @@
-/* Tailwind for the shadcn components in src/ui, without its preflight reset so
-   Pico and lecture_hall.scss keep styling everything else. Theme and utilities
-   sit in layers declared after Pico's (see public/root.css). */
+/* Tailwind for the shadcn components in src/ui. Preflight sits in `base`, below
+   Pico; theme and utilities sit in layers after Pico's (see public/root.css). */
+@import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
