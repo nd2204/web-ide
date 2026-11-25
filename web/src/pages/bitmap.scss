@@ -26,17 +26,17 @@
         td {
             padding: 0;
             vertical-align: top;
-            border: 1px solid var(--lh-seam);
+            border: 1px solid var(--color-border);
 
             &.cell {
                 cursor: crosshair;
 
                 &.filled {
-                    background-color: var(--lh-text);
+                    background-color: var(--color-foreground);
                 }
 
                 &.empty {
-                    background-color: var(--lh-panel);
+                    background-color: var(--color-card);
                 }
             }
 
@@ -45,7 +45,7 @@
                 text-align: center;
                 font-size: 10px;
                 // Muted ink, not the seam colour: the numbers must pass AA contrast.
-                color: var(--lh-muted);
+                color: var(--color-muted-foreground);
                 padding: 2px;
                 width: auto;
                 min-width: 0;
@@ -80,7 +80,7 @@
         gap: 0.4rem 0.75rem;
         align-items: center;
         padding: 0.4rem 0.75rem;
-        border-top: 1px solid var(--lh-seam);
+        border-top: 1px solid var(--color-border);
 
         &:first-child {
             border-top: none;

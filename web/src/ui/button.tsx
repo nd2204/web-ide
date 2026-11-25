@@ -11,9 +11,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "border-key-edge bg-key text-foreground hover:border-foreground hover:bg-[color-mix(in_srgb,var(--lh-key)_88%,var(--lh-text))] aria-[current=true]:bg-primary-foreground aria-[current=true]:text-primary",
+          "border-key-edge bg-key text-foreground hover:border-foreground hover:bg-[color-mix(in_srgb,var(--color-key)_88%,var(--color-foreground))] aria-[current=true]:bg-primary-foreground aria-[current=true]:text-primary",
         primary:
-          "border-[color-mix(in_srgb,var(--lh-yellow)_60%,black)] bg-primary text-primary-foreground hover:brightness-110",
+          "border-[color-mix(in_srgb,var(--color-primary)_60%,black)] bg-primary text-primary-foreground hover:brightness-110",
       },
       size: {
         default: "",

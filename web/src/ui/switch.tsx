@@ -21,7 +21,7 @@ export function Switch({
     >
       <span
         data-slot="switch-track"
-        className="inline-flex h-6 w-11 items-center rounded-full border border-well-edge bg-well p-0.5 transition-colors duration-100 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring group-data-[state=checked]:border-[color-mix(in_srgb,var(--lh-green)_60%,black)] group-data-[state=checked]:bg-output-pin"
+        className="inline-flex h-6 w-11 items-center rounded-full border border-well-edge bg-well p-0.5 transition-colors duration-100 group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-ring group-data-[state=checked]:border-[color-mix(in_srgb,var(--color-output-pin)_60%,black)] group-data-[state=checked]:bg-output-pin"
       >
         <SwitchPrimitive.Thumb
           data-slot="switch-thumb"

@@ -101,9 +101,7 @@ describe("shadcn migration guard", () => {
     };
     const pico = read(join(WEB, "public/pico.min.css"));
     const picoVars = new Set(
-      [...pico.matchAll(/(--[a-z0-9-]+)\s*:/g)]
-        .map((m) => m[1])
-        .filter((name) => !name.startsWith("--lh-")),
+      [...pico.matchAll(/(--[a-z0-9-]+)\s*:/g)].map((m) => m[1]),
     );
     const counts: Record<string, number> = {};
     for (const path of SOURCES) {

@@ -16,12 +16,12 @@
 /* Root typography. The root size steps from 16px to 20px with the viewport
    (the media queries after `section` below), so every rem grows with it. */
 :root {
-  background-color: var(--lh-ground);
-  color: var(--lh-text);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   font-weight: 400;
   font-size: 16px;
   line-height: 1.25;
-  font-family: var(--lh-font-sans);
+  font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   overflow-wrap: break-word;
   cursor: default;
@@ -55,7 +55,7 @@ table,
 ul {
   margin-top: 0;
   margin-bottom: 1.15rem;
-  color: var(--lh-text);
+  color: var(--color-foreground);
   font-style: normal;
   font-weight: 400;
   font-size: 1rem;
@@ -85,9 +85,9 @@ h4,
 h5,
 h6 {
   margin-top: 0;
-  color: var(--lh-text);
+  color: var(--color-foreground);
   font-weight: 700;
-  font-family: var(--lh-font-sans);
+  font-family: var(--font-sans);
 }
 
 h1 {
@@ -172,14 +172,14 @@ figure {
 
 hr {
   border: 0;
-  border-top: 1px solid var(--lh-seam);
+  border-top: 1px solid var(--color-border);
 }
 
 a,
 [role="link"] {
   outline: 0;
   background-color: transparent;
-  color: var(--lh-yellow);
+  color: var(--color-primary);
   text-decoration: none;
   transition:
     background-color 0.2s ease-in-out,
@@ -193,7 +193,7 @@ a,
 }
 
 :is(a, [role="link"]):focus {
-  background-color: color-mix(in srgb, var(--lh-focus) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-ring) 40%, transparent);
 }
 
 :where(svg:not([fill])) {
@@ -217,8 +217,8 @@ canvas {
 td,
 th {
   padding: calc(0.25rem / 2) 0.25rem;
-  border-bottom: 1px solid var(--lh-seam);
-  color: var(--lh-text);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-foreground);
   font-weight: 400;
   font-size: 1rem;
   text-align: start;
@@ -240,8 +240,8 @@ code,
 kbd,
 pre {
   border-radius: 4px;
-  background: var(--lh-raised);
-  color: var(--lh-text);
+  background: var(--color-muted);
+  color: var(--color-foreground);
   font-weight: 400;
   line-height: initial;
 }
@@ -281,12 +281,12 @@ button,
 [role="button"],
 input:is([type="button"], [type="reset"], [type="submit"]) {
   padding: 0.15rem 0.25rem;
-  border: 1px solid var(--lh-yellow);
+  border: 1px solid var(--color-primary);
   border-radius: 4px;
   outline: 0;
-  background-color: var(--lh-yellow);
+  background-color: var(--color-primary);
   box-shadow: 0 0 0 rgb(0 0 0 / 0);
-  color: var(--lh-on-yellow);
+  color: var(--color-primary-foreground);
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.25;
@@ -308,7 +308,7 @@ button {
 :is(button, [role="button"], input:is([type="button"], [type="reset"], [type="submit"])):focus {
   box-shadow:
     0 0 0 rgb(0 0 0 / 0),
-    0 0 0 3px color-mix(in srgb, var(--lh-focus) 40%, transparent);
+    0 0 0 3px color-mix(in srgb, var(--color-ring) 40%, transparent);
 }
 
 :where(button, [type="submit"], [type="button"], [type="reset"], [role="button"])[disabled],
@@ -332,12 +332,12 @@ input,
 select,
 textarea {
   margin: 0 0 0.25rem;
-  border: 1px solid var(--lh-seam);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   outline: 0;
-  background-color: var(--lh-raised);
+  background-color: var(--color-muted);
   box-shadow: none;
-  color: var(--lh-text);
+  color: var(--color-foreground);
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.25;
@@ -372,8 +372,8 @@ input:not([type="checkbox"], [type="radio"], [type="range"]) {
 input:not([type="submit"], [type="button"], [type="reset"], [type="range"], [type="file"], [readonly]):focus,
 select:focus,
 textarea:focus {
-  border-color: var(--lh-focus);
-  box-shadow: 0 0 0 3px var(--lh-focus);
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 3px var(--color-ring);
 }
 
 textarea {
@@ -381,7 +381,7 @@ textarea {
 }
 
 :is(input, textarea)::placeholder {
-  color: var(--lh-muted);
+  color: var(--color-muted-foreground);
   opacity: 1;
 }
 
@@ -390,7 +390,7 @@ input[type="file"] {
   border: 0;
   border-radius: 0;
   background: transparent 0 0;
-  color: var(--lh-muted);
+  color: var(--color-muted-foreground);
 }
 
 fieldset {

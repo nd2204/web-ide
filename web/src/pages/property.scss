@@ -7,8 +7,8 @@ dl {
   > header {
     grid-column: 1 / span 2;
     font-weight: bold;
-    background-color: var(--lh-muted);
-    color: var(--lh-on-yellow);
+    background-color: var(--color-muted-foreground);
+    color: var(--color-primary-foreground);
     padding: 0.15rem 0.25rem;
   }
 
@@ -26,10 +26,10 @@ dl {
     display: flex;
     align-items: center;
     padding: 0.35rem 0.75rem;
-    border: 1px solid var(--lh-seam);
+    border: 1px solid var(--color-border);
 
     &:nth-of-type(even) {
-      background-color: color-mix(in srgb, var(--lh-text) 3%, transparent);
+      background-color: color-mix(in srgb, var(--color-foreground) 3%, transparent);
     }
   }
 }

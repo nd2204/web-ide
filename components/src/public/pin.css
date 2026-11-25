@@ -1,6 +1,7 @@
 /* Pin table: the chip's input, output and internal pins with their bit keys and
    traces. Kind colour is the point of the signature: orange input, green
-   output, grey internal (the --lh-blue and --lh-amber names predate Braun).
+   output, grey internal (--color-input-pin, --color-output-pin and
+   --color-internal-pin).
 
    The rules carry a `:root[data-theme] .pinout` prefix so they outrank the
    generic button-group rule in web's lecture_hall.scss, which also matches the
@@ -15,13 +16,13 @@
 :root[data-theme] .pinout-heading,
 :root[data-theme] .pinout-name,
 :root[data-theme] .pinout-value {
-  border-bottom: 1px solid var(--lh-seam);
+  border-bottom: 1px solid var(--color-border);
   vertical-align: middle;
   text-align: start;
 }
 
 :root[data-theme] .pinout-heading {
-  color: var(--lh-muted);
+  color: var(--color-muted-foreground);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -38,26 +39,26 @@
   font-family: var(--font-family-monospace);
   font-size: 0.9rem;
   font-weight: 400;
-  color: var(--pin, var(--lh-muted));
+  color: var(--pin, var(--color-muted-foreground));
 }
 
 :root[data-theme] .pinout-value {
   padding: 0.125rem 0.4rem;
   font-size: 0.875em;
   font-weight: 400;
-  color: var(--lh-text);
+  color: var(--color-foreground);
 }
 
 :root[data-theme] .pinout-row[data-kind="input"] {
-  --pin: var(--lh-blue);
+  --pin: var(--color-input-pin);
 }
 
 :root[data-theme] .pinout-row[data-kind="output"] {
-  --pin: var(--lh-green);
+  --pin: var(--color-output-pin);
 }
 
 :root[data-theme] .pinout-row[data-kind="internal"] {
-  --pin: var(--lh-amber);
+  --pin: var(--color-internal-pin);
 }
 
 /* Bits: the joined bus is the one fused button group in the design. Reserve a
@@ -120,13 +121,13 @@
   transition:
     transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 120ms var(--lh-ease),
-    color 120ms var(--lh-ease);
+    background-color 120ms var(--ease-out-expo),
+    color 120ms var(--ease-out-expo);
 }
 
 :root[data-theme] .pinout .pin-bit:only-child[data-value="1"] {
   background: var(--pin);
-  color: var(--lh-ground);
+  color: var(--color-background);
 }
 
 :root[data-theme] .pinout .pin-bit:only-child:active:not(:disabled) {
@@ -160,8 +161,8 @@
   white-space: nowrap;
   font-family: var(--font-family-monospace);
   font-size: 0.75rem;
-  background: var(--lh-seam);
-  border-color: var(--lh-seam);
+  background: var(--color-border);
+  border-color: var(--color-border);
 }
 
 /* The trace fills the rest of the row. A gridline marks each step and the
@@ -178,7 +179,7 @@
       color-mix(in srgb, var(--pin) 16%, transparent),
       color-mix(in srgb, var(--pin) 16%, transparent)
     ),
-    linear-gradient(to right, var(--lh-seam) 1px, transparent 1px);
+    linear-gradient(to right, var(--color-border) 1px, transparent 1px);
   background-size:
     calc(100% / 16) 100%,
     calc(100% / 16) 100%;

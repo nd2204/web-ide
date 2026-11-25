@@ -3,7 +3,7 @@ import { cn } from "./cn";
 
 /** Shared by Input and Textarea: a sunk well with an edge, never raised. */
 export const wellClasses =
-  "mb-0 block w-full min-w-0 rounded-sm border border-well-edge bg-well text-foreground shadow-none outline-none appearance-none placeholder:text-muted-foreground hover:border-foreground focus:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-60 aria-[invalid=true]:border-[var(--lh-red)]";
+  "mb-0 block w-full min-w-0 rounded-sm border border-well-edge bg-well text-foreground shadow-none outline-none appearance-none placeholder:text-muted-foreground hover:border-foreground focus:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-60 aria-[invalid=true]:border-destructive";
 
 /** A single-line text field. */
 export function Input({
