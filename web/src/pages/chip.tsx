@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Icon } from "../pico/icon";
+import { Icon } from "../shell/icon";
 import { Button } from "../ui/button";
 import {
   Select,
@@ -251,7 +251,7 @@ export const Chip = () => {
         placement="bottom"
         disabled={menuOpen}
       >
-        <fieldset role="group">
+        <fieldset role="group" className="key-group">
           <Select
             onOpenChange={setMenuOpen}
             value={state.controls.project}
@@ -321,7 +321,7 @@ export const Chip = () => {
           </label>
           <div style={{ width: "30px" }}></div>
           <div className="flex-4">{selectors}</div>
-          <fieldset role="group">
+          <fieldset role="group" className="key-group">
             <Tip label={t`Open an HDL file directly`} placement="bottom">
               <Button
                 size="icon"
@@ -384,7 +384,7 @@ export const Chip = () => {
   };
 
   const chipButtons = (
-    <fieldset role="group">
+    <fieldset role="group" className="key-group">
       <Button
         variant="primary"
         onClick={evalIfCan}

@@ -4,6 +4,7 @@ import { Err, isErr, Ok } from "@davidsouther/jiffies/result.ts";
 import { CMP } from "@nand2tetris/simulator/languages/cmp.js";
 import { ReactElement } from "react";
 import { useTableParts } from "./table.js";
+import "./public/difftable.css";
 
 export const DiffTable = ({
   className = "",
@@ -67,7 +68,7 @@ export const DiffTable = ({
   });
 
   return (
-    <div className={"scroll-x " + className}>
+    <div className={"difftable-scroll " + className}>
       {failures > 0 && (
         <p>
           {failures} failure{failures === 1 ? "" : "s"}

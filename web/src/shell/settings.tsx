@@ -261,7 +261,7 @@ export const Settings = () => {
                   </span>
                   <a
                     href="#"
-                    className="text-[0.9rem]"
+                    className="text-[0.9rem] text-primary-text"
                     onClick={(e) => {
                       e.preventDefault();
                       window.open(
@@ -414,6 +414,7 @@ export const Settings = () => {
                 </span>
                 <div className="grid grid-flow-row grid-cols-1 *:min-w-0 gap-1">
                   <a
+                    className="text-primary-text"
                     href="https://nand2tetris.org"
                     target="_blank"
                     rel="noreferrer"
@@ -421,6 +422,7 @@ export const Settings = () => {
                     <Trans>nand2tetris.org (course website)</Trans>
                   </a>
                   <a
+                    className="text-primary-text"
                     href="https://github.com/davidsouther/nand2tetris"
                     target="_blank"
                     rel="noreferrer"

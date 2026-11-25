@@ -3,8 +3,8 @@ import { dialog, headerButton } from "../../src/helpers";
 
 // Radix locks page scroll while a Select or Dialog is open by making <body>
 // `position: relative`. #root is absolutely positioned, so without full-height
-// html and body (web/src/pico/pico.scss) it would collapse. See the
-// coexistence decision in the shadcn migration map.
+// html and body (web/src/ui/base.css) it would collapse. See the coexistence
+// decision in the shadcn migration map.
 
 test(
   "opening a Select leaves the #root box unchanged",

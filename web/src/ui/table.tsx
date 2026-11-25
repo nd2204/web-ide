@@ -4,8 +4,8 @@ import { cn } from "./cn";
 
 // A data table on the panel ground: seam rules between rows, muted small-caps
 // headings like the pin table's, and values in the mono face with tabular
-// numerals. Pico still styles bare `table`, `th` and `td` until its last step,
-// so every part sets margin, border, padding, colour and alignment itself.
+// numerals. ui/base.css styles bare `table`, `th` and `td` (Pico's old look), so
+// every part sets margin, border, padding, colour and alignment itself.
 
 /**
  * `density="compact"` fits a long list (the symbol table) into a small panel.

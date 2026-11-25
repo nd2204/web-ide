@@ -11,9 +11,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../App.context";
 import { PageContext } from "../Page.context";
-import { Icon } from "../pico/icon";
 import { Editor } from "../shell/editor";
 import { isPath } from "../shell/file_select";
+import { Icon } from "../shell/icon";
 import { Panel } from "../shell/panel";
 import URLs from "../urls";
 import "./asm.scss";
@@ -175,7 +175,7 @@ export const Asm = () => {
               )}
             </div>
             {!localFsRoot && (
-              <fieldset role="group">
+              <fieldset role="group" className="key-group">
                 <Tip label={t`Download`} placement="left">
                   <Button aria-label={t`Download`} onClick={downloadAsm}>
                     <Icon name="download" />
@@ -231,7 +231,7 @@ export const Asm = () => {
                 style={{ display: "none" }}
                 to={URLs["cpu"].href}
               />
-              <fieldset role="group">
+              <fieldset role="group" className="key-group">
                 <Tip label={t`Load in CPU Emulator`} placement="left">
                   <Button
                     aria-label={t`Load in CPU Emulator`}
@@ -309,13 +309,13 @@ export const Asm = () => {
         }
         header={
           <>
-            <fieldset role="group">
+            <fieldset role="group" className="key-group">
               <Button aria-label={t`Load file`} onClick={loadCompare}>
                 <Icon name="folder_open" />
               </Button>
             </fieldset>
             <div className="flex-1" />
-            <fieldset role="group">
+            <fieldset role="group" className="key-group">
               <Button onClick={compare}>
                 <Trans>Compare</Trans>
               </Button>

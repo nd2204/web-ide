@@ -71,7 +71,7 @@ export const Runbar = (props: {
 
   return (
     <div className="runbar">
-      <fieldset role="group">
+      <fieldset role="group" className="key-group">
         {props.prefix}
         <Tip label={props.overrideTooltips?.step ?? `Step`}>
           <Btn

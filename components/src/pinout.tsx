@@ -251,7 +251,7 @@ const Pin = ({
     >
       <fieldset
         role="group"
-        className="pin-bits"
+        className="pin-bits key-group"
         style={{ width: `${pin.bits.length}rem` }}
         data-changed={history.changed || undefined}
       >

@@ -180,7 +180,10 @@ export function TrackingDisclosure() {
         the user experience. This only includes anonymous interaction data, and
         never shares your code.
       </Trans>{" "}
-      <a href="www.google.com/policies/privacy/partners/">
+      <a
+        className="text-primary-text"
+        href="www.google.com/policies/privacy/partners/"
+      >
         <Trans>How Google uses data.</Trans>
       </a>
     </p>

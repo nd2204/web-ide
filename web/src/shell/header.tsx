@@ -8,8 +8,8 @@ import { Link, useLocation } from "react-router-dom";
 import { AppContext, useAppContext } from "../App.context";
 import type { IconName } from "../icons";
 import { PageContext } from "../Page.context";
-import { Icon } from "../pico/icon";
 import URLs, { LAST_ROUTE_KEY, TOOLS, URL } from "../urls";
+import { Icon } from "./icon";
 import { Tip } from "./tip";
 import "./header.scss";
 
@@ -134,12 +134,13 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <nav style={{ width: "100%" }}>
-        <ul>
-          <li>
+    <header className="app-header">
+      <nav className="app-nav" style={{ width: "100%" }}>
+        <ul className="app-title">
+          <li className="app-title-item">
             <strong>
               <a
+                className="app-home"
                 href="https://nand2tetris.org"
                 target="_blank"
                 rel="noreferrer"
@@ -160,6 +161,7 @@ const Header = () => {
             ({ href, icon, onClick, tooltip, target, tool }) => {
               const item = (
                 <li
+                  className="tool"
                   key={tooltip ? undefined : icon}
                   aria-current={
                     target && href?.replaceAll("/", "") === pathname
