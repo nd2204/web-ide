@@ -8,8 +8,8 @@ import { cn } from "./cn";
 // the panel (a pin table at a large text size, the 512px screen on a phone)
 // scrolls sideways inside it, never clips; inline-size containment keeps that
 // content from widening the panel, so its title bar stays in view.
-// The parts are divs, not `article`/`section`/`header`, so no Pico element rule
-// reaches them.
+// The parts are divs, not `article`/`section`/`header`, so no element rule in
+// ui/base.css reaches them.
 
 const InPanel = createContext(false);
 

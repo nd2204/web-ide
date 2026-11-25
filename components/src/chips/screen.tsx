@@ -102,7 +102,7 @@ export const Screen = ({
       title="Screen"
       header={
         showScaleControls && (
-          <fieldset role="group">
+          <fieldset role="group" className="key-group">
             <Btn aria-current={screenScale === 0} onClick={() => onScaleCB(0)}>
               x0
             </Btn>

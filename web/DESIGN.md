@@ -56,7 +56,7 @@ rounded:
 spacing:
   gap: "8px"
   key-height: "1.75rem"
-  key-padding-x: "0.8rem"
+  key-padding-x: "0.75rem"
   panel-inset: "0.75rem"
 components:
   key:
@@ -65,7 +65,7 @@ components:
     typography: "{typography.label}"
     rounded: "{rounded.key}"
     height: "{spacing.key-height}"
-    padding: "0 0.8rem"
+    padding: "0 0.75rem"
   key-primary:
     backgroundColor: "{colors.key-yellow}"
     textColor: "{colors.on-yellow-light}"
@@ -130,7 +130,7 @@ A warm-grey neutral field with one yellow key colour and three small signal hues
 ### Neutral
 - **Ground** (dark #1c1c1a, light #e9e7e1): page, header, footer.
 - **Panel** (dark #242421, light #f6f4ee): cards, editor background.
-- **Raised** (dark #2c2c29, light #efede6): panel title bars, keys, fields, active tabs.
+- **Raised** (dark #2c2c29, light #efede6): panel title bars and the active tab. Keys have their own lit face and fields their sunk well (see Fields, selects, sliders and switches).
 - **Seam** (dark #3d3d38, light #cfccc3): every 1px border and divider.
 - **Ink** (dark #ece9e1, light #2a2a28): primary text. Light focus ring is Ink; dark focus ring is Key Yellow.
 - **Muted** (dark #a19e94, light #6b685f): secondary text, inactive tabs and pills.
@@ -151,7 +151,7 @@ A warm-grey neutral field with one yellow key colour and three small signal hues
 
 ### Hierarchy
 - **Title** (700, 1rem): panel title bars, dialog headers, product name.
-- **Label** (700, 0.9rem, line-height 1.2): keys, tabs.
+- **Label** (700, 0.9rem, line-height 1.25): keys. Tabs use the same size at 400.
 - **Body** (400, 1rem): prose, settings values.
 - **Caption** (700, 0.75rem, 0.08em tracking, uppercase): pin table column heads only.
 - **Mono** (400, 15px; 700 inside bit cells at 0.8-0.9rem): pin names, bit values, editor.
@@ -169,7 +169,7 @@ Flat and tonal. Depth comes from stepping Ground, Panel and Raised plus 1px seam
 
 ### Shadow Vocabulary
 - **Key lip** (`box-shadow: inset 0 -2px 0 rgb(0 0 0 / 14%)`): the darker bottom edge on every key and pill button.
-- **Key pressed** (`box-shadow: inset 0 1px 0 rgb(0 0 0 / 14%)` with `transform: scale(0.97)`): the active state.
+- **Key pressed** (`box-shadow: inset 0 1px 0 rgb(0 0 0 / 14%)`, the key moving down 1px): the active state.
 - **Pin key lip** (`inset 0 -3px 0` in a darker mix of the pin colour): the bit key's lip, flattening to `inset 0 0 0` when pressed.
 
 ### Named Rules
@@ -182,10 +182,10 @@ Pill (999px) for keys, tabs, header tool pills, the tool capsule, selects, toggl
 ## Components
 
 ### Keys (buttons)
-- **Shape:** pill (999px), 1.75rem minimum height, 0.8rem horizontal padding, icon-only keys square.
-- **Default:** Raised fill, 1px Seam border, Ink 700 text at 0.9rem, bottom lip.
-- **Primary (`variant="primary"`):** Key Yellow fill and border, on-yellow ink text; hover brightens 8%.
-- **Hover / Active / Disabled:** hover tints with a 8% ink overlay and a Muted border; active presses (scale 0.97, lip flips); disabled goes transparent at 70% opacity. 120ms ease-out transitions, removed under reduced motion.
+- **Shape:** pill (999px), 1.75rem minimum height, 0.75rem horizontal padding, icon-only keys square.
+- **Default:** the lit key face with a 1px key edge, Ink 700 text at 0.9rem, bottom lip.
+- **Primary (`variant="primary"`):** Key Yellow fill with a darker yellow border, on-yellow ink text; hover brightens 10%.
+- **Hover / Active / Disabled:** hover mixes 12% Ink into the key face and turns the edge to Ink; active moves the key down 1px and flips the lip; disabled goes transparent at 60% opacity. 100ms transitions.
 - **Groups:** every button in a group is its own pill with a 0.3rem gap.
 
 ### Panels
@@ -216,7 +216,7 @@ Pill (999px) for keys, tabs, header tool pills, the tool capsule, selects, toggl
 
 ## Component Library
 
-Every panel, tab set, accordion, button, text field, select, switch, radio group, segmented well, slider, data table and dialog in the app is a shadcn-style component in `src/ui/` (Radix primitives, Tailwind v4 utilities, `cva` variants, `data-slot` attributes). `src/ui/tailwind.css` loads Tailwind's preflight reset in a layer under Pico, then `src/ui/base.css` with the element defaults Pico used to give (the root type size stepping from 16px to 20px with the viewport, flow margins, code chips, form metrics), and its theme and utilities in layers after Pico. The tokens themselves are Tailwind theme variables under shadcn names in `src/ui/tokens.css` (`--color-primary` is Key Yellow, `--color-key` the key face, `--color-well` the sunk well). Existing global rules in `lecture_hall.scss` skip elements carrying `data-slot`, so the two systems do not fight. Selects draw their own list (not the OS list) in the open-list style above. Dialogs (`src/ui/dialog.tsx`) are modal raised keys: a centred key-face card with a 2px key-edge border and a lip shadow, a Raised title bar with an X key, bounded by the viewport and scrolling inside on a phone. Escape and the X key dismiss them; clicking the overlay does not. Buttons (`src/ui/button.tsx`) are the calculator key: lit face, strong edge, inset bottom lip that flattens when pressed; an icon-only button is a round key, 44px on touch, and `aria-current="true"` marks the chosen key in a group. `components` widgets ask for one through a `Btn` wrapper that renders a plain `<button>` until `web` provides the shadcn one; in the same way `Field`, `Choice` and `Range` render a plain `<input>`, `<select>` and range input until `web` provides Input, Select and Slider (the run bar speed control and the memory panel's address field and number format). Data tables (`src/ui/table.tsx`: the Assembler symbol table, and `DiffTable`, which no route renders today) sit on the Panel ground with 1px Seam rules between rows, muted small-caps column headings like the pin table's, values in JetBrains Mono with tabular numerals, the Key Yellow step tint on the current row and a Red tint on a failed cell; `components` reaches them through `useTableParts()`, which renders plain table elements until `web` provides the parts. The pin table, memory grids and Bitmap grid stay custom widgets, styled by plain CSS in `../components/src/public` (or page SCSS) written against the same `--color-*` tokens. Panels (`src/ui/panel.tsx`) are the cards above: a titled panel is a region named by its title, a panel inside a panel becomes a seam-divided section, and content wider than the panel scrolls sideways instead of clipping; the memory, screen and keyboard widgets reach it through a `Panel` wrapper (`../components/src/panel.tsx`) that renders plain divs until `web` provides it. Tabs (`src/ui/tabs.tsx`: the test panel, the compiler's files, the Bitmap Jack and Hack code) are the pill tabs below on a seam, wrapping onto more rows rather than widening the panel. Accordions (`src/ui/accordion.tsx`: CPU registers, chip visualizations, the plain editor's parse error) are keycap bars: each item is a lit key face with a key edge and 6px corners, its title left and a chevron right, several open at once. Tab and accordion content stays mounted while hidden, so an editor keeps its state. Layout outside widgets is Tailwind's flex utilities; widget rows use their own plain CSS. Tooltips (`src/ui/tooltip.tsx`) are inverted keys (Text colour as the ground, page Ground as the text) that open on focus or after 300ms of hover and never on touch; `components` widgets request one through a `Tip` wrapper that defaults to a plain `title` until `web` provides the Radix one. The header, footer and status line still use bare `nav`, `ul` and `li` markup until the last steps, styled by `src/shell/header.scss` and `lecture_hall.scss` rather than by Pico.
+Every panel, tab set, accordion, button, text field, select, switch, radio group, segmented well, slider, data table and dialog in the app is a shadcn-style component in `src/ui/` (Radix primitives, Tailwind v4 utilities, `cva` variants, `data-slot` attributes). `src/ui/tailwind.css` loads Tailwind's preflight reset and then `src/ui/base.css`, which keeps the element defaults the app had under Pico CSS before it was removed (the root type size stepping from 16px to 20px with the viewport, flow margins, code chips, form metrics), with Tailwind's theme and utilities in the layers above. The tokens themselves are Tailwind theme variables under shadcn names in `src/ui/tokens.css` (`--color-primary` is Key Yellow, `--color-key` the key face, `--color-well` the sunk well). Selects draw their own list (not the OS list) in the open-list style above. Dialogs (`src/ui/dialog.tsx`) are modal raised keys: a centred key-face card with a 2px key-edge border and a lip shadow, a Raised title bar with an X key, bounded by the viewport and scrolling inside on a phone. Escape and the X key dismiss them; clicking the overlay does not. Buttons (`src/ui/button.tsx`) are the calculator key: lit face, strong edge, inset bottom lip that flattens when pressed; an icon-only button is a round key, 44px on touch, and `aria-current="true"` marks the chosen key in a group. `components` widgets ask for one through a `Btn` wrapper that renders a plain `<button>` until `web` provides the shadcn one; in the same way `Field`, `Choice` and `Range` render a plain `<input>`, `<select>` and range input until `web` provides Input, Select and Slider (the run bar speed control and the memory panel's address field and number format). Data tables (`src/ui/table.tsx`: the Assembler symbol table, and `DiffTable`, which no route renders today) sit on the Panel ground with 1px Seam rules between rows, muted small-caps column headings like the pin table's, values in JetBrains Mono with tabular numerals, the Key Yellow step tint on the current row and a Red tint on a failed cell; `components` reaches them through `useTableParts()`, which renders plain table elements until `web` provides the parts. The pin table, memory grids and Bitmap grid stay custom widgets, styled by plain CSS in `../components/src/public` (or page SCSS) written against the same `--color-*` tokens. Panels (`src/ui/panel.tsx`) are the cards above: a titled panel is a region named by its title, a panel inside a panel becomes a seam-divided section, and content wider than the panel scrolls sideways instead of clipping; the memory, screen and keyboard widgets reach it through a `Panel` wrapper (`../components/src/panel.tsx`) that renders plain divs until `web` provides it. Tabs (`src/ui/tabs.tsx`: the test panel, the compiler's files, the Bitmap Jack and Hack code) are the pill tabs below on a seam, wrapping onto more rows rather than widening the panel. Accordions (`src/ui/accordion.tsx`: CPU registers, chip visualizations, the plain editor's parse error) are keycap bars: each item is a lit key face with a key edge and 6px corners, its title left and a chevron right, several open at once. Tab and accordion content stays mounted while hidden, so an editor keeps its state. Layout outside widgets is Tailwind's flex utilities; widget rows use their own plain CSS. Tooltips (`src/ui/tooltip.tsx`) are inverted keys (Text colour as the ground, page Ground as the text) that open on focus or after 300ms of hover and never on touch; `components` widgets request one through a `Tip` wrapper that defaults to a plain `title` until `web` provides the Radix one. The header, footer and status line are plain markup with classes (`app-header`, `app-title`, `tool`, `app-footer`), styled by `src/shell/header.scss` and the unlayered Braun rules in `src/shell/braun.scss`.
 
 ## Do's and Don'ts
 

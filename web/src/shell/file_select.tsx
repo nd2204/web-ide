@@ -13,8 +13,8 @@ import {
   useState,
 } from "react";
 import { AppContext } from "../App.context";
-import { Icon } from "../pico/icon";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
+import { Icon } from "./icon";
 import "./file_select.scss";
 import { Button } from "../ui/button";
 import { cn } from "../ui/cn";

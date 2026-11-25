@@ -1,5 +1,6 @@
-/* Tailwind for the shadcn components in src/ui. Preflight sits in `base`, below
-   Pico; theme and utilities sit in layers after Pico's (see public/root.css). */
+/* Tailwind for the shadcn components in src/ui. Preflight and base.css sit in
+   `base`, theme.css in `theme` and the utilities in `utilities`, in the layer
+   order declared in public/root.css. */
 @import "tailwindcss/preflight.css" layer(base);
 @import "./base.css" layer(base);
 @import "tailwindcss/theme.css" layer(theme);

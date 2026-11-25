@@ -297,7 +297,7 @@ export const Memory = forwardRef(
         title={name}
         overflow="clip"
         header={
-          <fieldset role="group">
+          <fieldset role="group" className="key-group">
             {fileSelect && (
               <Tip
                 label={loadTooltip?.value ?? "Load file"}

@@ -82,6 +82,13 @@
 
   /* Outline of a compiler file entry. */
   --light-grey: var(--color-border);
+
+  /* A disabled file name in the file picker. */
+  --disabled: var(--color-muted-foreground);
+
+  /* A compiler file tab that does not compile. Pico left the light value an
+     invalid string, which draws nothing; dark is a dim red. */
+  --compiler-err-color: transparent;
 }
 
 :root[data-theme="dark"] {
@@ -104,5 +111,6 @@
   --color-key-edge: #8a877c;
   --color-well: #171715;
   --color-well-edge: #6e6b62;
+  --compiler-err-color: rgb(69 25 22);
   color-scheme: dark;
 }

@@ -19,10 +19,9 @@ import Footer from "./shell/footer";
 import Header from "./shell/header";
 import { Settings } from "./shell/settings";
 import { TipRoot } from "./shell/tip";
+import { TrackingBanner } from "./tracking";
 import { TooltipProvider } from "./ui/tooltip";
 import urls from "./urls";
-import "./pico/pico.scss";
-import { TrackingBanner } from "./tracking";
 import { updateVersion } from "./versions";
 
 // Select and Slider are only needed once a tool page renders, so the providers
@@ -79,7 +78,7 @@ function App() {
                     <FilePicker />
                     <Router basename={import.meta.env.BASE_URL}>
                       <Header />
-                      <main className="flex flex-1 flex-col">
+                      <main className="app-main flex flex-1 flex-col">
                         <ErrorBoundary fallback={RenderError}>
                           <Suspense
                             fallback={

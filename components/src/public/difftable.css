@@ -1,0 +1,4 @@
+/* The diff table scrolls sideways inside its panel instead of widening it. */
+.difftable-scroll {
+  overflow-x: auto;
+}

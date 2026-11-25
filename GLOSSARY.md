@@ -21,7 +21,7 @@ _Avoid_: Variable, theme value
 
 **Braun**:
 The app's visual world: matte warm-grey panels, tactile keys, one colour per meaning. The migration to shadcn keeps it unchanged.
-_Avoid_: Lecture Hall (the old name; it survives only in `lecture_hall.scss` and `lecture_hall_colors.ts`)
+_Avoid_: Lecture Hall (the old name; it survives only in `lecture_hall_colors.ts` and the Monaco theme names)
 
 **Overlay**:
 A control that appears above the page and is dismissed on demand: a tooltip, dialog or menu. Overlays are primitives.

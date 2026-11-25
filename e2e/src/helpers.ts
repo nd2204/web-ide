@@ -1,7 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 
 // Shared locators for the primitives the shadcn migration touches. They use
-// roles and accessible names only, never Pico class names or tag selectors, so
+// roles and accessible names only, never class names or tag selectors, so
 // a spec survives swapping the markup behind a primitive.
 
 /** Opens a Select and chooses the option with this exact label. */

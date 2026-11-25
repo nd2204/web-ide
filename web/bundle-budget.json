@@ -1,6 +1,6 @@
 {
   "entryJsGzipBytes": 230400,
-  "entryCssGzipBytes": 11264,
+  "entryCssGzipBytes": 10496,
   "fonts": {
     "material_symbols_outlined.woff2": 6144
   },
@@ -9,5 +9,10 @@
     "step": "0: infrastructure",
     "entryJsGzipBytes": 182681,
     "entryCssGzipBytes": 9611
+  },
+  "ratchet": {
+    "recordedAt": "2026-11-25",
+    "step": "9: pico/ deletion",
+    "entryCssGzipBytes": 10398
   }
 }

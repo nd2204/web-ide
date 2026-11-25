@@ -1,10 +1,10 @@
 /* Element defaults that Pico used to set, rebuilt on the Braun tokens so that
-   deleting public/pico.min.css changes nothing on screen (issue #36). They sit
+   deleting Pico changed nothing on screen (issues #36 and #26). They sit
    in `base` after Tailwind's preflight (see tailwind.css), so preflight loses
    to them and every other layer and the unlayered SCSS still wins. Selectors
    are at least as specific as preflight's, which they come after.
 
-   Pico's spacing variables resolved to these values here (pico.scss set them):
+   Pico's spacing variables resolved to these values (the old pico.scss set them):
    spacing 0.25rem, line height 1.25, typography spacing 1.15rem, form element
    padding 0.15rem by 0.25rem, radius 4px.
 
@@ -414,4 +414,58 @@ label {
 
 label > :where(input, select, textarea) {
   margin-top: calc(0.25rem * 0.25);
+}
+
+/* Code and values in JetBrains Mono. */
+code,
+kbd {
+  font-family: var(--font-family-monospace);
+  font-size: var(--font-size-monospace);
+}
+
+del {
+  text-decoration: none;
+}
+
+textarea {
+  overflow: scroll;
+  white-space: pre;
+  font-family: var(--font-family-monospace);
+  font-size: var(--font-size-monospace);
+}
+
+/* The app frame. The page never scrolls: #root is absolutely sized against a
+   full-height body. Radix scroll lock makes <body> `position: relative` while
+   a Select or Dialog is open; with these rules #root keeps the same box. */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.app-main {
+  overflow: hidden;
 }

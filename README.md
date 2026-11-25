@@ -80,11 +80,12 @@ Components are reusable pieces of UI, which take props to update their interface
 Asynchronous one-off behavior in the project can be handled with promises & async/await syntax.
 For evented asynchronous behavior, use RXJS observables and subscriptions.
 
-#### Pico
+#### Styling
 
-Jiffies extends [`PicoCSS`](https://picocss.com), allowing rapid iteration on custom components.
-Some ideas have been moved upstream to Pico.
-Specific components in the forked Pico include [`inline-buttons`](https://github.com/picocss/pico/issues/182) and a [`property sheet`](https://github.com/picocss/pico/issues/195).
+The UI is built from shadcn-style components: [Radix](https://www.radix-ui.com) primitives styled with [Tailwind CSS](https://tailwindcss.com) v4 and `cva` variants, in `web/src/ui`.
+Design tokens (colours, radii, fonts) are Tailwind theme variables under shadcn names in `web/src/ui/tokens.css`, with a light and a dark theme.
+The widgets in `components` (pin table, memory, screen, run bar) keep their own plain CSS, written against the same tokens.
+[DEVELOPMENT.md](./DEVELOPMENT.md#styling-and-ui) has the rules, and `web/DESIGN.md` describes the visual design.
 
 ### Jiffies
 

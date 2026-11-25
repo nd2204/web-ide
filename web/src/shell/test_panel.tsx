@@ -25,7 +25,6 @@ import {
   useState,
 } from "react";
 import { AppContext } from "../App.context";
-import { Icon } from "../pico/icon";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -36,6 +35,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Editor } from "./editor";
 import { isPath } from "./file_select";
+import { Icon } from "./icon";
 import { Panel } from "./panel";
 import { SwitchRow } from "./switch_row";
 import { Tip } from "./tip";

@@ -1,11 +1,9 @@
-/* One layer order for Tailwind, Pico and our own rules, declared before the
-   first @import because a layer's place is fixed where it first appears.
-   Tailwind's preflight, theme.css and utilities.css are imported into `base`,
-   `theme` and `utilities` (src/ui/tailwind.css); preflight sits below Pico, so it
-   only reaches what Pico leaves unset. Unlayered rules (lecture_hall.scss) still
-   beat every layer. */
-@layer base, pico, theme, components, utilities;
-@import "./pico.min.css" layer(pico);
+/* One layer order for Tailwind and our own rules, declared before any other
+   rule because a layer's place is fixed where it first appears. Tailwind's
+   preflight (with src/ui/base.css), theme.css and utilities.css are imported
+   into `base`, `theme` and `utilities` (src/ui/tailwind.css). Unlayered rules
+   (src/shell/braun.scss, the widget CSS in `components`) beat every layer. */
+@layer base, theme, components, utilities;
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;

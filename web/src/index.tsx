@@ -3,8 +3,7 @@ import ReactDOM from "react-dom/client";
 import { installPreloadErrorReload } from "./preloadError";
 import { registerServiceWorker } from "./registerServiceWorker";
 
-import "./pico/pico.scss";
-import "./pico/lecture_hall.scss";
+import "./shell/braun.scss";
 import "./ui/tailwind.css";
 
 import App from "./App";

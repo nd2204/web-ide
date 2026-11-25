@@ -4,9 +4,9 @@
    --color-internal-pin).
 
    The rules carry a `:root[data-theme] .pinout` prefix so they outrank the
-   generic button-group rule in web's lecture_hall.scss, which also matches the
-   bit fieldset. Pico's bare `td` and `th` rules still apply until Pico is deleted,
-   so each cell sets its own border, padding, colour and alignment. */
+   generic button-group rule (`.key-group`) in web's braun.scss, which the bit
+   fieldset also carries. web's base.css still styles bare `td` and `th`, so
+   each cell sets its own border, padding, colour and alignment. */
 
 :root[data-theme] .pinout {
   border-collapse: separate;

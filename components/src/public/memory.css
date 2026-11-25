@@ -20,7 +20,7 @@
 }
 
 /* A narrow memory panel wraps its title-bar keys rather than scroll sideways. */
-.memory fieldset[role="group"] {
+.memory .key-group {
   flex-wrap: wrap;
 }
 

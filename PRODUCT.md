@@ -27,7 +27,7 @@ The official-lineage, open-source, no-install successor to the venerable Java de
 
 ## Capabilities and Constraints
 
-- Monorepo: `projects`, `runner`, `simulator`, `components`, `web`, `cli`, `e2e`. UI lives in `web` (Vite SPA, React 19, Pico CSS fork, SCSS), `components` (shared React with Immer and RxJS stores).
+- Monorepo: `projects`, `runner`, `simulator`, `components`, `web`, `cli`, `e2e`. UI lives in `web` (Vite SPA, React 19, Radix and Tailwind CSS v4 primitives, SCSS), `components` (shared React with Immer and RxJS stores).
 - Tool names and terminology follow the book: Hardware Simulator, CPU Emulator, Assembler, VM Emulator, Bitmap Editor, Jack Compiler.
 - Fidelity: tool behavior, languages, test scripts, and file formats must stay faithful to the book and the Java desktop suite; `runner` exists to check conformance against the reference implementation.
 - Local-first: runs entirely in the browser, with no accounts and no server for student work.
