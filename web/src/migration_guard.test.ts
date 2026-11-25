@@ -95,7 +95,6 @@ describe("shadcn migration guard", () => {
   // (c) Custom properties that only Pico defines.
   it("limits Pico-only CSS variables", () => {
     const CEILING: Record<string, number> = {
-      "--color": 2,
       "--line-height": 1,
       "--mark-background-color": 2,
       "--spacing": 3,

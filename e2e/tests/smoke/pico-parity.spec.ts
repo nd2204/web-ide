@@ -7,10 +7,10 @@ import { dialog, headerButton } from "../../src/helpers";
 // moves or changes its type, colours or spacing. Once pico.min.css is gone
 // there is nothing to remove and the check passes trivially; delete it then.
 //
-// Not compared: Monaco's internals (it draws its own), `stroke` (Pico's
-// button colour transition leaves dark-mode Select chevrons stuck at the
-// on-yellow colour, a Chrome bug that goes away with Pico), and grid track
-// metrics, which only matter through the boxes compared here.
+// Not compared: Monaco's internals (it draws its own), and grid track metrics,
+// which only matter through the boxes compared here. One such difference is
+// known: the radio indicator in Settings loses Pico's gap on its empty grid,
+// and nothing moves.
 
 const PROPS = [
   "display",
@@ -34,6 +34,8 @@ const PROPS = [
   "border-bottom-width",
   "border-top-color",
   "border-radius",
+  "fill",
+  "stroke",
 ];
 
 /** Returns every element whose box or style changes when Pico is removed. */
@@ -45,7 +47,9 @@ async function picoDiff(page: Page): Promise<string[]> {
       "*, ::before, ::after { transition: none !important; animation: none !important; }";
     document.head.append(freeze);
 
-    const elements = [...document.querySelectorAll("#root *, [role=dialog] *")]
+    const elements = [...document.querySelectorAll(
+        "#root *, [role=dialog] *, [data-radix-popper-content-wrapper] *",
+      )]
       .filter((el) => !el.closest(".monaco-editor"));
     const describe = (el: Element) =>
       `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ""}.${[...el.classList].slice(0, 3).join(".")}`;
@@ -90,14 +94,26 @@ async function picoDiff(page: Page): Promise<string[]> {
   }, PROPS);
 }
 
-const VIEWPORTS = {
-  desktop: { width: 1280, height: 800 },
-  phone: { width: 390, height: 844 },
+// Every tool page, by the grid that marks it as rendered.
+const PAGES = {
+  chip: ".ChipPage",
+  cpu: ".CpuPage",
+  asm: ".AsmPage",
+  vm: ".VmPage",
+  compiler: ".CompilerPage",
+  bitmap: ".BitmapPage",
 };
 
-for (const [name, viewport] of Object.entries(VIEWPORTS)) {
+const DESKTOP = { width: 1280, height: 800 };
+const VARIANTS = {
+  desktop: { viewport: DESKTOP, colorScheme: "light" },
+  phone: { viewport: { width: 390, height: 844 }, colorScheme: "light" },
+  dark: { viewport: DESKTOP, colorScheme: "dark" },
+} as const;
+
+for (const [name, options] of Object.entries(VARIANTS)) {
   test.describe(`without Pico (${name})`, { tag: "@smoke" }, () => {
-    test.use({ viewport });
+    test.use(options);
 
     test.beforeEach(async ({ page }) => {
       await page.addInitScript(() =>
@@ -105,10 +121,20 @@ for (const [name, viewport] of Object.entries(VIEWPORTS)) {
       );
     });
 
-    test("the chip page looks the same", async ({ page }) => {
+    for (const [route, ready] of Object.entries(PAGES)) {
+      test(`the ${route} page looks the same`, async ({ page }) => {
+        await page.goto(route);
+        await expect(page.locator(ready)).toBeVisible();
+        await expect(page.getByText("Loading...")).toHaveCount(0);
+        expect(await picoDiff(page)).toEqual([]);
+      });
+    }
+
+    test("an open Select list looks the same", async ({ page }) => {
       await page.goto("chip");
       await expect(page.locator(".ChipPage")).toBeVisible();
-      await page.waitForLoadState("networkidle");
+      await page.getByTestId("project-picker").click();
+      await expect(page.getByRole("listbox")).toBeVisible();
       expect(await picoDiff(page)).toEqual([]);
     });
 

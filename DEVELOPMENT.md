@@ -117,7 +117,7 @@ The app is moving from Pico CSS and SCSS to shadcn (Radix, Tailwind v4, `cva`). 
 - Colour tokens are the `--lh-*` variables in `web/src/ui/tokens.css`. They stay canonical until the final rename to shadcn names. The Tailwind `dark:` variant follows `data-theme="dark"`.
 - `components` styles its widgets with plain CSS in `components/src/public` and imports no Tailwind, Radix or `web/src/ui`. Chrome around a widget is passed in as slots from `web`.
 - Primitives carry `coarse:min-h-11` for 44px touch targets and use the `phone` breakpoint (576px) for chrome. Page grids keep their SCSS thresholds.
-- Until Pico is gone, button-based parts set explicit `bg-*`, `text-*` and `border-*` plus `w-auto mb-0`, use `inline-flex w-full` instead of `flex`, and add `grid-flow-row grid-cols-1` to Tailwind `grid`.
+- Until Pico is gone, button-based parts set explicit `bg-*`, `text-*` and `border-*` plus `w-auto mb-0`, use `inline-flex w-full` instead of `flex`, and add `grid-flow-row grid-cols-1` to Tailwind `grid`. A Tailwind `grid` also takes `*:min-w-0` and a `container` takes `mx-auto px-1 phone:px-0`, which Pico's `.grid` and `.container` classes used to supply.
 - `web/src/migration_guard.test.ts` counts remaining Pico imports, type selectors in `lecture_hall.scss` and Pico-only CSS variables. A step may only lower those numbers. `web/src/bundle_budget.test.ts` enforces `web/bundle-budget.json` against `web/build`, and fails in GitHub Actions when the build is missing.
 - Tests: Radix needs browser APIs that jsdom lacks, and `web/src/setupTests.ts` stubs them. In e2e, `e2e/src/helpers.ts` provides `pick`, `toggle`, `openTab` and `dialog`. Use roles and accessible names, never Pico class names.
 

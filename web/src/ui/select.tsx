@@ -76,7 +76,7 @@ export function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative grid cursor-default select-none items-center rounded-sm px-2 py-1 text-[0.9rem] outline-none data-[disabled]:opacity-50 data-[highlighted]:bg-[color-mix(in_srgb,var(--lh-yellow)_28%,var(--lh-key))] data-[state=checked]:font-bold",
+        "relative grid *:min-w-0 cursor-default select-none items-center rounded-sm px-2 py-1 text-[0.9rem] outline-none data-[disabled]:opacity-50 data-[highlighted]:bg-[color-mix(in_srgb,var(--lh-yellow)_28%,var(--lh-key))] data-[state=checked]:font-bold",
         className,
       )}
       {...props}

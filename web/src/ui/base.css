@@ -6,10 +6,15 @@
 
    Pico's spacing variables resolved to these values here (pico.scss set them):
    spacing 0.25rem, line height 1.25, typography spacing 1.15rem, form element
-   padding 0.15rem by 0.25rem, radius 4px. */
+   padding 0.15rem by 0.25rem, radius 4px.
 
-/* Root typography. The root size steps from 16px to 20px with the viewport, so
-   every rem in the app grows with it. */
+   This is Pico's look kept as it is, not the Braun design: the 3px focus glow
+   on buttons and fields, Key Yellow link text and the fixed field height go
+   against DESIGN.md. Primitives in this folder set their own and win; change
+   these only on purpose, with the @visual baselines. */
+
+/* Root typography. The root size steps from 16px to 20px with the viewport
+   (the media queries after `section` below), so every rem grows with it. */
 :root {
   background-color: var(--lh-ground);
   color: var(--lh-text);
@@ -23,30 +28,6 @@
   tab-size: 4;
   -webkit-tap-highlight-color: transparent;
   text-size-adjust: 100%;
-}
-
-@media (min-width: 576px) {
-  :root {
-    font-size: 17px;
-  }
-}
-
-@media (min-width: 768px) {
-  :root {
-    font-size: 18px;
-  }
-}
-
-@media (min-width: 992px) {
-  :root {
-    font-size: 19px;
-  }
-}
-
-@media (min-width: 1200px) {
-  :root {
-    font-size: 20px;
-  }
 }
 
 *,
@@ -143,25 +124,42 @@ section {
   margin-bottom: 0.5rem;
 }
 
+/* The root size and section spacing grow at Pico's breakpoints. */
 @media (min-width: 576px) {
+  :root {
+    font-size: 17px;
+  }
+
   section {
     margin-bottom: 0.625rem;
   }
 }
 
 @media (min-width: 768px) {
+  :root {
+    font-size: 18px;
+  }
+
   section {
     margin-bottom: 0.75rem;
   }
 }
 
 @media (min-width: 992px) {
+  :root {
+    font-size: 19px;
+  }
+
   section {
     margin-bottom: 0.875rem;
   }
 }
 
 @media (min-width: 1200px) {
+  :root {
+    font-size: 20px;
+  }
+
   section {
     margin-bottom: 1rem;
   }
