@@ -96,11 +96,8 @@ describe("shadcn migration guard", () => {
   it("limits Pico-only CSS variables", () => {
     const CEILING: Record<string, number> = {
       "--color": 2,
-      "--form-element-disabled-background-color": 1,
-      "--form-element-disabled-opacity": 1,
       "--line-height": 1,
       "--mark-background-color": 2,
-      "--nav-link-spacing-horizontal": 1,
       "--spacing": 3,
     };
     const pico = read(join(WEB, "public/pico.min.css"));

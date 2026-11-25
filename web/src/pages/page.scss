@@ -7,3 +7,22 @@
   margin: 0px;
   gap: 0;
 }
+
+// The default page grid, which Pico's `.grid` class used to give every page:
+// one column, then equal columns from 992px. Each page's own unlayered rules
+// replace it where they set columns. Grid items may shrink below their content.
+@layer base {
+  :is(.Page, .AsmPage) {
+    grid-template-columns: 1fr;
+
+    > * {
+      min-width: 0;
+    }
+  }
+
+  @media (min-width: 992px) {
+    :is(.Page, .AsmPage) {
+      grid-template-columns: repeat(auto-fit, minmax(0%, 1fr));
+    }
+  }
+}

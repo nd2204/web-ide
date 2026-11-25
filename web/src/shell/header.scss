@@ -1,3 +1,51 @@
+// The header's nav: the title list on the left and the tool list on the right.
+// These rules used to come from Pico's `nav` styles and their overrides in
+// pico.scss. They sit in the `components` layer, so they beat Tailwind's
+// preflight and lose to the unlayered rules below and in lecture_hall.scss,
+// which theme the header.
+@layer components {
+  #root > header nav {
+    display: flex;
+    justify-content: space-between;
+
+    :is(ol, ul) {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    :is(ol, ul):first-of-type {
+      margin-left: -0.5rem;
+    }
+
+    li {
+      display: inline-block;
+      margin: 0;
+      padding: 0 0.5rem;
+    }
+
+    :where(a, [role="link"]) {
+      display: inline-block;
+      margin: -0.5rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    :where(a, [role="link"]),
+    :where(a, [role="link"]):is([aria-current], :hover, :active, :focus) {
+      text-decoration: none;
+    }
+
+    // Pico floats a zero-width space before every nav li, which in the
+    // flex column items becomes a 25px row. Delete with pico.min.css.
+    li::before {
+      display: none;
+    }
+  }
+}
+
 // The header toolbar's base list and item layout. lecture_hall.scss themes it.
 ul.icon-list {
   margin-right: 0.4rem;

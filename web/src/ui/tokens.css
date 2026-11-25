@@ -3,6 +3,13 @@
    them. Monaco reads the same values through shell/lecture_hall_colors.ts, and
    shell/lecture_hall_colors.test.ts keeps the two in sync. */
 
+/* The UI face; values use JetBrains Mono (--font-family-monospace). */
+:root {
+  --lh-font-sans:
+    "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans",
+    sans-serif;
+}
+
 :root[data-theme="dark"] {
   --lh-ground: #1c1c1a;
   --lh-panel: #242421;
