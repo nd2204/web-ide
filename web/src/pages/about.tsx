@@ -21,7 +21,7 @@ export const About = () => {
       tabIndex={0}
       className="overflow-y-scroll"
     >
-      {/* The markdown's rule keeps the browser's 0.5em spacing that preflight resets. */}
+      {/* The markdown's <hr> keeps the browser's 0.5em spacing that preflight resets. */}
       <div className="container [&_hr]:my-[0.5em]">
         <Markdown>{aboutContent}</Markdown>
         <p>
