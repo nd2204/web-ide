@@ -8,15 +8,17 @@ const tokensCss = readFileSync(
   "utf8",
 );
 
-function tokens(theme: "dark" | "light") {
-  const block = tokensCss.match(
-    new RegExp(`:root\\[data-theme="${theme}"\\] \\{([^}]*)\\}`),
-  );
+// Light is the default theme in `@theme static`; dark overrides it.
+const BLOCKS = {
+  light: /@theme static \{([^}]*)\}/,
+  dark: /:root\[data-theme="dark"\] \{([^}]*)\}/,
+};
+
+function colors(theme: "dark" | "light") {
+  const block = tokensCss.match(BLOCKS[theme]);
   expect(block, `${theme} token block`).not.toBeNull();
   const out: Record<string, string> = {};
-  for (const m of (block?.[1] ?? "").matchAll(
-    /--lh-([a-z-]+): (#[0-9a-f]{6});/g,
-  )) {
+  for (const m of (block?.[1] ?? "").matchAll(/--color-([a-z-]+): ([^;]+);/g)) {
     out[m[1]] = m[2];
   }
   return out;
@@ -25,10 +27,16 @@ function tokens(theme: "dark" | "light") {
 describe("Lecture Hall Monaco colours", () => {
   for (const theme of ["dark", "light"] as const) {
     it(`${theme} editor tokens match the stylesheet`, () => {
-      const css = tokens(theme);
+      const css = colors(theme);
       for (const [name, value] of Object.entries(LECTURE_HALL_TOKENS[theme])) {
-        expect(css[name], `--lh-${name}`).toBe(value);
+        expect(css[name], `--color-${name}`).toBe(value);
       }
     });
   }
+
+  it("gives the dark theme a value for every colour", () => {
+    expect(Object.keys(colors("dark")).sort()).toEqual(
+      Object.keys(colors("light")).sort(),
+    );
+  });
 });

@@ -56,7 +56,7 @@ export function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-0 border-b border-solid border-border aria-[current=true]:bg-[color-mix(in_srgb,var(--lh-yellow)_16%,transparent)]",
+        "border-0 border-b border-solid border-border aria-[current=true]:bg-[color-mix(in_srgb,var(--color-primary)_16%,transparent)]",
         className,
       )}
       {...props}
@@ -76,7 +76,7 @@ const cellVariants = cva(cellBase, {
     /** `fail` tints a value that differs from the expected one. */
     tone: {
       default: "",
-      fail: "bg-[color-mix(in_srgb,var(--lh-red)_16%,transparent)]",
+      fail: "bg-[color-mix(in_srgb,var(--color-destructive)_16%,transparent)]",
     },
   },
   defaultVariants: { align: "start", tone: "default" },

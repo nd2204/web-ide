@@ -18,7 +18,7 @@ import { LECTURE_HALL_MONACO } from "./lecture_hall_colors";
 
 // Lecture Hall editor themes: slate with chalk colours in dark, whiteboard
 // with marker inks in light. Colours live in `lecture_hall_colors.ts`, which a
-// test keeps in step with `pico/lecture_hall.scss`.
+// test keeps in step with `ui/tokens.css`.
 // Defined on the Monaco instance the editor component hands to `beforeMount`,
 // so the theme is registered on the same module the editor renders with.
 export function defineLectureHallThemes(m: typeof monacoT) {

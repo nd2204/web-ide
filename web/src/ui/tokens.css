@@ -1,57 +1,108 @@
-/* Braun colour tokens, one block per theme. These are the single source for the
-   --lh-* names; lecture_hall.scss and the shadcn parts in this folder read
-   them. Monaco reads the same values through shell/lecture_hall_colors.ts, and
-   shell/lecture_hall_colors.test.ts keeps the two in sync. */
+/* Braun design tokens under shadcn names. This file is their single source:
+   Tailwind utilities (`bg-card`, `text-muted-foreground`, `rounded-md`) and our
+   SCSS (`var(--color-border)`) read the same variables. Monaco reads the same
+   values through shell/lecture_hall_colors.ts, and
+   shell/lecture_hall_colors.test.ts keeps the two in sync.
 
-/* The UI face; values use JetBrains Mono (--font-family-monospace). */
-:root {
-  --lh-font-sans:
+   Light is the default theme: its values sit in `@theme static`, which declares
+   the names to Tailwind and always emits them. `:root[data-theme="dark"]`
+   overrides the colours; App.tsx sets `data-theme` on <html>.
+
+   Colour roles (DESIGN.md "Colors"):
+     background, card, muted   Ground, Panel and Raised surfaces
+     border                    Seam lines
+     foreground                Ink; muted-foreground is the quieter ink
+     primary                   Key Yellow: the one primary action, current step
+     primary-text              Key Yellow as text (links, active tab labels)
+     accent                    hover wash
+     ring                      focus outline
+     input-pin                 orange: input pins
+     output-pin                green: output pins and passed
+     internal-pin              grey: internal pins and warnings
+     destructive               red: errors
+     key, well (and -edge)     lit keys and recessed fields */
+
+@theme static {
+  --color-background: #e9e7e1;
+  --color-card: #f6f4ee;
+  --color-muted: #efede6;
+  --color-border: #cfccc3;
+  --color-foreground: #2a2a28;
+  --color-muted-foreground: #6b685f;
+  --color-primary: #f2d21a;
+  --color-primary-foreground: #2a2a28;
+  --color-input-pin: #b85f08;
+  --color-output-pin: #3f7f26;
+  --color-internal-pin: #6e6b61;
+  --color-destructive: #b3261e;
+  --color-ring: #2a2a28;
+  --color-primary-text: #6e5a00;
+  --color-accent: rgb(42 42 40 / 7%);
+  --color-key: #fffefb;
+  --color-key-edge: #8a867b;
+  --color-well: #e2dfd5;
+  --color-well-edge: #9a968b;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+
+  /* The hover and press easing (an exponential ease-out). */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* The UI face; values use JetBrains Mono (--font-family-monospace). */
+  --font-sans:
     "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans",
     sans-serif;
+
+  /* Tailwind's own default; our SCSS reads it too (tracking.scss). */
+  --spacing: 0.25rem;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Outer gap between the panels of a tool page. */
+  --panel-gap: 8px;
+
+  /* Values, code and pins. */
+  --font-family-monospace:
+    "JetBrains Mono", source-code-pro, Menlo, Monaco, Consolas, "Roboto Mono",
+    "Ubuntu Monospace", "Noto Mono", "Oxygen Mono", "Liberation Mono",
+    monospace, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+  --font-size-monospace: 15px;
+
+  /* The current test step, and an editor error mark. */
+  --mark-background-color: color-mix(
+    in srgb,
+    var(--color-primary) 16%,
+    transparent
+  );
+  --mark-error-color: color-mix(in srgb, var(--color-destructive) 35%, transparent);
+
+  /* Outline of a compiler file entry. */
+  --light-grey: var(--color-border);
 }
 
 :root[data-theme="dark"] {
-  --lh-ground: #1c1c1a;
-  --lh-panel: #242421;
-  --lh-raised: #2c2c29;
-  --lh-seam: #3d3d38;
-  --lh-text: #ece9e1;
-  --lh-muted: #a19e94;
-  --lh-yellow: #f2d21a;
-  --lh-on-yellow: #1c1c1a;
-  --lh-blue: #f59a3c;
-  --lh-green: #86c866;
-  --lh-amber: #a8a59a;
-  --lh-red: #ff8a7a;
-  --lh-focus: #f2d21a;
-  --lh-accent-text: #f2d21a;
-  --lh-hover: rgb(236 233 225 / 8%);
-  --lh-key: #3d3d38;
-  --lh-key-edge: #8a877c;
-  --lh-well: #171715;
-  --lh-well-edge: #6e6b62;
+  --color-background: #1c1c1a;
+  --color-card: #242421;
+  --color-muted: #2c2c29;
+  --color-border: #3d3d38;
+  --color-foreground: #ece9e1;
+  --color-muted-foreground: #a19e94;
+  --color-primary: #f2d21a;
+  --color-primary-foreground: #1c1c1a;
+  --color-input-pin: #f59a3c;
+  --color-output-pin: #86c866;
+  --color-internal-pin: #a8a59a;
+  --color-destructive: #ff8a7a;
+  --color-ring: #f2d21a;
+  --color-primary-text: #f2d21a;
+  --color-accent: rgb(236 233 225 / 8%);
+  --color-key: #3d3d38;
+  --color-key-edge: #8a877c;
+  --color-well: #171715;
+  --color-well-edge: #6e6b62;
   color-scheme: dark;
-}
-
-:root[data-theme="light"] {
-  --lh-ground: #e9e7e1;
-  --lh-panel: #f6f4ee;
-  --lh-raised: #efede6;
-  --lh-seam: #cfccc3;
-  --lh-text: #2a2a28;
-  --lh-muted: #6b685f;
-  --lh-yellow: #f2d21a;
-  --lh-on-yellow: #2a2a28;
-  --lh-blue: #b85f08;
-  --lh-green: #3f7f26;
-  --lh-amber: #6e6b61;
-  --lh-red: #b3261e;
-  --lh-focus: #2a2a28;
-  --lh-accent-text: #6e5a00;
-  --lh-hover: rgb(42 42 40 / 7%);
-  --lh-key: #fffefb;
-  --lh-key-edge: #8a867b;
-  --lh-well: #e2dfd5;
-  --lh-well-edge: #9a968b;
-  color-scheme: light;
 }

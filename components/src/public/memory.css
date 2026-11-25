@@ -11,12 +11,12 @@
 }
 
 .memory-cell[data-current] > code {
-  background: color-mix(in srgb, var(--lh-yellow) 16%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 16%, transparent);
 }
 
 .memory-cell-value,
 .memory-cell-value > span {
-  color: var(--lh-text);
+  color: var(--color-foreground);
 }
 
 /* A narrow memory panel wraps its title-bar keys rather than scroll sideways. */
@@ -26,5 +26,5 @@
 
 /* The well around the screen canvas. */
 .screen-well {
-  background-color: var(--lh-raised);
+  background-color: var(--color-muted);
 }

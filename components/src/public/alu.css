@@ -6,9 +6,9 @@
 
 /* Its outlines and labels draw in the text colour. */
 .alu :is(path, polygon) {
-  stroke: var(--lh-text);
+  stroke: var(--color-foreground);
 }
 
 .alu text {
-  fill: var(--lh-text);
+  fill: var(--color-foreground);
 }

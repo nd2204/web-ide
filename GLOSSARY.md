@@ -16,12 +16,12 @@ _Avoid_: Chip component, shared component
 The generic controls around a widget's content (its buttons, inputs and toolbars), as opposed to the content itself. Chrome is built from primitives; content stays custom.
 
 **Token**:
-A named design value (colour, radius, spacing) that both primitives and widgets read. The `--lh-*` tokens are canonical until the final rename to shadcn names.
+A named design value (colour, radius, spacing) that both primitives and widgets read. Tokens carry shadcn names as Tailwind theme variables (`--color-primary`, `--radius-md`) and live in `web/src/ui/tokens.css`.
 _Avoid_: Variable, theme value
 
 **Braun**:
 The app's visual world: matte warm-grey panels, tactile keys, one colour per meaning. The migration to shadcn keeps it unchanged.
-_Avoid_: Lecture Hall (the old name; `lh-` survives only in token names)
+_Avoid_: Lecture Hall (the old name; it survives only in `lecture_hall.scss` and `lecture_hall_colors.ts`)
 
 **Overlay**:
 A control that appears above the page and is dismissed on demand: a tooltip, dialog or menu. Overlays are primitives.

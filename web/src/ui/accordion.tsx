@@ -57,7 +57,7 @@ export function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group/trigger m-0 inline-flex w-full coarse:min-h-11 cursor-pointer items-center justify-between gap-2 rounded-none border-0 bg-transparent px-3 py-2 text-start text-base font-bold leading-tight text-foreground shadow-none outline-none transition-colors duration-100 hover:bg-[color-mix(in_srgb,var(--lh-key)_88%,var(--lh-text))] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring motion-reduce:transition-none",
+          "group/trigger m-0 inline-flex w-full coarse:min-h-11 cursor-pointer items-center justify-between gap-2 rounded-none border-0 bg-transparent px-3 py-2 text-start text-base font-bold leading-tight text-foreground shadow-none outline-none transition-colors duration-100 hover:bg-[color-mix(in_srgb,var(--color-key)_88%,var(--color-foreground))] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring motion-reduce:transition-none",
           className,
         )}
         {...props}
