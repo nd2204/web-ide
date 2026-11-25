@@ -6,6 +6,7 @@ import {
 import { type JSX, RefObject, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AppContext, useAppContext } from "../App.context";
+import type { IconName } from "../icons";
 import { PageContext } from "../Page.context";
 import { Icon } from "../pico/icon";
 import URLs, { LAST_ROUTE_KEY, TOOLS, URL } from "../urls";
@@ -14,7 +15,7 @@ import "./header.scss";
 
 interface HeaderButton {
   tooltip: string;
-  icon: string;
+  icon: IconName;
   href?: string;
   tool?: string;
   target?: JSX.Element;
@@ -27,7 +28,7 @@ interface HeaderButtonContext {
   pathname: string;
 }
 
-function headerButtonFromURL(url: URL, icon: string, tooltip?: string) {
+function headerButtonFromURL(url: URL, icon: IconName, tooltip?: string) {
   return {
     href: url.href,
     tool: url.tool,

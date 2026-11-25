@@ -55,13 +55,27 @@ describe("deleteLegacyCaches", () => {
     const { data, storage } = fakeCaches({
       images: [],
       [`workbox-precache-v2-${SCOPE}`]: [],
-      "web-ide-google-fonts": [],
+      "web-ide-pages": [],
     });
 
     expect(await deleteLegacyCaches(storage)).toEqual(["images"]);
     expect([...data.keys()]).toEqual([
       `workbox-precache-v2-${SCOPE}`,
-      "web-ide-google-fonts",
+      "web-ide-pages",
     ]);
+  });
+
+  it("deletes the Google Fonts caches left by earlier builds", async () => {
+    const { data, storage } = fakeCaches({
+      "web-ide-google-fonts": [],
+      "web-ide-google-fonts-css": [],
+      "web-ide-user-guide": [],
+    });
+
+    expect(await deleteLegacyCaches(storage)).toEqual([
+      "web-ide-google-fonts",
+      "web-ide-google-fonts-css",
+    ]);
+    expect([...data.keys()]).toEqual(["web-ide-user-guide"]);
   });
 });

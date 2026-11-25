@@ -1,6 +1,9 @@
 {
   "entryJsGzipBytes": 230400,
   "entryCssGzipBytes": 10240,
+  "fonts": {
+    "material_symbols_outlined.woff2": 6144
+  },
   "baseline": {
     "recordedAt": "2026-11-21",
     "step": "0: infrastructure",

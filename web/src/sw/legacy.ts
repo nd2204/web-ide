@@ -1,9 +1,17 @@
 // The Create React App build registered a Workbox worker at the same URL as
 // this one. Its precache shares Workbox's cache name, so Workbox prunes those
-// entries itself on activation. Its runtime cache is cleaned up here.
+// entries itself on activation. Runtime caches that no route fills any more
+// are cleaned up here.
 
-/** Runtime caches created by the CRA service worker. */
-export const LEGACY_CACHES = ["images"];
+/**
+ * Runtime caches no current route uses: the CRA worker's `images`, and the
+ * Google Fonts caches from before Material Symbols was self-hosted.
+ */
+export const LEGACY_CACHES = [
+  "images",
+  "web-ide-google-fonts",
+  "web-ide-google-fonts-css",
+];
 
 /** CRA emitted its bundles under static/js and static/css; Vite uses assets/. */
 const CRA_ASSET = /\/static\/(js|css)\//;
@@ -26,7 +34,7 @@ export async function hasLegacyPrecache(storage: CacheStorage) {
   return false;
 }
 
-/** Deletes the CRA runtime caches. Resolves to the names that were deleted. */
+/** Deletes the legacy runtime caches. Resolves to the names that were deleted. */
 export async function deleteLegacyCaches(storage: CacheStorage) {
   const names = await storage.keys();
   const legacy = names.filter((name) => LEGACY_CACHES.includes(name));

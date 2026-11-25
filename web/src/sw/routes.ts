@@ -18,16 +18,6 @@ export function isAppNavigation(
   );
 }
 
-/** Stylesheets from Google Fonts, such as the Material Symbols icon font CSS. */
-export function isGoogleFontsStylesheet(url: URL): boolean {
-  return url.origin === "https://fonts.googleapis.com";
-}
-
-/** Font files referenced by Google Fonts stylesheets. */
-export function isGoogleFontsFile(url: URL): boolean {
-  return url.origin === "https://fonts.gstatic.com";
-}
-
 /** User guide screenshots, which are too large to precache. */
 export function isUserGuideImage(
   url: URL,

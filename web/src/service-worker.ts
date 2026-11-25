@@ -12,18 +12,9 @@ import {
   precacheAndRoute,
 } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import {
-  CacheFirst,
-  NetworkFirst,
-  StaleWhileRevalidate,
-} from "workbox-strategies";
+import { NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 import { deleteLegacyCaches, hasLegacyPrecache } from "./sw/legacy";
-import {
-  isAppNavigation,
-  isGoogleFontsFile,
-  isGoogleFontsStylesheet,
-  isUserGuideImage,
-} from "./sw/routes";
+import { isAppNavigation, isUserGuideImage } from "./sw/routes";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -47,26 +38,11 @@ registerRoute(
   }),
 );
 
-// Build output: hashed JS and CSS (Monaco included), fonts, icons, the manifest
+// Build output: hashed JS and CSS (Monaco included), fonts (Material Symbols
+// included), icons, the manifest
 // and the user guide PDFs.
 precacheAndRoute(self.__WB_MANIFEST);
 cleanupOutdatedCaches();
-
-// Material Symbols is loaded from Google Fonts by the app's stylesheet.
-registerRoute(
-  ({ url }) => isGoogleFontsStylesheet(url),
-  new StaleWhileRevalidate({ cacheName: "web-ide-google-fonts-css" }),
-);
-registerRoute(
-  ({ url }) => isGoogleFontsFile(url),
-  new CacheFirst({
-    cacheName: "web-ide-google-fonts",
-    plugins: [
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new ExpirationPlugin({ maxEntries: 20, maxAgeSeconds: 365 * 24 * 3600 }),
-    ],
-  }),
-);
 
 registerRoute(
   ({ url }) => isUserGuideImage(url, ORIGIN, BASE),

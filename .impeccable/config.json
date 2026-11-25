@@ -7,7 +7,7 @@
         "rule": "design-system-font",
         "value": "material symbols outlined",
         "createdAt": "2026-11-24T06:08:23.411Z",
-        "reason": "icon font, not a typeface choice; icon.scss only lost its ul.icon-list block in this step, the font import is unchanged"
+        "reason": "icon font, not a typeface choice; self-hosted in step 7 and documented as Icon Font in web/DESIGN.md Typography"
       }
     ]
   }

@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  isAppNavigation,
-  isGoogleFontsFile,
-  isGoogleFontsStylesheet,
-  isUserGuideImage,
-} from "./routes";
+import { isAppNavigation, isUserGuideImage } from "./routes";
 
 const ORIGIN = "https://nand2tetris.github.io";
 const BASE = "/web-ide/";
@@ -37,20 +32,6 @@ describe("isAppNavigation", () => {
   it("skips other origins", () => {
     const other = new URL("https://example.com/web-ide/");
     expect(isAppNavigation(navigate, other, ORIGIN, BASE)).toBe(false);
-  });
-});
-
-describe("Google Fonts matchers", () => {
-  it("separates stylesheets from font files", () => {
-    const css = new URL(
-      "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined",
-    );
-    const font = new URL("https://fonts.gstatic.com/s/materialsymbols/x.woff2");
-
-    expect(isGoogleFontsStylesheet(css)).toBe(true);
-    expect(isGoogleFontsFile(css)).toBe(false);
-    expect(isGoogleFontsFile(font)).toBe(true);
-    expect(isGoogleFontsStylesheet(font)).toBe(false);
   });
 });
 
