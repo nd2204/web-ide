@@ -148,55 +148,6 @@
     }
   }
 
-  // Panels: slate cards with a seam and a calm title bar.
-  article.panel {
-    background: var(--lh-panel);
-    border: 1px solid var(--lh-seam);
-    border-radius: var(--lh-radius);
-    // Round corners clip, but a tall panel (the CPU screen column) still scrolls.
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    &.editor {
-      overflow-y: hidden;
-    }
-
-    > header {
-      background: var(--lh-raised);
-      border-bottom: 1px solid var(--lh-seam);
-      padding: 0.1rem 0.6rem;
-      gap: 0.4rem 0.75rem;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      font-weight: 700;
-
-      // The title is as tall as one row of controls, so it lines up with the
-      // first row when the controls wrap.
-      > :first-child {
-        display: flex;
-        align-items: center;
-        min-height: var(--lh-btn-h);
-        white-space: nowrap;
-      }
-
-      .stack.stack-row.stack-wrap {
-        gap: 0.4rem 0.75rem;
-        align-items: center;
-        justify-content: flex-start;
-      }
-
-      // The Builtin switch label sits on the first row, level with the title.
-      > label {
-        align-self: center;
-      }
-    }
-
-    > footer {
-      background: var(--lh-raised);
-      border-top: 1px solid var(--lh-seam);
-    }
-  }
-
   #root > main {
     gap: 0.6rem;
     padding: 8px;
@@ -207,40 +158,6 @@
   .Page,
   .AsmPage {
     gap: var(--lh-gap);
-  }
-
-  // A panel nested in a panel (CPU and VM screen column) is a section, not a card.
-  article.panel article.panel {
-    border: 0;
-    border-top: 1px solid var(--lh-seam);
-    border-radius: 0;
-  }
-
-  // Bitmap Jack/Hack tabs use the same pill tabs as the test panel.
-  .tab-container {
-    gap: 0.25rem;
-
-    .tab-button {
-      margin: 0;
-      padding: 0.2rem 0.7rem;
-      font-size: 0.9rem;
-      font-weight: 700;
-      border: 1px solid transparent;
-      border-radius: 999px;
-      background-color: transparent;
-      color: var(--lh-muted);
-
-      &:hover:not(.active) {
-        background-color: var(--lh-hover);
-        color: var(--lh-text);
-      }
-
-      &.active {
-        background-color: var(--lh-raised);
-        border-color: var(--lh-seam);
-        color: var(--lh-accent-text);
-      }
-    }
   }
 
   // Footer / status line.
@@ -260,63 +177,6 @@
     }
   }
 
-  // Tabs become pills inside the panel.
-  [role="tablist"] {
-    --border: 1px solid transparent;
-    --border-empty: 1px solid transparent;
-    gap: 0.25rem;
-    padding: 0.35rem 0.5rem 0;
-  }
-
-  [role="tablist"]::after,
-  [role="tablist"]::before {
-    border-bottom: 1px solid var(--lh-seam);
-  }
-
-  label[role="tab"],
-  [role="tab"] label {
-    padding: 0.2rem 0.7rem;
-    line-height: 1.25;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-
-  // The visually hidden radio kept a gap on the left of the label; take it
-  // out of the flow (still focusable) so the padding is even.
-  [role="tab"] {
-    position: relative;
-
-    [type="radio"] {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-
-  [role="tab"] {
-    border-radius: 999px;
-    color: var(--lh-muted);
-    border: 1px solid transparent;
-
-    &:hover {
-      background: var(--lh-hover);
-      color: var(--lh-text);
-      border: 1px solid transparent;
-    }
-
-    &[aria-selected="true"],
-    &:has(:checked) {
-      background: var(--lh-raised);
-      border: 1px solid var(--lh-seam);
-      color: var(--lh-accent-text);
-      font-weight: 700;
-    }
-  }
-
   // Button groups: every button is its own pill with a gap, so neighbours never
   // fuse into one slab. (The pin bus below is the one joined group.)
   fieldset[role="group"] {
@@ -329,21 +189,7 @@
     background: transparent;
     box-shadow: none;
   }
-
-  // Dropdowns take the same slate.
-  details[role="list"] ul {
-    background: var(--lh-panel);
-    border: 1px solid var(--lh-seam);
-    border-radius: var(--lh-radius);
-  }
-
-  details > summary {
-    background: var(--lh-raised);
-    border-radius: var(--lh-radius-sm);
-  }
 }
-
-
 
 // Reviewer pass: dialogs, banner, status, mobile header, drawn icons.
 :root[data-theme="dark"],
@@ -421,6 +267,8 @@
 
     dt,
     dd {
+      display: flex;
+      align-items: center;
       border: 0;
       background: transparent;
       padding: 0.25rem 0;
@@ -451,12 +299,6 @@
     a {
       color: var(--lh-accent-text);
     }
-  }
-
-  // Pages that are a single card (Converter, About) sit on the same grid as the
-  // panel pages.
-  #root > main > article {
-    margin: 0;
   }
 
   // Header on narrow screens: keep the title to one line, scroll the tools.
@@ -525,11 +367,6 @@
       min-height: 44px;
       justify-content: center;
     }
-
-    label[role="tab"],
-    [role="tab"] label {
-      min-height: 44px;
-    }
   }
 }
 
@@ -540,72 +377,6 @@
   :root[data-theme="light"] {
     #root > header ul.icon-list li {
       transition: none;
-    }
-  }
-}
-
-// Content blocks that sat flush against panel edges or against each other.
-:root[data-theme="dark"],
-:root[data-theme="light"] {
-  // Rows inside a nested panel (CPU and VM Keyboard row).
-  article.panel > .stack.stack-row.stack-align-baseline {
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.4rem 0.75rem;
-  }
-
-  // Accordions (Registers) and the register list inside them.
-  details {
-    margin: 0;
-
-    > summary {
-      padding: 0.35rem 0.75rem;
-    }
-
-    dl {
-      margin: 0 0.75rem 0.6rem;
-    }
-  }
-
-  // VM Structures: Stack and Call-stack.
-  .VmPage article.panel main > section > p,
-  .VmPage article.panel main > section > div,
-  .VmPage article.panel main > section > main {
-    margin: 0;
-    padding: 0.45rem 0.75rem;
-  }
-
-  // Bitmap option rows.
-  .BitmapPage .control-row {
-    padding: 0.4rem 0.75rem;
-    gap: 0.4rem 0.75rem;
-  }
-
-  // Property sheet (Converter): cells need room around their text.
-  dl {
-    dt,
-    dd {
-      display: flex;
-      align-items: center;
-      padding: 0.35rem 0.75rem;
-    }
-  }
-
-  // Single card pages: title and body share one inset.
-  #root > main > article {
-    padding: 0;
-
-    > header {
-      margin: 0;
-      padding: 0.5rem 0.75rem;
-
-      h2 {
-        margin: 0;
-      }
-    }
-
-    > main {
-      padding: 0.5rem 0.75rem;
     }
   }
 }

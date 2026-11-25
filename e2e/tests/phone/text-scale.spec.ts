@@ -25,6 +25,11 @@ test.describe("150% text scale", { tag: "@smoke" }, () => {
         // header title only.
         .filter((el) => !el.matches("[data-slot=select-trigger], .truncate"))
         .filter((el) => !el.closest("[data-allow-clip], .monaco-editor"))
+        // A scroller (a panel whose pin table is wider than a phone) clips
+        // nothing: its content scrolls into view. A panel body is the content
+        // that scrolls inside its panel, not a label.
+        .filter((el) => !/auto|scroll/.test(getComputedStyle(el).overflowX))
+        .filter((el) => !el.matches("[data-slot=panel-body]"))
         .filter((el) => el.scrollWidth > el.clientWidth + 1)
         .map((el) => `${el.tagName.toLowerCase()}: ${el.textContent?.trim().slice(0, 30)}`),
     );

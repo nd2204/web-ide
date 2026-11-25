@@ -158,7 +158,11 @@ const scrollReducer =
   });
 
 export const VirtualScroll = <T extends {}, U extends ReactNode = ReactNode>(
-  props: VirtualScrollProps<T, U> & { className?: string },
+  props: VirtualScrollProps<T, U> & {
+    className?: string;
+    /** Names the scroller, which then takes keyboard focus to scroll. */
+    "aria-label"?: string;
+  },
 ) => {
   const viewportRef = useRef<HTMLDivElement | null>(null);
 
@@ -204,6 +208,9 @@ export const VirtualScroll = <T extends {}, U extends ReactNode = ReactNode>(
         overflowAnchor: "none",
       }}
       className={props.className ?? ""}
+      role={props["aria-label"] ? "group" : undefined}
+      aria-label={props["aria-label"]}
+      tabIndex={props["aria-label"] ? 0 : undefined}
       onScroll={(e) => dispatchScroll((e.target as HTMLDivElement).scrollTop)}
     >
       <div style={{ height: `${state.topPaddingHeight}px` }} />

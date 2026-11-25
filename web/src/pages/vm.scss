@@ -39,6 +39,12 @@
 
   .vm {
     grid-area: vm;
+
+    // VM Structures: the Stack frame and the Call-stack, each inset like a row.
+    section > :is(p, div) {
+      margin: 0;
+      padding: 0.45rem 0.75rem;
+    }
   }
 
   .display {

@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { testPanel } from "../helpers";
 
 const START_TIMEOUT_MS = 2_000;
 const POLL_INTERVAL_MS = 500;
@@ -10,7 +11,7 @@ export class TestPanel {
     private page: Page,
     private runTooltip = "Run",
   ) {
-    this.panel = page.locator("article._test_panel");
+    this.panel = testPanel(page);
   }
 
   async runTest(options?: { stuckTimeoutMs?: number }): Promise<void> {

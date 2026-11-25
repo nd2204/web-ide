@@ -1,0 +1,9 @@
+/* The run bar: its keys, step counters and speed slider wrap as one row. */
+.runbar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem 0.75rem;
+}

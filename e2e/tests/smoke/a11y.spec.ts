@@ -20,24 +20,9 @@ const KNOWN: { rule: string; target: RegExp; why: string }[] = [
     why: "Radix hides #root while a Select is open and traps focus in the list",
   },
   {
-    rule: "aria-required-children",
-    target: /^section(\[role="tablist"\])?$/,
-    why: "tabs are radio inputs inside role=tab wrappers (tabs step)",
-  },
-  {
-    rule: "nested-interactive",
-    target: /^#tab-_r_\w+_$/,
-    why: "tabs are radio inputs inside role=tab wrappers (tabs step)",
-  },
-  {
     rule: "color-contrast",
     target: /\.line-numbers|tr\[data-kind="output"\]/,
     why: "muted text on panels: Braun token review, separate from this migration",
-  },
-  {
-    rule: "scrollable-region-focusable",
-    target: /^(#root > \.stack-item-1 > div|main > div|\.(RAM|ROM|Stack) > div|\.canvas-panel > main > div)$/,
-    why: "scroll panes are not keyboard focusable (Panel step)",
   },
 ];
 

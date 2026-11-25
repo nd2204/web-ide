@@ -28,74 +28,13 @@
     font-size: var(--font-size-monospace);
   }
 
-  article.fill {
-    padding: 0;
-    margin: 0;
-  }
-
-  article.no-shadow {
-    box-shadow: none;
-  }
-
-  // Tighten up panel articles
-  article.panel {
-    border: solid var(--border-width) var(--card-border-color);
-    padding: 0;
-    margin: 0;
-    border-radius: 0;
-    box-shadow: none;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-
-    &.editor {
-      overflow-y: hidden;
-    }
-
-    > header {
-      padding: 0;
-      margin: 0;
-      font-weight: bold;
-      border-radius: 0;
-    }
-
-    > header > *:first-child {
-      padding: 0 var(--block-spacing-vertical);
-    }
-
-    main {
-      flex: 1;
-    }
-  }
-
-  // Tighten up accordian headers
-  details {
-    margin-bottom: 0;
-    padding-bottom: 0;
-
-    > summary {
-      display: flex;
-      flex-direction: row;
-      align-items: baseline;
-      background-color: var(--card-sectionning-background-color);
-      padding: calc(var(--block-spacing-vertical) * 0.66)
-        var(--block-spacing-horizontal);
-      font-weight: bold;
-    }
-
-    > summary > *:first-child {
-      flex: 1;
-      padding: 0 var(--block-spacing-horizontal);
-    }
-  }
-
   #root {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: column;
 
-    header {
+    > header {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -104,14 +43,6 @@
 
     > main {
       overflow: hidden;
-    }
-
-    > footer {
-      border-top: 1px solid var(--card-border-color);
-      background-color: var(--card-background-color);
-      padding-top: calc(var(--block-spacing-vertical) / 2);
-      padding-left: var(--block-spacing-horizontal);
-      align-items: baseline;
     }
   }
 

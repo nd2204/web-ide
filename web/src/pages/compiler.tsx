@@ -14,13 +14,13 @@ import { PageContext } from "../Page.context";
 import { Icon } from "../pico/icon";
 import { Editor } from "../shell/editor";
 import { Panel } from "../shell/panel";
-import { Tab, TabList } from "../shell/tabs";
 import { Dialog, DialogActions, DialogContent } from "../ui/dialog";
 import URLs from "../urls";
 import "./compiler.scss";
 import { Tip } from "../shell/tip";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 export const Compiler = () => {
   const { setStatus, canUpgradeFs } = useContext(BaseContext);
@@ -29,7 +29,6 @@ export const Compiler = () => {
   const { stores, setTool } = useContext(PageContext);
   const { state, dispatch, actions } = stores.compiler;
 
-  const [selected, setSelected] = useState(0);
   const [suppressStatus, setSuppressStatus] = useState(false);
   const [editable, setEditable] = useState(false);
 
@@ -59,10 +58,6 @@ export const Compiler = () => {
     },
     [tracking],
   );
-
-  useEffect(() => {
-    setSelected(Object.keys(state.files).indexOf(state.selected));
-  }, [state.selected]);
 
   const loadRef = useRef<HTMLInputElement>(null);
 
@@ -192,12 +187,10 @@ export const Compiler = () => {
       {newFileDialogComponent}
       <Panel
         className="code"
+        title={<Trans>Source</Trans>}
         header={
           <>
-            <div>
-              <Trans>Source</Trans>
-            </div>
-            <div className="stack stack-row stack-item-1">
+            <div className="flex flex-1 flex-row">
               <Tip
                 label={t`Open a folder containing Jack file(s)`}
                 placement="right"
@@ -243,18 +236,24 @@ export const Compiler = () => {
           </>
         }
       >
-        <TabList tabIndex={{ value: selected, set: setSelected }}>
+        <Tabs value={state.selected} onValueChange={onSelect}>
+          <TabsList>
+            {Object.keys(state.files).map((file) => (
+              <TabsTrigger
+                key={file}
+                value={file}
+                style={{
+                  backgroundColor: !state.compiled[file].valid
+                    ? "var(--compiler-err-color)"
+                    : undefined,
+                }}
+              >
+                {`${file}.jack`}
+              </TabsTrigger>
+            ))}
+          </TabsList>
           {Object.keys(state.files).map((file) => (
-            <Tab
-              title={`${file}.jack`}
-              key={file}
-              onSelect={() => onSelect(file)}
-              style={{
-                backgroundColor: !state.compiled[file].valid
-                  ? "var(--compiler-err-color)"
-                  : undefined,
-              }}
-            >
+            <TabsContent key={file} value={file}>
               <Editor
                 value={state.files[file]}
                 path={file}
@@ -265,9 +264,9 @@ export const Compiler = () => {
                 language={"jack"}
                 disabled={!editable}
               />
-            </Tab>
+            </TabsContent>
           ))}
-        </TabList>
+        </Tabs>
       </Panel>
     </div>
   );
@@ -310,7 +309,7 @@ const NameDialog = ({
         closeLabel={t`Close`}
         aria-describedby={undefined}
       >
-        <div className="stack stack-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2">
           <Input
             aria-label={t`File name`}
             value={value}

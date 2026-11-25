@@ -21,6 +21,7 @@ import { useClockReset } from "../clockface.js";
 import { Field } from "../field.js";
 import InlineEdit from "../inline_edit.js";
 import { LOADING } from "../messages.js";
+import { Panel } from "../panel.js";
 import { useStateInitializer } from "../react.js";
 import { BaseContext } from "../stores/base.context.js";
 import { Tip, type TipPlacement } from "../tooltip.js";
@@ -42,7 +43,9 @@ export const MemoryBlock = ({
   format = dec,
   onChange = () => undefined,
   onFocus = () => undefined,
+  "aria-label": label,
 }: {
+  "aria-label"?: string;
   jmp?: { value: number };
   memory: MemoryAdapter;
   highlight?: number;
@@ -95,6 +98,7 @@ export const MemoryBlock = ({
 
   return (
     <VirtualScroll<[number, number], ReactNode>
+      aria-label={label}
       settings={settings}
       get={get}
       row={row}
@@ -288,9 +292,11 @@ export const Memory = forwardRef(
     };
 
     return (
-      <article className={`panel memory ${className ?? name}`}>
-        <header>
-          <div style={{ whiteSpace: "nowrap" }}>{name}</div>
+      <Panel
+        className={`memory ${className ?? name}`}
+        title={name}
+        overflow="clip"
+        header={
           <fieldset role="group">
             {fileSelect && (
               <Tip
@@ -346,10 +352,12 @@ export const Memory = forwardRef(
               )}
             />
           </fieldset>
-        </header>
+        }
+      >
         {displayEnabled ? (
           <MemoryBlock
             key={renderKey}
+            aria-label={name}
             jmp={goto}
             memory={memory}
             highlight={highlighted}
@@ -366,7 +374,7 @@ export const Memory = forwardRef(
         ) : (
           "Memory display is disabled"
         )}
-      </article>
+      </Panel>
     );
   },
 );

@@ -112,7 +112,7 @@ The app is moving from Pico CSS and SCSS to shadcn (Radix, Tailwind v4, `cva`). 
 
 - Primitives live in `web/src/ui`, one file per part, and every Radix part sets `data-slot`. Tailwind is unprefixed, and its preflight reset is off until Pico is gone.
 - One cascade layer order, declared once in `web/public/root.css`: `@layer pico, theme, components, utilities;`. Our own SCSS in `lecture_hall.scss` is unlayered and still wins over every layer.
-- The old flex helpers are named `stack`, `stack-row`, `stack-wrap`, `stack-justify-*`, `stack-align-*` and `stack-item-<n>` so they never collide with Tailwind's `flex`, `row`, `justify-*` and `flex-<n>`.
+- Layout in `web` uses Tailwind's flex utilities (`flex`, `flex-col`, `flex-1`, `justify-*`, `items-*`) directly; there is no `Stack` or `Row` wrapper. Widgets in `components` lay out their rows with plain CSS in `components/src/public`. Panels, tabs and accordions are `web/src/ui` primitives, and `components` widgets reach the Panel through a context wrapper like `Btn`.
 - Colour tokens are the `--lh-*` variables in `web/src/ui/tokens.css`. They stay canonical until the final rename to shadcn names. The Tailwind `dark:` variant follows `data-theme="dark"`.
 - `components` styles its widgets with plain CSS in `components/src/public` and imports no Tailwind, Radix or `web/src/ui`. Chrome around a widget is passed in as slots from `web`.
 - Primitives carry `coarse:min-h-11` for 44px touch targets and use the `phone` breakpoint (576px) for chrome. Page grids keep their SCSS thresholds.

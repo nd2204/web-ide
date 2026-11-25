@@ -3,6 +3,7 @@ import { Memory } from "@nand2tetris/simulator/cpu/memory.js";
 import { useCallback, useRef, useState } from "react";
 import { Btn } from "../button.js";
 import { useClockFrame, useClockReset } from "../clockface.js";
+import { Panel } from "../panel.js";
 import "../public/memory.css";
 
 const WHITE = "white";
@@ -97,10 +98,10 @@ export const Screen = ({
   });
 
   return (
-    <article className="panel">
-      <header>
-        <div>Screen</div>
-        {showScaleControls && (
+    <Panel
+      title="Screen"
+      header={
+        showScaleControls && (
           <fieldset role="group">
             <Btn aria-current={screenScale === 0} onClick={() => onScaleCB(0)}>
               x0
@@ -112,10 +113,11 @@ export const Screen = ({
               x2
             </Btn>
           </fieldset>
-        )}
-      </header>
+        )
+      }
+    >
       {screenScale > 0 && (
-        <main className="screen-well">
+        <div className="screen-well">
           <figure
             style={{
               width: `${512 * screenScale}px`,
@@ -139,8 +141,8 @@ export const Screen = ({
               }}
             ></canvas>
           </figure>
-        </main>
+        </div>
       )}
-    </article>
+    </Panel>
   );
 };

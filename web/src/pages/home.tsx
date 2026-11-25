@@ -5,6 +5,12 @@ import { AssignmentStubs } from "@nand2tetris/projects/base.js";
 import { runTests } from "@nand2tetris/simulator/projects/runner.js";
 import type { ParsedPath } from "path";
 import { ChangeEventHandler, useCallback, useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 
 // import { parse, ParsedPath } from "node:path";
 
@@ -23,20 +29,25 @@ const TestResult = (props: {
   cmp: string;
   out: string;
 }) => (
-  <details>
-    <summary>
-      {props.name} {props.pass ? <Trans>Passed</Trans> : <Trans>Failed</Trans>}
-    </summary>
-    <div className="stack stack-row">
-      <pre>
-        <code>{props.hdl}</code>
-      </pre>
-      <pre>
-        <code>{props.tst}</code>
-      </pre>
-    </div>
-    <DiffTable cmp={props.cmp} out={props.out} />
-  </details>
+  <Accordion>
+    <AccordionItem value={props.name}>
+      <AccordionTrigger>
+        {props.name}{" "}
+        {props.pass ? <Trans>Passed</Trans> : <Trans>Failed</Trans>}
+      </AccordionTrigger>
+      <AccordionContent>
+        <div className="flex flex-row">
+          <pre>
+            <code>{props.hdl}</code>
+          </pre>
+          <pre>
+            <code>{props.tst}</code>
+          </pre>
+        </div>
+        <DiffTable cmp={props.cmp} out={props.out} />
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
 );
 
 async function loadAssignment(file: ParsedPath & { file?: File }) {

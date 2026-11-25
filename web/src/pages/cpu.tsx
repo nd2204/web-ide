@@ -1,5 +1,4 @@
-import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Keyboard } from "@nand2tetris/components/chips/keyboard";
 import MemoryComponent from "@nand2tetris/components/chips/memory.js";
 import { Screen, ScreenScales } from "@nand2tetris/components/chips/screen.js";
@@ -12,8 +11,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../App.context";
 import { PageContext } from "../Page.context";
 import { isPath } from "../shell/file_select";
-import { Accordian, Panel } from "../shell/panel";
+import { Panel } from "../shell/panel";
 import { TestPanel } from "../shell/test_panel";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 import {
   Select,
   SelectContent,
@@ -25,6 +30,7 @@ import "./cpu.scss";
 import "./property.scss";
 
 export const CPU = () => {
+  const { t } = useLingui();
   const { filePicker } = useContext(AppContext);
   const { setTool, stores } = useContext(PageContext);
   const { state, actions, dispatch } = stores.cpu;
@@ -178,9 +184,10 @@ export const CPU = () => {
       />
       <Panel
         className="IO"
+        aria-label={t`Computer`}
         header={
           <>
-            <div className="stack-item-1">
+            <div className="flex-1">
               {runnersAssigned && cpuRunner.current && (
                 <Runbar
                   runner={cpuRunner.current}
@@ -206,10 +213,13 @@ export const CPU = () => {
           onScale={onScale}
         ></Screen>
         <Keyboard update={onKeyChange} keyboard={state.sim.Keyboard} />
-        <Accordian summary={<Trans>Registers</Trans>} open={true}>
-          <main>
-            <div>
-              <dl>
+        <Accordion defaultValue={["registers"]}>
+          <AccordionItem value="registers">
+            <AccordionTrigger>
+              <Trans>Registers</Trans>
+            </AccordionTrigger>
+            <AccordionContent>
+              <dl className="registers">
                 <dt>PC</dt>
                 <dd data-testid="register-PC">{state.sim.PC}</dd>
                 <dt>A</dt>
@@ -217,9 +227,9 @@ export const CPU = () => {
                 <dt>D</dt>
                 <dd data-testid="register-D">{state.sim.D}</dd>
               </dl>
-            </div>
-          </main>
-        </Accordian>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </Panel>
       {runnersAssigned && (
         <TestPanel

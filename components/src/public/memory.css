@@ -19,6 +19,11 @@
   color: var(--lh-text);
 }
 
+/* A narrow memory panel wraps its title-bar keys rather than scroll sideways. */
+.memory fieldset[role="group"] {
+  flex-wrap: wrap;
+}
+
 /* The well around the screen canvas. */
 .screen-well {
   background-color: var(--lh-raised);

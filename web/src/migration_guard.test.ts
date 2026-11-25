@@ -37,7 +37,7 @@ const strip = (text: string) =>
 describe("shadcn migration guard", () => {
   // (a) Pico is imported from outside `web/src/pico`.
   it("limits imports of pico/", () => {
-    const CEILING = 13;
+    const CEILING = 10;
     const hits = SOURCES.filter((path) => !path.includes("/src/pico/")).flatMap(
       (path) =>
         strip(read(path))
@@ -55,25 +55,17 @@ describe("shadcn migration guard", () => {
   it("limits type selectors in lecture_hall.scss", () => {
     const CEILING: Record<string, number> = {
       a: 3,
-      article: 9,
-      dd: 3,
-      details: 3,
-      dialog: 0,
-      div: 3,
-      dl: 3,
-      dt: 3,
+      dd: 2,
+      div: 2,
+      dl: 1,
+      dt: 2,
       fieldset: 1,
-      footer: 3,
-      h2: 1,
-      header: 7,
-      label: 5,
+      footer: 2,
+      header: 5,
       li: 7,
-      main: 8,
+      main: 1,
       nav: 4,
-      p: 1,
-      section: 3,
-      summary: 2,
-      ul: 8,
+      ul: 7,
     };
     const TAGS =
       "button|input|select|textarea|dialog|table|thead|tbody|tr|th|td|details|summary|fieldset|legend|label|article|header|footer|main|nav|a|h[1-6]|p|ul|li|code|kbd|pre|hr|progress|mark|form|section|dl|dt|dd|span|div";
@@ -103,35 +95,13 @@ describe("shadcn migration guard", () => {
   // (c) Custom properties that only Pico defines.
   it("limits Pico-only CSS variables", () => {
     const CEILING: Record<string, number> = {
-      "--accordion-active-summary-color": 1,
-      "--accordion-close-summary-color": 1,
-      "--accordion-open-summary-color": 1,
-      "--block-spacing-horizontal": 5,
-      "--block-spacing-vertical": 3,
-      "--border-radius": 2,
-      "--border-width": 3,
-      "--card-background-color": 2,
-      "--card-border-color": 5,
-      "--card-sectionning-background-color": 1,
       "--color": 2,
       "--form-element-disabled-background-color": 1,
       "--form-element-disabled-opacity": 1,
-      "--form-element-spacing-horizontal": 2,
-      "--form-element-spacing-vertical": 2,
-      "--icon-chevron": 1,
-      "--line-height": 2,
+      "--line-height": 1,
       "--mark-background-color": 2,
-      "--nav-element-spacing-horizontal": 1,
       "--nav-link-spacing-horizontal": 1,
-      "--outline-width": 1,
-      "--primary": 3,
-      "--primary-focus": 1,
-      "--primary-inverse": 1,
-      "--secondary": 1,
-      "--secondary-hover": 1,
-      "--secondary-inverse": 1,
-      "--spacing": 13,
-      "--transition": 2,
+      "--spacing": 3,
     };
     const pico = read(join(WEB, "public/pico.min.css"));
     const picoVars = new Set(
@@ -151,13 +121,14 @@ describe("shadcn migration guard", () => {
     }
   });
 
-  // (d) Our flex helpers were renamed to `stack` so they cannot collide with
-  // Tailwind's `flex`, `row`, `justify-*` and `flex-<n>` classes.
-  it("has no .flex or .row selectors or class names", () => {
+  // (d) Layout is Tailwind's `flex`, `flex-col`, `justify-*` and `flex-<n>`
+  // utilities (or widget CSS in `components`). The old `stack` helpers are
+  // gone, and no stylesheet may define a rule that shadows a utility's name.
+  it("has no flex helper selectors or stack class names", () => {
     const BAD_SELECTOR =
-      /\.(flex(-[0-9])?|row|wrap|justify-[a-z]+|align-[a-z]+)(?![\w-])/;
+      /\.(flex(-[0-9])?|row|wrap|justify-[a-z]+|align-[a-z]+|stack(-[a-z0-9-]+)?)(?![\w-])/;
     const BAD_CLASS =
-      /class(Name)?=["'`{][^"'`]*(?<![\w-])(flex(-[0-9])?|row|wrap|justify-[a-z]+|align-[a-z]+)(?![\w-])/;
+      /class(Name)?=["'`{][^"'`]*(?<![\w-])stack(-[a-z0-9-]+)?(?![\w-])/;
     const hits = SOURCES.filter((path) => !path.includes("/src/ui/")).flatMap(
       (path) =>
         strip(read(path))

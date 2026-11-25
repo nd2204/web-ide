@@ -13,6 +13,7 @@ import { SwitchRow } from "../shell/switch_row";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Textarea } from "../ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 
@@ -780,7 +781,13 @@ export const BitmapEditor = () => {
           </fieldset>
         }
       >
-        <div style={{ overflow: "auto", padding: "var(--spacing)" }}>
+        <div
+          role="group"
+          aria-label={t`Canvas`}
+          // Scrolls a large canvas; focusable so the keyboard can scroll it.
+          tabIndex={0}
+          className="overflow-auto p-1"
+        >
           <table
             className={`canvas-grid ${obviousStyling ? "obvious-edges" : ""}`}
             onMouseLeave={stopDraw}
@@ -826,37 +833,44 @@ export const BitmapEditor = () => {
         </div>
       </Panel>
 
-      {/* Code Panel */}
-      <Panel
-        className="code-panel"
-        header={
-          <div className="tab-container">
-            <button
-              className={`tab-button ${codeMode === "jack" ? "active" : ""}`}
-              onClick={() => setCodeMode("jack")}
-            >
-              <Trans>Generated Jack Code</Trans>
-            </button>
-            <button
-              className={`tab-button ${codeMode === "hack" ? "active" : ""}`}
-              onClick={() => setCodeMode("hack")}
-            >
-              <Trans>Generated Hack Assembly</Trans>
-            </button>
-          </div>
-        }
+      {/* Code Panel: the Tabs root wraps the panel so its list can sit in the
+          title bar; `contents` keeps the panel itself the grid item. */}
+      <Tabs
+        className="contents"
+        value={codeMode}
+        onValueChange={(mode) => setCodeMode(mode as CodeMode)}
       >
-        <Textarea
-          className="generated-code"
-          aria-label={
-            codeMode === "jack"
-              ? t`Generated Jack Code`
-              : t`Generated Hack Assembly`
+        <Panel
+          className="code-panel"
+          header={
+            <TabsList className="w-auto shrink border-0">
+              <TabsTrigger value="jack">
+                <Trans>Generated Jack Code</Trans>
+              </TabsTrigger>
+              <TabsTrigger value="hack">
+                <Trans>Generated Hack Assembly</Trans>
+              </TabsTrigger>
+            </TabsList>
           }
-          readOnly
-          value={generatedCode}
-        />
-      </Panel>
+        >
+          <TabsContent value="jack" className="h-full">
+            <Textarea
+              className="generated-code"
+              aria-label={t`Generated Jack Code`}
+              readOnly
+              value={codeMode === "jack" ? generatedCode : ""}
+            />
+          </TabsContent>
+          <TabsContent value="hack" className="h-full">
+            <Textarea
+              className="generated-code"
+              aria-label={t`Generated Hack Assembly`}
+              readOnly
+              value={codeMode === "hack" ? generatedCode : ""}
+            />
+          </TabsContent>
+        </Panel>
+      </Tabs>
 
       {/* Controls Panel */}
       <Panel className="controls-panel">

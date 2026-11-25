@@ -10,23 +10,30 @@ import { AppContext } from "../App.context";
 
 import "./editor.scss";
 import { Action } from "@nand2tetris/simulator/types";
-import { Button } from "../ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 import { Textarea } from "../ui/textarea";
 
 const Monaco = lazy(() => import("./Monaco"));
 
 export const ErrorPanel = ({ error }: { error?: CompilationError }) => {
   return error ? (
-    <details className="ErrorPanel" open>
-      <Button asChild>
-        <summary role="button" className="secondary">
+    <Accordion className="ErrorPanel" defaultValue={["error"]}>
+      <AccordionItem value="error">
+        <AccordionTrigger>
           <Trans>Parse Error</Trans>
-        </summary>
-      </Button>
-      <pre>
-        <code>{error?.message}</code>
-      </pre>
-    </details>
+        </AccordionTrigger>
+        <AccordionContent>
+          <pre>
+            <code>{error?.message}</code>
+          </pre>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   ) : (
     <></>
   );
