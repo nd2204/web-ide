@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-DePvh3-m.js";import{n as t}from"./dist-Bgkbbuwj.js";import{r as n}from"./panel-jINNjk_K.js";var r=e();function i({className:e,...i}){return(0,r.jsx)(`textarea`,{"data-slot":`textarea`,className:t(n,`h-auto min-h-16 p-2 [font-family:var(--font-family-monospace)] [font-size:var(--font-size-monospace)] leading-normal`,e),...i})}export{i as t};

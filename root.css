@@ -1,4 +1,9 @@
-@import "./pico.min.css" layer(pico);
+/* One layer order for Tailwind and our own rules, declared before any other
+   rule because a layer's place is fixed where it first appears. Tailwind's
+   preflight (with src/ui/base.css), theme.css and utilities.css are imported
+   into `base`, `theme` and `utilities` (src/ui/tailwind.css). Unlayered rules
+   (src/shell/braun.scss, the widget CSS in `components`) beat every layer. */
+@layer base, theme, components, utilities;
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
@@ -7,8 +12,6 @@
   /* src: url(https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPQ.ttf) format('truetype'); */
   src: url(./jet_brains_mono.ttf) format("truetype");
 }
-
-@layer pico component user;
 
 /* Be Vietnam Pro: the UI face of the Braun theme, designed for Vietnamese. */
 @font-face {
@@ -31,4 +34,14 @@
   font-weight: 700;
   font-display: swap;
   src: url(./be_vietnam_pro_700.ttf) format("truetype");
+}
+
+/* Material Symbols Outlined, the icon font: a static FILL 0, wght 400, GRAD 0,
+   opsz 24 instance holding only the icons in src/icons.ts (npm run icons). */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./material_symbols_outlined.woff2) format("woff2");
 }
